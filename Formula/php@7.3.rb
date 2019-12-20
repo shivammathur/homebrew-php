@@ -1,13 +1,12 @@
 class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.12.tar.xz"
-  sha256 "aafe5e9861ad828860c6af8c88cdc1488314785962328eb1783607c1fdd855df"
+  url "https://www.php.net/distributions/php-7.3.13.tar.xz"
+  sha256 "57ac55fe442d2da650abeb9e6fa161bd3a98ba6528c029f076f8bba43dd5c228"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 2
-    sha256 "43f5ff7b9cc84ecdb01ec45f76084f07a9f6e8e596422aa5c66e9cae6d7f7899" => :catalina
+    sha256 "b0ae3f768db17db6bc7c6ed34215bf469f286b80ebab0580a0cce61ef5f49369" => :catalina
   end
 
   keg_only :versioned_formula
