@@ -1,0 +1,63 @@
+name: 'Update and Build Formulae'
+on:
+  repository_dispatch:
+  push:
+    paths:
+    - '**.rb'
+    - '**.yml'
+    - '**.sh'    
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  supported:    
+    runs-on: macOS-latest
+    strategy:      
+      fail-fast: false
+      matrix:
+        php-version:
+          - 'php'
+          - 'php@7.2'
+          - 'php@7.3'
+          - 'php@8.0'
+    steps:
+    - uses: actions/checkout@v1
+    - name: build
+      run: sh ./.github/scripts/build.sh
+      env:
+        GIT_URL: https://github.com/shivammathur/homebrew-php.git
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_NAME: "Shivam Mathur"        
+        HOMEBREW_BINTRAY_USER: shivammathur
+        HOMEBREW_BINTRAY_REPO: php
+        HOMEBREW_BINTRAY_EMAIL: ${{ secrets.email }}
+        HOMEBREW_BINTRAY_KEY: ${{ secrets.bintray_key }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PHP_VERSION: ${{ matrix.php-version }}
+        GITHUB_ACTIONS: true
+      continue-on-error: true
+  deprecated:
+    needs: supported
+    runs-on: ubuntu-latest
+    strategy:      
+      fail-fast: false
+      matrix:
+        php-version:
+          - 'php@5.6'
+          - 'php@7.0'
+    steps:
+    - uses: actions/checkout@v1
+    - name: Fetch
+      run: sh .github/scripts/update.sh old ${{ matrix.php-version }}
+    - name: Commit files
+      run: |
+        git config --local user.email "${{ secrets.email }}"
+        git config --local user.name "Shivam Mathur"     
+        if [[ `git status --porcelain` ]]; then     
+          git stash
+          git pull -f https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master
+          git stash apply
+          git add ./Formula/${{ matrix.php-version }}.rb
+          git commit -m "Fetch latest Formula for ${{ matrix.php-version }}"
+          git push -f https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags
+        fi
+      
