@@ -46,7 +46,6 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
-  cat *.json
   add_log "$tick" "PHP $new_version" "Bottle filled"
 
   step_log "Adding label"
@@ -65,7 +64,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
 
   step_log "Stocking the new Bottle"
   git stash
-  sleep $[ ( $RANDOM % 100 )  + 1 ]s
+  sleep $((RANDOM % 100 + 1))s
   git pull -f https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master
   git stash apply
   curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X DELETE https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/versions/"$new_version" >/dev/null 2>&1 || true
@@ -73,7 +72,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X POST https://api.bintray.com/content/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/"$new_version"/publish >/dev/null 2>&1 || true
   add_log "$tick" "PHP $new_version" "Bottle added to stock"
 
-  step_log "Updating inventory" 
+  step_log "Updating inventory"
   git push https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags
   add_log "$tick" "Inventory" "updated"
 else
