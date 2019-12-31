@@ -5,12 +5,12 @@ on:
     paths:
     - '**.rb'
     - '**.yml'
-    - '**.sh'    
+    - '**.sh'
   schedule:
     - cron: '0 0 * * *'
 jobs:
   supported:    
-    runs-on: macOS-latest
+    runs-on: macos-latest
     strategy:      
       fail-fast: false
       matrix:
