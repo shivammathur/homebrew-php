@@ -1,12 +1,12 @@
 class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.4.1.tar.xz"
-  sha256 "561bb866bdd509094be00f4ece7c3543ec971c4d878645ee81437e291cffc762"
+  url "https://www.php.net/distributions/php-7.4.2.tar.xz"
+  sha256 "98284deac017da0d426117ecae7599a1f1bf62ae3911e8bc16c4403a8f4bdf13"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "8a7d4cf318a9c1551d84523230895fc88700c1d20e80c9bd73c4a6608ea0ebe9" => :catalina
+    sha256 "75153f4d2c96b010e41536cf7589c5f373dc407422d4f076e4fb1cfc9bc22dd4" => :catalina
   end
 
   depends_on "httpd" => [:build, :test]
@@ -145,7 +145,7 @@ class Php < Formula
       --with-password-argon2=#{Formula["argon2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
-      --with-pdo-odbc=unixODBC
+      --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
       --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pdo-sqlite
       --with-pgsql=#{Formula["libpq"].opt_prefix}
