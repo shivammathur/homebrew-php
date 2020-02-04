@@ -42,7 +42,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   add_log "$tick" "$GITHUB_REPOSITORY" "Tap added to brewery"
 
   step_log "Filling the Bottle"
-  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --skip-setup --skip-homebrew
+  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --skip-setup
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
