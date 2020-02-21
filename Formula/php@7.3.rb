@@ -2,12 +2,12 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.14.tar.xz"
-  sha256 "cc05dd373ca5d36652800762f65c10e828a17de35aaf246262e3efa99d00cdb0"
+  url "https://www.php.net/distributions/php-7.3.15.tar.xz"
+  sha256 "de7ae7cf3d1dbb2824975b26b32991dac2b732886ec22075b8c53b261b018166"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "7e0405d0b9aa17aef0c0209b3ef8e75279659eb67952671487c938899f417c8a" => :catalina
+    sha256 "d44b5d7c044914eb3033e5562cebea8af4809b4ee111a067afeedff0834c9c03" => :catalina
   end
 
   keg_only :versioned_formula
