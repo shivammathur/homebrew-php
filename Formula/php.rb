@@ -1,12 +1,13 @@
 class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.4.2.tar.xz"
-  sha256 "98284deac017da0d426117ecae7599a1f1bf62ae3911e8bc16c4403a8f4bdf13"
+  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
+  url "https://www.php.net/distributions/php-7.4.3.tar.xz"
+  sha256 "cf1f856d877c268124ded1ede40c9fb6142b125fdaafdc54f855120b8bc6982a"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "75153f4d2c96b010e41536cf7589c5f373dc407422d4f076e4fb1cfc9bc22dd4" => :catalina
+    sha256 "b53916c43d89cd43695033ee8c67f97632ba96b5a7f4bcc9d5a87a19bf06f292" => :catalina
   end
 
   depends_on "httpd" => [:build, :test]
