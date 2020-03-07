@@ -5,8 +5,8 @@ class PhpAT80 < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 80
-    sha256 "15520bfcd32e1a512f11ad928eaad0158e4c5bca5cf82b2328273c5d704c9feb" => :catalina
+    rebuild 81
+    sha256 "9dcf43815df915a4dcaba68cfb9b8f9079b0f2197c78e0afce5d92c5b784a17b" => :catalina
   end
 
   keg_only :versioned_formula
