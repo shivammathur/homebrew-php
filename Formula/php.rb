@@ -2,12 +2,12 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.4.tar.xz"
-  sha256 "1873c4cefdd3df9a78dcffb2198bba5c2f0464f55c9c960720c84df483fca74c"
+  url "https://www.php.net/distributions/php-7.4.5.tar.xz"
+  sha256 "d059fd7f55bdc4d2eada15a00a2976697010d3631ef6f83149cc5289e1f23c2c"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "68d959a673e7965d433704284622a7e73a5d0936fd29596dce4ac999483461af" => :catalina
+    sha256 "49975e84a18796ab03632061fcb1c078b0857065ac274091c628b7a92555e7c1" => :catalina
   end
 
   head do
@@ -339,14 +339,8 @@ class Php < Formula
     assert_no_match /^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra"
     begin
-      require "socket"
-
-      server = TCPServer.new(0)
-      port = server.addr[1]
-      server_fpm = TCPServer.new(0)
-      port_fpm = server_fpm.addr[1]
-      server.close
-      server_fpm.close
+      port = free_port
+      port_fpm = free_port
 
       expected_output = /^Hello world!$/
       (testpath/"index.php").write <<~EOS
