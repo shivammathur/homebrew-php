@@ -7,7 +7,8 @@ class Php < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "49975e84a18796ab03632061fcb1c078b0857065ac274091c628b7a92555e7c1" => :catalina
+    rebuild 1
+    sha256 "6acfd00929dfcb6a727d536191572d9b9658f4ef904001f1140ad0f86110f087" => :catalina
   end
 
   head do
@@ -48,6 +49,7 @@ class Php < Formula
 
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
+  uses_from_macos "krb5"
   uses_from_macos "libedit"
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
