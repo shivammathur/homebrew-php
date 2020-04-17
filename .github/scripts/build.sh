@@ -25,6 +25,9 @@ if [ "$PHP_VERSION" != "php@8.0" ]; then
   step_log "Sourcing latest formulae"
   sh .github/scripts/update.sh new "$PHP_VERSION" >/dev/null 2>&1
   add_log "$tick" "Formulae" "Sourced"
+  NL=$'\\\n'
+  sed -i '' "s~^  depends_on \"jpeg\".*~  depends_on \"jpeg\"${NL}  depends_on \"krb5\"~g" ./Formula/"$PHP_VERSION".rb
+  cat ./Formula/"$PHP_VERSION".rb
 fi
 
 step_log "Checking label"

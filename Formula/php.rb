@@ -32,6 +32,7 @@ class Php < Formula
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "jpeg"
+  depends_on "krb5"
   depends_on "libffi"
   depends_on "libpng"
   depends_on "libpq"
@@ -47,7 +48,6 @@ class Php < Formula
 
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
-  uses_from_macos "krb5"
   uses_from_macos "libedit"
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
