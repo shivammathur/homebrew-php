@@ -2,12 +2,12 @@ class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.2.29.tar.xz"
-  sha256 "b117de74136bf4b439d663be9cf0c8e06a260c1f340f6b75ccadb609153a7fe8"
+  url "https://www.php.net/distributions/php-7.2.30.tar.xz"
+  sha256 "aa93df27b58a45d6c9800ac813245dfdca03490a918ebe515b3a70189b1bf8c3"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "d1413ec07a7ea3e1a7a7e8158f64e98ec30bc86f6a97c2dc36a7c23bb8a7451f" => :catalina
+    sha256 "c273ebe264be15a48311501e9d4d2d66b9bf1f6044e28f9f9f67f793fac859c7" => :catalina
   end
 
   keg_only :versioned_formula
@@ -27,6 +27,7 @@ class PhpAT72 < Formula
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "jpeg"
+  depends_on "krb5"
   depends_on "libpng"
   depends_on "libpq"
   depends_on "libsodium"
@@ -331,14 +332,8 @@ class PhpAT72 < Formula
     assert_no_match /^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra"
     begin
-      require "socket"
-
-      server = TCPServer.new(0)
-      port = server.addr[1]
-      server_fpm = TCPServer.new(0)
-      port_fpm = server_fpm.addr[1]
-      server.close
-      server_fpm.close
+      port = free_port
+      port_fpm = free_port
 
       expected_output = /^Hello world!$/
       (testpath/"index.php").write <<~EOS
