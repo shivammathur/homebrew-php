@@ -36,7 +36,8 @@ new_version=$(brew info Formula/"$PHP_VERSION".rb | grep "$PHP_VERSION" | head -
 existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -s https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package" | sed -e 's/^.*"latest_version":"\([^"]*\)".*$/\1/')
 echo "existing label: $existing_version"
 echo "new label: $new_version"
-if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
+if true; then
+#if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
