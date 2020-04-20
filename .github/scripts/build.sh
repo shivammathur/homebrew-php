@@ -33,7 +33,7 @@ fi
 step_log "Checking label"
 package="${PHP_VERSION//@/:}"
 new_version=$(brew info Formula/"$PHP_VERSION".rb | grep "$PHP_VERSION" | head -n 1 | cut -d' ' -f3)
-existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -s https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package" | sed -e 's/^.*"latest_version":"\([^"]*\)".*$/\1/')
+existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -s https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package" | sed -e 's/^.*"latest_version":"\([^"]*\)".*$/\1/' | cut -d '_' -f 1)
 echo "existing label: $existing_version"
 echo "new label: $new_version"
 
