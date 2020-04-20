@@ -8,7 +8,8 @@ class Php < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "f0047362d60d798f0ae781ddfb3b392de6cec08b97195778fd1154ff635b1bd8" => :catalina
+    rebuild 1
+    sha256 "abcac99b5fa8dfa46940d1ae6fac476bb9397e1aa2e6891875528465af1e96b6" => :catalina
   end
 
   head do
