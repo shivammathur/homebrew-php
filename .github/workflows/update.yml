@@ -12,6 +12,7 @@ jobs:
       matrix:
         php-version:
           - 'php'
+          - 'php@7.1'
           - 'php@7.2'
           - 'php@7.3'
           - 'php@8.0'
