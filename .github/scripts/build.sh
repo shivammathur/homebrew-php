@@ -21,7 +21,7 @@ unset HOMEBREW_DISABLE_LOAD_FORMULA
 brew update-reset "$(brew --repository)" >/dev/null 2>&1
 add_log "$tick" "Housekeeping" "Done"
 
-if [ "$PHP_VERSION" != "php@8.0" ]; then
+if [ "$PHP_VERSION" != "php@8.0" ] && [ "$PHP_VERSION" != "php@7.1" ]; then
   step_log "Sourcing latest formulae"
   sh .github/scripts/update.sh new "$PHP_VERSION" >/dev/null 2>&1
   add_log "$tick" "Formulae" "Sourced"
