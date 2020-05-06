@@ -39,12 +39,10 @@ brew install shivammathur/php/php@7.2
 The code in this project is licensed under the [MIT license](http://choosealicense.com/licenses/mit/).
 Please see the [license file](LICENSE) for more information.
 
-Some formulae in [Formula](Formula) directory are fetched from third party projects and their licenses are linked below.
-- [Homebrew License](LICENSE_HOMEBREW)
-- [eXolnet License](LICENSE_eXolnet)
+Some formulae in [Formula](Formula) directory are fetched from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap and their license can be found [here](LICENSE_HOMEBREW).
+
 
 
 ## This project uses the following works
 
 - [Homebrew](https://github.com/Homebrew/homebrew-core "Homebrew")
-- [eXolnet/homebrew-deprecated](https://github.com/eXolnet/homebrew-deprecated "eXolnet/homebrew-deprecated")
