@@ -16,11 +16,6 @@ add_log() {
   fi
 }
 
-step_log "Housekeeping"
-unset HOMEBREW_DISABLE_LOAD_FORMULA
-brew update-reset "$(brew --repository)" >/dev/null 2>&1
-add_log "$tick" "Housekeeping" "Done"
-
 if [ "$PHP_VERSION" = "php" ] || [ "$PHP_VERSION" = "php@7.2" ] || [ "$PHP_VERSION" = "php@7.3" ]; then
   step_log "Sourcing latest formulae"
   sh .github/scripts/update.sh "$PHP_VERSION" >/dev/null 2>&1
@@ -46,7 +41,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   add_log "$tick" "$GITHUB_REPOSITORY" "Tap added to brewery"
 
   step_log "Filling the Bottle"
-  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --skip-setup
+  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --verbose --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
@@ -72,7 +67,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   git pull -f https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master
   git stash apply
   curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X DELETE https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/versions/"$new_version" >/dev/null 2>&1 || true
-  brew test-bot --ci-upload --tap="$GITHUB_REPOSITORY" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --bintray-org="$HOMEBREW_BINTRAY_USER"
+  brew test-bot --verbose --ci-upload --tap="$GITHUB_REPOSITORY" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --bintray-org="$HOMEBREW_BINTRAY_USER"
   curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X POST https://api.bintray.com/content/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/"$new_version"/publish >/dev/null 2>&1 || true
   add_log "$tick" "PHP $new_version" "Bottle added to stock"
 
