@@ -2,16 +2,17 @@ class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.2.30.tar.xz"
-  sha256 "aa93df27b58a45d6c9800ac813245dfdca03490a918ebe515b3a70189b1bf8c3"
-  revision 1
+  url "https://www.php.net/distributions/php-7.2.31.tar.xz"
+  sha256 "8beaa634bb878a96af9bc8643811ea46973f5f41ad2bfb6ab4cfd290e5a39806"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "3a28ec385405c486a1cb7aae6240d416848151ca5136048b89d194909cb3f22f" => :catalina
+    sha256 "115b581518fd4b9b9ad8df26fc22886980847d88d1f472db10eccd838e664f8e" => :catalina
   end
 
   keg_only :versioned_formula
+
+  deprecate! :date => "November 30, 2020"
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -183,10 +184,11 @@ class PhpAT72 < Formula
       "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
     # Use OpenSSL cert bundle
+    openssl = Formula["openssl@1.1"]
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
+      "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
+      "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
     config_files = {
       "php.ini-development"   => "php.ini",
