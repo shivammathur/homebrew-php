@@ -19,7 +19,8 @@ add_log() {
 
 if [ "$PHP_VERSION" = "php" ] || [ "$PHP_VERSION" = "php@7.2" ] || [ "$PHP_VERSION" = "php@7.3" ]; then
   step_log "Sourcing latest formulae"
-  sh .github/scripts/update.sh "$PHP_VERSION" >/dev/null 2>&1
+  mkdir -p Formula
+  curl -o "Formula/$PHP_VERSION.rb" "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb" >/dev/null 2>&1
   add_log "$tick" "Formulae" "Sourced"
   NL=$'\\\n'
   sed -i '' "s~^  depends_on \"jpeg\".*~  depends_on \"jpeg\"${NL}  depends_on \"krb5\"~g" ./Formula/"$PHP_VERSION".rb  
