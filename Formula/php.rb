@@ -2,13 +2,12 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.5.tar.xz"
-  sha256 "d059fd7f55bdc4d2eada15a00a2976697010d3631ef6f83149cc5289e1f23c2c"
-  revision 2
+  url "https://www.php.net/distributions/php-7.4.6.tar.xz"
+  sha256 "d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "ec8b3547e167c6dfdf9076c5fdf0fdbac5d7509d31f30a148a407df7fb9183c3" => :catalina
+    sha256 "5ecd9f085dd42e2a6c319d8aa2e1b1b7f538faddd13ed12227f13c1da0c1d89e" => :catalina
   end
 
   head do
@@ -191,10 +190,11 @@ class Php < Formula
       "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
     # Use OpenSSL cert bundle
+    openssl = Formula["openssl@1.1"]
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
+      "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
+      "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
     config_files = {
       "php.ini-development"   => "php.ini",
