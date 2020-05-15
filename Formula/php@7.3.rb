@@ -2,16 +2,17 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.17.tar.xz"
-  sha256 "6a30304c27f7e7a94538f5ffec599f600ee93aedbbecad8aa4f8bec539b10ad8"
-  revision 1
+  url "https://www.php.net/distributions/php-7.3.18.tar.xz"
+  sha256 "7b3e2479a8d6fd7666dcdef8aec50d49c4599cc6ee86e48d41724cfd99cc9e58"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "df72ce8339c41714a4b8645c47dd69267d075ebaee25152d3f3b8ea39cc37b29" => :catalina
+    sha256 "0dc7a569e4fa8defc209cbfd485da433cdf42110237f733769ef619f8838a552" => :catalina
   end
 
   keg_only :versioned_formula
+
+  deprecate! :date => "December 6, 2021"
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -183,10 +184,11 @@ class PhpAT73 < Formula
       "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
     # Use OpenSSL cert bundle
+    openssl = Formula["openssl@1.1"]
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
+      "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
+      "openssl.capath = \"#{openssl.pkgetc}/certs\""
 
     # php 7.3 known bug
     # SO discussion: https://stackoverflow.com/a/53709484/791609
