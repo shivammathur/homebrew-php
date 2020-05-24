@@ -16,8 +16,7 @@ add_log() {
     printf "\033[31;1m%s \033[0m\033[34;1m%s \033[0m\033[90;1m%s\033[0m\n" "$mark" "$subject" "$message"
   fi
 }
-
-if [ "$PHP_VERSION" = "php" ] || [ "$PHP_VERSION" = "php@7.2" ] || [ "$PHP_VERSION" = "php@7.3" ]; then
+if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]]; then
   step_log "Sourcing latest formulae"
   mkdir -p Formula
   curl -o "Formula/$PHP_VERSION.rb" "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb" >/dev/null 2>&1
@@ -42,7 +41,7 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   add_log "$tick" "$GITHUB_REPOSITORY" "Tap added to brewery"
 
   step_log "Filling the Bottle"
-  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"
+  brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url="$HOMEBREW_BINTRAY_URL"
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
@@ -63,17 +62,22 @@ if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]
   add_log "$tick" "$package" "Bottle labeled"
 
   step_log "Stocking the new Bottle"
-  git stash
-  sleep $((RANDOM % 100 + 1))s
-  git pull -f https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master
-  git stash apply
-  if [ $(ls *.json 2>/dev/null | wc -l) != "0" ]; then
+  if [ "$(find . -name '*.json' | wc -l 2>/dev/null | wc -l)" != "0" ]; then
     curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X DELETE https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/versions/"$new_version" >/dev/null 2>&1 || true
-    brew test-bot --ci-upload --publish --tap="$GITHUB_REPOSITORY" --root-url=https://dl.bintray.com/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" --bintray-org="$HOMEBREW_BINTRAY_USER"    
+    export HOMEBREW_BOTTLE_DOMAIN="https://dl.bintray.com/$HOMEBREW_BINTRAY_USER"
+    brew test-bot --ci-upload --publish --tap="$GITHUB_REPOSITORY" --root-url="$HOMEBREW_BINTRAY_URL" --bintray-org="$HOMEBREW_BINTRAY_USER"    
     add_log "$tick" "PHP $new_version" "Bottle added to stock"
 
     step_log "Updating inventory"
-    git push https://"$HOMEBREW_BINTRAY_USER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags
+    for try in $(seq 10); do
+      echo "try: $try" >/dev/null
+      git fetch && git rebase origin/master
+      if git push https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags; then
+        break
+      else
+        sleep 3s
+      fi
+    done
     add_log "$tick" "Inventory" "updated"
   else
     add_log "$cross" "bottle" "broke"
