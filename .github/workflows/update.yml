@@ -23,10 +23,12 @@ jobs:
     - uses: actions/checkout@v1
     - name: build
       run: sh ./.github/scripts/build.sh
-      env:
-        GIT_URL: ${{ github.event.repository.html_url }}
+      env:        
+        GITHUB_ACTIONS: true        
+        GITHUB_MESSAGE: ${{ github.event.head_commit.message }}
         GITHUB_REPOSITORY: ${{ github.repository }}
-        HOMEBREW_MAKE_JOBS: 6
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GIT_URL: ${{ github.event.repository.html_url }}
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{ github.repository_owner }}/php
         HOMEBREW_BINTRAY_USER: ${{ github.repository_owner }}
         HOMEBREW_BINTRAY_REPO: php
@@ -34,8 +36,6 @@ jobs:
         HOMEBREW_BINTRAY_KEY: ${{ secrets.bintray_key }}
         HOMEBREW_NO_ANALYTICS: 1
         HOMEBREW_NO_AUTO_UPDATE: 1
-        HOMEBREW_NO_INSTALL_CLEANUP: 1
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        HOMEBREW_NO_INSTALL_CLEANUP: 1        
         PHP_VERSION: ${{ matrix.php-version }}
-        GITHUB_ACTIONS: true
       continue-on-error: true

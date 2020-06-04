@@ -32,7 +32,7 @@ existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" 
 echo "existing label: $existing_version"
 echo "new label: $new_version"
 
-if [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
+if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
