@@ -69,6 +69,8 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_ver
     add_log "$tick" "PHP $new_version" "Bottle added to stock"
 
     step_log "Updating inventory"
+    git config --local user.email homebrew-test-bot@lists.sfconservancy.org
+    git config --local user.name BrewTestBot
     for try in $(seq 10); do
       echo "try: $try" >/dev/null
       git fetch && git rebase origin/master
