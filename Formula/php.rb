@@ -4,10 +4,11 @@ class Php < Formula
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
   url "https://www.php.net/distributions/php-7.4.6.tar.xz"
   sha256 "d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "5ecd9f085dd42e2a6c319d8aa2e1b1b7f538faddd13ed12227f13c1da0c1d89e" => :catalina
+    sha256 "45808c391b317d7aa12af930b2dd3bb2f3114af830b3b8023bbf386a66b8dbdc" => :catalina
   end
 
   head do
