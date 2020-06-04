@@ -4,10 +4,11 @@ class PhpAT73 < Formula
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
   url "https://www.php.net/distributions/php-7.3.18.tar.xz"
   sha256 "7b3e2479a8d6fd7666dcdef8aec50d49c4599cc6ee86e48d41724cfd99cc9e58"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "0dc7a569e4fa8defc209cbfd485da433cdf42110237f733769ef619f8838a552" => :catalina
+    sha256 "2d3613f97f480f431d4e91fd892cc48c1e938d0e880a0bc17bfcc3f1071ecba0" => :catalina
   end
 
   keg_only :versioned_formula
