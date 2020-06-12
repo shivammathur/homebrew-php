@@ -2,13 +2,13 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.6.tar.xz"
-  sha256 "d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832"
-  revision 1
+  url "https://www.php.net/distributions/php-7.4.7.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.7.tar.xz"
+  sha256 "53558f8f24cd8ab6fa0ea252ca8198e2650160649681ce5230c1df1dc2b52faf"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "45808c391b317d7aa12af930b2dd3bb2f3114af830b3b8023bbf386a66b8dbdc" => :catalina
+    sha256 "e75974490e1a799e8bfb0711cbe7edd5b672473397cce6449a2f73cd666534a1" => :catalina
   end
 
   head do
