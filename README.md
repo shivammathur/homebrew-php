@@ -46,3 +46,5 @@ Some formulae in [Formula](Formula) directory are fetched from [homebrew-core](h
 ## This project uses the following works
 
 - [Homebrew](https://github.com/Homebrew/homebrew-core "Homebrew")
+- [PCOV](https://github.com/krakjoe/pcov "PCOV PHP Extension")
+- [Xdebug](https://github.com/xdebug/xdebug "Xdebug PHP Extension")

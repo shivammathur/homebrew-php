@@ -35,6 +35,10 @@ echo "new label: $new_version"
 if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
+  step_log "Updating Homebrew"
+  brew update-reset
+  add_log "$tick" "Homebrew" "Updated"
+
   step_log "Adding tap $GITHUB_REPOSITORY"
   mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/$HOMEBREW_BINTRAY_USER"
   ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
