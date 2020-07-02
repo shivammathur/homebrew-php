@@ -3,12 +3,14 @@ class PhpAT72 < Formula
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
   url "https://www.php.net/distributions/php-7.2.31.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.2.31.tar.xz"
   sha256 "8beaa634bb878a96af9bc8643811ea46973f5f41ad2bfb6ab4cfd290e5a39806"
   revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "f866931630f037533e80789529973911dda207559dd98a3579498bd46956ae95" => :catalina
+    rebuild 1
+    sha256 "aad4a2c14c61d0bf513b692ad3e7b65e243ca08dc520c5c0aab82fb933518fde" => :catalina
   end
 
   keg_only :versioned_formula
