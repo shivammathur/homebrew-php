@@ -1,21 +1,8 @@
-Subject: [PATCH] PHP 5.6 - LibSSL 1.1 compatibility
+From c24860dc09845d3d2538ec7447e5edec638e029d Mon Sep 17 00:00:00 2001
+From: zsalab <zsalab@zettasystem.com>
+Date: Tue, 1 Aug 2017 01:43:04 +0200
+Subject: OpenSSL 1.1.0 compatibility
 
-This patch does not try to backport the 7.1 openssl module, it is the
-improved version of the 5.6 original openssl module.
-
-https://github.com/oerdnj/deb.sury.org/issues/566
-http://zettasystem.com/PHP-5.6.31-OpenSSL-1.1.0-compatibility-20170801.patch
-
-Upstream-Status: Deny [https://github.com/php/php-src/pull/2667]
-Reason: As PHP 5.6 is no longer actively supported only security fixes
-may land on this branch. As this change does not fall in this category,
-I'm closing this PR. (All higher versions of PHP already have OpenSSL
-1.1 support.)
-
-Author: zsalab@github https://github.com/zsalab
-
-Only port source modification, do not include the test case
-Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
 ---
  ext/openssl/openssl.c | 683 +++++++++++++++++++++++++++++++++++++-------------
  ext/openssl/xp_ssl.c  |  18 +-
