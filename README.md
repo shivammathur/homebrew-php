@@ -6,34 +6,50 @@
 
 > Homebrew tap for PHP releases.
 
-## Add the tap
+## PHP Support
 
-```bash
-brew tap shivammathur/homebrew-php
-```
+|PHP Version|formula|
+|--- |--- |
+`PHP 5.6`|`php@5.6`|
+`PHP 7.0`|`php@7.0`|
+`PHP 7.1`|`php@7.1`|
+`PHP 7.2`|`php@7.2`|
+`PHP 7.3`|`php@7.2`|
+`PHP 7.4`|`php` or `php@7.4`|
+`PHP 8.0.0-dev`|`php@8.0`|
+
+PHP formulae which are supported on `homebrew-core` tap are synced with each PHP patch release and maintained after they are deprecated.
 
 ## Usage
 
-Update `brew` before you install.
+**Update `brew`**
 
 ```bash
 brew update
 ```
 
-Then install any formula. See [Formula](Formula) directory for available formulae.
+**Add the tap**
+
+```bash
+brew tap shivammathur/homebrew-php
+```
+
+**Install**
+*See [PHP Support](#php-support) for available formulae.*
 
 To install latest PHP version.
 
 ```bash
 brew install shivammathur/php/php
+brew link --overwrite --force php
 ```
 
 To install a specific PHP version, for example `7.2`.
 
 ```bash
 brew install shivammathur/php/php@7.2
+brew link --overwrite --force php@7.2
 ```
-
 
 ## License
 The code in this project is licensed under the [MIT license](http://choosealicense.com/licenses/mit/).
@@ -42,9 +58,8 @@ Please see the [license file](LICENSE) for more information.
 Some formulae in [Formula](Formula) directory are fetched from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap and their license can be found [here](LICENSE_HOMEBREW).
 
 
+## Related Projects
 
-## This project uses the following works
-
-- [Homebrew](https://github.com/Homebrew/homebrew-core "Homebrew")
-- [PCOV](https://github.com/krakjoe/pcov "PCOV PHP Extension")
-- [Xdebug](https://github.com/xdebug/xdebug "Xdebug PHP Extension")
+- [shivammathur/homebrew-extensions](https://github.com/shivammathur/homebrew-extensions "Tap for PHP extensions")
+- [shivammathur/homebrew-phalcon](https://github.com/shivammathur/homebrew-extensions "Tap for psr and phalcon extensions")
+- [shivammathur/setup-php](https://github.com/shivammathur/setup-php "Setup PHP in GitHub Actions")
