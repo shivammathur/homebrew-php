@@ -20,7 +20,7 @@ jobs:
           - 'php@7.3'
           - 'php@8.0'
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: build
       run: sh ./.github/scripts/build.sh
       env:        

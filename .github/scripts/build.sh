@@ -77,7 +77,7 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_ver
     git config --local user.name BrewTestBot
     for try in $(seq 10); do
       echo "try: $try" >/dev/null
-      git fetch && git rebase origin/master
+      git fetch origin master && git rebase origin/master
       if git push https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags; then
         break
       else
