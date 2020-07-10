@@ -2,14 +2,13 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.19.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.19.tar.xz"
-  sha256 "6402faa19b1a8c4317c7612632bce985684a5bbae0980a5779a4019439882422"
+  url "https://www.php.net/distributions/php-7.3.20.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.20.tar.xz"
+  sha256 "43292046f6684eb13acb637276d4aa1dd9f66b0b7045e6f1493bc90db389b888"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 1
-    sha256 "82168a81cd3e3b5f66c4c0481737873fc2c68905ced7a9d08a6739c2c2593409" => :catalina
+    sha256 "0c270324325c1ba377a3dbe508dc99977e2d9ae442490738811c92eaaaed2cf1" => :catalina
   end
 
   keg_only :versioned_formula
@@ -179,7 +178,7 @@ class PhpAT73 < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
@@ -236,7 +235,7 @@ class PhpAT73 < Formula
     # Custom location for extensions installed via pecl
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
