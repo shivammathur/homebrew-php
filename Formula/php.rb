@@ -2,14 +2,13 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.7.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.7.tar.xz"
-  sha256 "53558f8f24cd8ab6fa0ea252ca8198e2650160649681ce5230c1df1dc2b52faf"
+  url "https://www.php.net/distributions/php-7.4.8.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.8.tar.xz"
+  sha256 "642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 1
-    sha256 "110d0cabd791f1397c73005148690a9f53b4cc791aa81da53a4a7825c9e6da43" => :catalina
+    sha256 "dec1d6d42bf119e0e43e248a6d0304e1c5e92c0b7f256a84a28c9ef173f5fcf1" => :catalina
   end
 
   head do
@@ -185,7 +184,7 @@ class Php < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
@@ -237,7 +236,7 @@ class Php < Formula
     # Custom location for extensions installed via pecl
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
