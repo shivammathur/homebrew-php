@@ -39,3 +39,8 @@ jobs:
         HOMEBREW_NO_INSTALL_CLEANUP: 1        
         PHP_VERSION: ${{ matrix.php-version }}
       continue-on-error: true
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.php-version }}
+        path: ./*.tar.gz
