@@ -289,7 +289,7 @@ class PhpAT70 < Formula
     version.to_s.split(".")[0..1].join(".")
   end
 
-  plist_options :manual => "php-fpm"
+  plist_options manual: "php-fpm"
 
   def plist
     <<~EOS
