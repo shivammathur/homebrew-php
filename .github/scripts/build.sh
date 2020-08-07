@@ -16,13 +16,11 @@ add_log() {
     printf "\033[31;1m%s \033[0m\033[34;1m%s \033[0m\033[90;1m%s\033[0m\n" "$mark" "$subject" "$message"
   fi
 }
-if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]]; then
+if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
   step_log "Sourcing latest formulae"
   mkdir -p Formula
   curl -o "Formula/$PHP_VERSION.rb" "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb" >/dev/null 2>&1
   add_log "$tick" "Formulae" "Sourced"
-  NL=$'\\\n'
-  sed -i '' "s~^  depends_on \"jpeg\".*~  depends_on \"jpeg\"${NL}  depends_on \"krb5\"~g" ./Formula/"$PHP_VERSION".rb  
 fi
 
 step_log "Checking label"

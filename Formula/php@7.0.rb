@@ -3,6 +3,7 @@ class PhpAT70 < Formula
   homepage "https://secure.php.net/"
   url "https://php.net/get/php-7.0.33.tar.xz/from/this/mirror"
   sha256 "ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
+  license "PHP-3.01"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
