@@ -8,9 +8,9 @@ class Php < Formula
   license "PHP-3.01"
 
   bottle do
-    sha256 "ec3af8e7bcfda01b5b0370cd33e97b12ce0988c2743e2437be4efc7d15a15f74" => :catalina
-    sha256 "fb211d4a9cf8fddb20c0c40b0934c09db7c0d5514bd5cb4d7692b115fec4b9e2" => :mojave
-    sha256 "d3c4639e3b5d8ba7e33c73a5e52cf3e3825fd0c7e3a647af6364e8ddeb25d90d" => :high_sierra
+    root_url "https://dl.bintray.com/shivammathur/php"
+    rebuild 1
+    sha256 "010ffc53bd23c39ceca7bfb71e112ddc7f2afea3676f38f7660a1c61d1bb6851" => :catalina
   end
 
   head do
