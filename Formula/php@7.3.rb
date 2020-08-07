@@ -8,9 +8,9 @@ class PhpAT73 < Formula
   license "PHP-3.01"
 
   bottle do
-    sha256 "cc1ad9e9b7d3f0a51849a1b9a28415bed3f592fe70bfb0d429e1efa5ddeb80e4" => :catalina
-    sha256 "8f1ab87a3e6c1b776792f9e8e5fdd763362d8ae2fb8fdebe2411fc575e3debaa" => :mojave
-    sha256 "7272926cf0c1ead42efd7789bb36533babff024baf9d9944040fa8ea6747ec7b" => :high_sierra
+    root_url "https://dl.bintray.com/shivammathur/php"
+    rebuild 1
+    sha256 "c484feae7b6b75259213c98eb988ece103fa6df51e227af24cb9dc696a6fa99f" => :catalina
   end
 
   keg_only :versioned_formula
