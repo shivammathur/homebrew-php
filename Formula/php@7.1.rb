@@ -14,6 +14,7 @@ class PhpAT71 < Formula
   keg_only :versioned_formula
 
   option "with-zts", "Enable Zend Thread Safety"
+  option "with-debug", "Enable debug mode"
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -165,6 +166,7 @@ class PhpAT71 < Formula
     ]
 
     args << "--enable-maintainer-zts" if build.with? "zts"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./configure", *args
     system "make"

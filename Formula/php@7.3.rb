@@ -16,6 +16,7 @@ class PhpAT73 < Formula
   keg_only :versioned_formula
 
   option "with-zts", "Enable Zend Thread Safety"
+  option "with-debug", "Enable debug mode"
 
   deprecate! date: "2021-12-06"
 
@@ -177,6 +178,7 @@ class PhpAT73 < Formula
     ]
 
     args << "--enable-maintainer-zts" if build.with? "zts"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./configure", *args
     system "make"
