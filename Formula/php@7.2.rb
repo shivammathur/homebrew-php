@@ -15,6 +15,8 @@ class PhpAT72 < Formula
 
   keg_only :versioned_formula
 
+  option "with-zts", "Enable Zend Thread Safety"
+
   deprecate! date: "2020-11-30"
 
   depends_on "httpd" => [:build, :test]
@@ -173,6 +175,8 @@ class PhpAT72 < Formula
       --with-xsl#{headers_path}
       --with-zlib#{headers_path}
     ]
+
+    args << "--enable-maintainer-zts" if build.with? "zts"
 
     system "./configure", *args
     system "make"

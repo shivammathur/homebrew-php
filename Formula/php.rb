@@ -20,6 +20,8 @@ class Php < Formula
     depends_on "re2c" => :build # required to generate PHP lexers
   end
 
+  option "with-zts", "Enable Zend Thread Safety"
+
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
   depends_on "apr"
@@ -172,6 +174,8 @@ class Php < Formula
       --with-zip
       --with-zlib
     ]
+
+    args << "--enable-maintainer-zts" if build.with? "zts"
 
     system "./configure", *args
     system "make"

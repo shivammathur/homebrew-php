@@ -13,6 +13,8 @@ class PhpAT70 < Formula
 
   keg_only :versioned_formula
 
+  option "with-zts", "Enable Zend Thread Safety"
+
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
   depends_on "apr"
@@ -168,6 +170,8 @@ class PhpAT70 < Formula
       --with-xsl#{headers_path}
       --with-zlib#{headers_path}
     ]
+
+    args << "--enable-maintainer-zts" if build.with? "zts"
 
     system "./configure", *args
     system "make"
