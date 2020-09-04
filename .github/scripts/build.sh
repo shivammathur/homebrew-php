@@ -21,8 +21,7 @@ step_log "Updating Homebrew"
 brew update-reset
 add_log "$tick" "Homebrew" "Updated"
 
-if [[ "$PHP_VERSION" =~ php$ ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
-#if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
+if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
   step_log "Sourcing latest formulae"
   mkdir -p Formula
   curl -o "Formula/$PHP_VERSION.rb" "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb" >/dev/null 2>&1
