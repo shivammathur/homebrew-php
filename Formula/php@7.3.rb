@@ -2,18 +2,19 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.21.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.21.tar.xz"
-  sha256 "4c8b065746ef776d84b7ae47908c21a79e3d4704b86b60d816716b8697c58ce9"
+  url "https://www.php.net/distributions/php-7.3.22.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.22.tar.xz"
+  sha256 "0e66606d3bdab5c2ae3f778136bfe8788e574913a3d8138695e54d98562f1fb5"
   license "PHP-3.01"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 2
-    sha256 "17672ece064b9449225e9098b16b72e17fae2d2b5194e77870a5c3cb7844ce88" => :catalina
+    sha256 "8c48abb760a9692282c57ab893804220dc99c1d7969636af24c44f54a367407f" => :catalina
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2021-12-06", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
