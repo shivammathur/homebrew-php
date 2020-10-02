@@ -44,6 +44,7 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_ver
   add_log "$tick" "$GITHUB_REPOSITORY" "Tap added to brewery"
 
   step_log "Filling the Bottle"
+  sudo xcode-select -s /Applications/Xcode_11.7.app
   brew test-bot "$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$PHP_VERSION" --root-url="$HOMEBREW_BINTRAY_URL"
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"~ {} +
   LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
