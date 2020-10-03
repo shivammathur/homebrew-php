@@ -32,10 +32,11 @@ step_log "Checking label"
 package="${PHP_VERSION//@/:}"
 new_version=$(brew info Formula/"$PHP_VERSION".rb | grep "$PHP_VERSION" | head -n 1 | cut -d' ' -f3)
 existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -s https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package" | sed -e 's/^.*"latest_version":"\([^"]*\)".*$/\1/' | cut -d '_' -f 1)
+latest_version=$(printf "%s\n%s" "$new_version" "$existing_version" | sort | tail -n 1)
 echo "existing label: $existing_version"
 echo "new label: $new_version"
 
-if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$new_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
+if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
