@@ -17,6 +17,9 @@ add_log() {
   fi
 }
 
+message_version=$(echo "$GITHUB_MESSAGE" | grep -Eo 'build-only-[0-9].[0-9]' | cut -d '-' -f 3)
+[ "$message_version" != "" ] && [ "$PHP_VERSION" != "php@$message_version" ] && exit 0;
+
 step_log "Updating Homebrew"
 brew update-reset
 add_log "$tick" "Homebrew" "Updated"
@@ -36,7 +39,7 @@ latest_version=$(printf "%s\n%s" "$new_version" "$existing_version" | sort | tai
 echo "existing label: $existing_version"
 echo "new label: $new_version"
 
-if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$existing_version" =~ ^8.* ]]; then
+if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$new_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
