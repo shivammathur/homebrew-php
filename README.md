@@ -17,6 +17,7 @@
 `PHP 7.3`|`php@7.2`|
 `PHP 7.4`|`php` or `php@7.4`|
 `PHP 8.0.0-dev`|`php@8.0`|
+`PHP 8.1.0-dev`|`php@8.1`|
 
 ## Usage
 
