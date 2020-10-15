@@ -20,9 +20,9 @@ add_log() {
 message_version=$(echo "$GITHUB_MESSAGE" | grep -Eo 'build-only-[0-9].[0-9]' | cut -d '-' -f 3)
 [ "$message_version" != "" ] && [ "$PHP_VERSION" != "php@$message_version" ] && exit 0;
 
-step_log "Updating Homebrew"
-brew update-reset
-add_log "$tick" "Homebrew" "Updated"
+# step_log "Updating Homebrew"
+# brew update-reset
+# add_log "$tick" "Homebrew" "Updated"
 
 if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
   step_log "Sourcing latest formulae"
