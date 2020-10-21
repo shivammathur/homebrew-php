@@ -29,6 +29,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build
+      id: build
       run: sh ./.github/scripts/build.sh
       env:        
         GITHUB_ACTIONS: true        
@@ -48,6 +49,7 @@ jobs:
         DARWIN_VERSION: ${{ matrix.os-version }}
       continue-on-error: true
     - name: Upload Artifact
+      if: steps.build.outputs.build == 'true'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.php-version }}

@@ -84,19 +84,27 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
     git config --local user.email homebrew-test-bot@lists.sfconservancy.org
     git config --local user.name BrewTestBot
     for try in $(seq 10); do
-      echo "try: $try" >/dev/null
+      echo "try: $try"
+      git rebase --abort || true
       git fetch origin master && git rebase origin/master
-      if git push https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git HEAD:master --follow-tags; then
+      if [ "$(git ls-files -u | wc -l)" -gt 0 ] ; then
+        sed -i '' '/=====|>>>>>|<<<<</d' Formula/"$PHP_VERSION".rb
+        git add Formula/"$PHP_VERSION".rb && git rebase --continue
+      fi
+      if git push https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master; then
         break
       else
         sleep 3s
       fi
     done
     add_log "$tick" "Inventory" "updated"
+    echo "::set-output name=build::true"
   else
+    echo "::set-output name=build::false"
     add_log "$cross" "bottle" "broke"
     exit 1
   fi    
 else
+  echo "::set-output name=build::false"
   add_log "$tick" "PHP $new_version" "Bottle exists"
 fi
