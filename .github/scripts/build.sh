@@ -20,10 +20,6 @@ add_log() {
 message_version=$(echo "$GITHUB_MESSAGE" | grep -Eo 'build-only-[0-9].[0-9]' | cut -d '-' -f 3)
 [ "$message_version" != "" ] && [ "$PHP_VERSION" != "php@$message_version" ] && exit 0;
 
-# step_log "Updating Homebrew"
-# brew update-reset
-# add_log "$tick" "Homebrew" "Updated"
-
 if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
   step_log "Sourcing latest formulae"
   mkdir -p Formula
@@ -41,6 +37,18 @@ echo "new label: $new_version"
 
 if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$new_version" =~ ^8.* ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
+
+  step_log "Updating Homebrew"
+  for formula in apr apr-util argon2 aspell autoconf curl-openssl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidyp unixodbc; do
+    curl -o "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$formula.rb &
+    to_wait+=( $! )
+  done
+  wait "${to_wait[@]}"
+  (
+    cd "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core" || exit
+    git diff --name-only | cut -d '/' -f 2 | sed -e 's/\.[^.]*$//' | sudo tee "$GITHUB_WORKSPACE/.github/deps/${ImageOS:?}_${ImageVersion:?}"
+  )
+  add_log "$tick" "Homebrew" "Updated"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
   mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/$HOMEBREW_BINTRAY_USER"
