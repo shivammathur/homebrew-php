@@ -91,9 +91,14 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
     step_log "Updating inventory"
     git config --local user.email homebrew-test-bot@lists.sfconservancy.org
     git config --local user.name BrewTestBot
+    if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
+      git add ./.github/deps/*
+      git commit -m "Update runner dependencies"
+    fi
     for try in $(seq 10); do
       echo "try: $try"
       git rebase --abort || true
+      git
       git fetch origin master && git rebase origin/master
       if [ "$(git ls-files -u | wc -l)" -gt 0 ] ; then
         sed -i '' '/=====|>>>>>|<<<<</d' Formula/"$PHP_VERSION".rb
