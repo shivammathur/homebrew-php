@@ -39,15 +39,11 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Updating Homebrew"
-  for formula in apr apr-util argon2 aspell autoconf curl-openssl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidyp unixodbc; do
-    curl -o "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$formula.rb &
+  while read -r formula; do
+    curl -o "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/$formula.rb" -sL "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$formula.rb" &
     to_wait+=( $! )
-  done
+  done < "./.github/deps/${ImageOS:?}_${ImageVersion:?}"
   wait "${to_wait[@]}"
-  (
-    cd "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core" || exit
-    git diff --name-only | cut -d '/' -f 2 | sed -e 's/\.[^.]*$//' | sudo tee "$GITHUB_WORKSPACE/.github/deps/${ImageOS:?}_${ImageVersion:?}"
-  )
   add_log "$tick" "Homebrew" "Updated"
 
   step_log "Adding tap $GITHUB_REPOSITORY"
@@ -89,12 +85,6 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
     add_log "$tick" "PHP $new_version" "Bottle added to stock"
 
     step_log "Updating inventory"
-    git config --local user.email homebrew-test-bot@lists.sfconservancy.org
-    git config --local user.name BrewTestBot
-    if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
-      git add ./.github/deps/*
-      git commit -m "Update runner dependencies"
-    fi
     for try in $(seq 10); do
       echo "try: $try"
       git rebase --abort || true
