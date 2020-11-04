@@ -20,3 +20,18 @@ if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
   git commit -m "Update PHP dependencies on ${ImageOS:?} ${ImageVersion:?} runner"
   git push -f https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master || true
 fi
+
+brew update-reset
+brew tap shivammathur/php
+(
+  cd ./Aliases || exit 1
+  brew audit --tap=shivammathur/php 2>/dev/null | grep 'ln -s' | while read ln_cmd; do eval $ln_cmd; done
+)
+if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
+  git stash
+  git pull -f https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master
+  git stash apply
+  git add .
+  git commit -m "Update symlinks shivammathur/php"
+  git push -f https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master || true
+fi
