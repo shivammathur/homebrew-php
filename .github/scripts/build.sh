@@ -96,6 +96,10 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
         sed -i '' '/=====|>>>>>|<<<<</d' Formula/"$PHP_VERSION".rb
         git add Formula/"$PHP_VERSION".rb && git rebase --continue
       fi
+      if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
+        git add Formula/"$PHP_VERSION".rb
+        git commit -m "$PHP_VERSION: update $new_version bottle."
+      fi
       if git push https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master; then
         break
       else
