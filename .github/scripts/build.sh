@@ -80,6 +80,7 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
   step_log "Stocking the new Bottle"
   if [ "$(find . -name '*.json' | wc -l 2>/dev/null | wc -l)" != "0" ]; then
     # curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -X DELETE https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package"/versions/"$new_version" >/dev/null 2>&1 || true
+    unset HOMEBREW_DISABLE_LOAD_FORMULA
     export HOMEBREW_BOTTLE_DOMAIN="https://dl.bintray.com/$HOMEBREW_BINTRAY_USER"
     brew test-bot --ci-upload --publish --tap="$GITHUB_REPOSITORY" --root-url="$HOMEBREW_BINTRAY_URL" --bintray-org="$HOMEBREW_BINTRAY_USER"    
     add_log "$tick" "PHP $new_version" "Bottle added to stock"
@@ -89,8 +90,7 @@ if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_
     git config --local user.name BrewTestBot
     for try in $(seq 10); do
       echo "try: $try"
-      git rebase --abort || true
-      git
+      git rebase --abort 2>/dev/null || true
       git fetch origin master && git rebase origin/master
       if [ "$(git ls-files -u | wc -l)" -gt 0 ] ; then
         sed -i '' '/=====|>>>>>|<<<<</d' Formula/"$PHP_VERSION".rb
