@@ -8,6 +8,7 @@ class PhpAT80 < Formula
     root_url "https://dl.bintray.com/shivammathur/php"
     rebuild 372
     sha256 "8dcb4d7e59ceccd6286fe82753d22885b979dff6deb74b0914a2b346e2553d51" => :big_sur
+    sha256 "d977324772e74d4eb80974b3c50bc2d0055c475ae820c022971c82a08baf2862" => :catalina
   end
 
   keg_only :versioned_formula
