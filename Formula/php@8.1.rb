@@ -39,7 +39,7 @@ class PhpAT81 < Formula
   depends_on "openssl@1.1"
   depends_on "pcre2"
   depends_on "sqlite"
-  depends_on "tidyp"
+  depends_on "tidy-html5"
   depends_on "unixodbc"
 
   uses_from_macos "xz" => :build
@@ -165,7 +165,7 @@ class PhpAT81 < Formula
       --with-pspell=#{Formula["aspell"].opt_prefix}
       --with-sodium
       --with-sqlite3
-      --with-tidy=#{Formula["tidyp"].opt_prefix}
+      --with-tidy=#{Formula["tidy-html5"].opt_prefix}
       --with-unixODBC
       --with-xsl
       --with-zip
