@@ -258,9 +258,10 @@ class PhpAT80 < Formula
     # Configure JIT
     jit_ini = etc/"php/#{php_version}/conf.d/jit.ini"
     jit_ini.write <<~EOS
+      opcache.enable=1
+      opcache.enable_cli=1
       opcache.jit_buffer_size=256M
       opcache.jit=1235
-      pcre.jit=1
     EOS
 
     %w[
