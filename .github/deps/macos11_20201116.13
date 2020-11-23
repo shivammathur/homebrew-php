@@ -1,4 +1,5 @@
 curl-openssl
+freetds
 gettext
 gmp
 krb5
