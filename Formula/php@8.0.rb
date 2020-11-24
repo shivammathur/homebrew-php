@@ -8,7 +8,6 @@ class PhpAT80 < Formula
     root_url "https://dl.bintray.com/shivammathur/php"
     rebuild 4
     sha256 "e8b09f9cfe267b2a2048a36dc84b4d77ad2c3b332c5d3e29fcdad6b39bcf8f4c" => :catalina
-    rebuild 5
     sha256 "bdab1d70d48489fd9ce0df599b7c0b2523c12bd5dfff687ee20f3fba3667f51a" => :big_sur
   end
 
@@ -260,7 +259,6 @@ class PhpAT80 < Formula
     jit_ini = etc/"php/#{php_version}/conf.d/jit.ini"
     jit_ini.write <<~EOS
       opcache.enable=1
-      opcache.enable_cli=1
       opcache.jit_buffer_size=256M
       opcache.jit=1235
     EOS
