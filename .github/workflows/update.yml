@@ -40,8 +40,6 @@ jobs:
           - 'php@8.0'
           - 'php@8.1'
         include:
-          - php-version: 'php@8.0'
-            os-version: 'macos-11.0'
           - php-version: 'php@8.1'
             os-version: 'macos-11.0'
     steps:
