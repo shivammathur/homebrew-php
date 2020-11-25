@@ -35,7 +35,7 @@ latest_version=$(printf "%s\n%s" "$new_version" "$existing_version" | sort | tai
 echo "existing label: $existing_version"
 echo "new label: $new_version"
 
-if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$new_version" =~ ^8.* ]]; then
+if [[ "$GITHUB_MESSAGE" = *--build-all* ]] || [ "$latest_version" != "$existing_version" ] || [[ "$new_version" =~ 8.[1-9] ]]; then
   add_log "$tick" "PHP $new_version" "New label found or nightly build"
 
   step_log "Updating Homebrew"
