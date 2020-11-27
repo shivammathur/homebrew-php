@@ -14,6 +14,7 @@ class Php < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
+    sha256 "854263b78457ca23bf345a4a72acc984978750d6ee2801c9f9436726fd8308ae" => :catalina
   end
 
   head do
