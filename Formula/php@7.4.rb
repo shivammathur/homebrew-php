@@ -1,21 +1,22 @@
-class PhpAT80 < Formula
+class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.0.0.tar.xz"
+  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
+  url "https://www.php.net/distributions/php-7.4.13.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.13.tar.xz"
+  sha256 "aead303e3abac23106529560547baebbedba0bb2943b91d5aa08fff1f41680f4"
   license "PHP-3.01"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 386
-    sha256 "d9252b7a8dc56a5e90b040877ae0acd1bc178a3440174d20e16c368cc487e91e" => :catalina
   end
 
   keg_only :versioned_formula
 
-  depends_on "bison" => :build
+  deprecate! date: "2022-11-28", because: :versioned_formula
+
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
-  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
@@ -85,7 +86,7 @@ class PhpAT80 < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{php_version}"
+    config_path = etc/"php/#{version.major_minor}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -120,7 +121,6 @@ class PhpAT80 < Formula
       --enable-mbregex
       --enable-mbstring
       --enable-mysqlnd
-      --enable-opcache
       --enable-pcntl
       --enable-phpdbg
       --enable-phpdbg-readline
@@ -166,6 +166,7 @@ class PhpAT80 < Formula
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
       --with-unixODBC
+      --with-xmlrpc
       --with-xsl
       --with-zip
       --with-zlib
@@ -176,7 +177,7 @@ class PhpAT80 < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
@@ -228,15 +229,15 @@ class PhpAT80 < Formula
     # Custom location for extensions installed via pecl
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config --extension-dir").chomp
+    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
+    pear_path = HOMEBREW_PREFIX/"share/pear@#{version.major_minor}"
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{php_version}/php.ini",
+      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -254,18 +255,10 @@ class PhpAT80 < Formula
 
     system bin/"pear", "update-channels"
 
-    # Configure JIT
-    jit_ini = etc/"php/#{php_version}/conf.d/jit.ini"
-    jit_ini.write <<~EOS
-      opcache.enable=1
-      opcache.jit_buffer_size=256M
-      opcache.jit=1235
-    EOS
-
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -282,7 +275,7 @@ class PhpAT80 < Formula
   def caveats
     <<~EOS
       To enable PHP in Apache add the following to httpd.conf and restart Apache:
-          LoadModule php_module #{opt_lib}/httpd/modules/libphp.so
+          LoadModule php7_module #{opt_lib}/httpd/modules/libphp7.so
 
           <FilesMatch \\.php$>
               SetHandler application/x-httpd-php
@@ -292,12 +285,8 @@ class PhpAT80 < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{php_version}/
+          #{etc}/php/#{version.major_minor}/
     EOS
-  end
-
-  def php_version
-    version.to_s.split(".")[0..1].join(".")
   end
 
   plist_options manual: "php-fpm"
@@ -342,14 +331,8 @@ class PhpAT80 < Formula
     assert_no_match /^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra"
     begin
-      require "socket"
-
-      server = TCPServer.new(0)
-      port = server.addr[1]
-      server_fpm = TCPServer.new(0)
-      port_fpm = server_fpm.addr[1]
-      server.close
-      server_fpm.close
+      port = free_port
+      port_fpm = free_port
 
       expected_output = /^Hello world!$/
       (testpath/"index.php").write <<~EOS
@@ -370,10 +353,16 @@ class PhpAT80 < Formula
         DirectoryIndex index.php
       EOS
 
+      php_module = if head?
+        "LoadModule php_module #{lib}/httpd/modules/libphp.so"
+      else
+        "LoadModule php7_module #{lib}/httpd/modules/libphp7.so"
+      end
+
       (testpath/"httpd.conf").write <<~EOS
         #{main_config}
         LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
-        LoadModule php_module #{lib}/httpd/modules/libphp.so
+        #{php_module}
         <FilesMatch \\.(php|phar)$>
           SetHandler application/x-httpd-php
         </FilesMatch>

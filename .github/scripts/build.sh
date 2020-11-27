@@ -20,7 +20,7 @@ add_log() {
 message_version=$(echo "$GITHUB_MESSAGE" | grep -Eo 'build-only-[0-9].[0-9]' | cut -d '-' -f 3)
 [ "$message_version" != "" ] && [ "$PHP_VERSION" != "php@$message_version" ] && exit 0;
 
-if [[ "$PHP_VERSION" =~ php$|php@7.[2-3] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
+if [[ "$PHP_VERSION" =~ php$|php@7.[2-4] ]] && [[ "$GITHUB_MESSAGE" != *--skip-fetch* ]]; then
   step_log "Sourcing latest formulae"
   mkdir -p Formula
   curl -o "Formula/$PHP_VERSION.rb" "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb" >/dev/null 2>&1
@@ -29,7 +29,7 @@ fi
 
 step_log "Checking label"
 package="${PHP_VERSION//@/:}"
-new_version=$(brew info Formula/"$PHP_VERSION".rb | grep "$PHP_VERSION" | head -n 1 | cut -d' ' -f3)
+new_version=$(brew info Formula/"$PHP_VERSION".rb | grep "$PHP_VERSION" | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" | head -n 1)
 existing_version=$(curl --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" -s https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO"/"$package" | sed -e 's/^.*"latest_version":"\([^"]*\)".*$/\1/' | cut -d '_' -f 1)
 latest_version=$(printf "%s\n%s" "$new_version" "$existing_version" | sort | tail -n 1)
 echo "existing label: $existing_version"
