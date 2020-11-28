@@ -1,4 +1,4 @@
-# shivammathur/homebrew-php
+# brew tap shivammathur/php
 
 <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP"><img alt="Build status" src="https://github.com/shivammathur/homebrew-php/workflows/Update%20and%20Build%20Formulae/badge.svg"></a>
 <a href="https://github.com/shivammathur/homebrew-php/blob/master/LICENSE" title="license"><img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg"></a>
@@ -21,41 +21,63 @@
 
 ## Usage
 
-### Update brew
+### Prerequisites
 
-Update brew and the formulae before installing PHP.
+- Install Xcode Command Line Utilities
+
+```
+xcode-select --install
+```
+
+- Install Homebrew:
+
+```zsh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+- If previously installed, update homebrew and the formulae:
 
 ```zsh
 brew update
 ```
 
+- If you have packages from old `homebrew/php` tap, refer to [this guide](https://github.com/shivammathur/homebrew-php/wiki/Cleanup) for removing them.  
+
 ### Add the tap
 
-Fetch the formulae in this tap.
+Fetch the formulae in this tap:
 
-```bash
+```zsh
 brew tap shivammathur/php
 ```
 
 ### Install PHP
 
-*See [PHP Support](#php-support) for available formulae.*
+> See [PHP Support](#php-support) for available formulae.
 
-For example, to install `PHP 7.3`.
+- For example, to install `PHP 7.3`:
+
+```zsh 
+brew install shivammathur/php/php@7.3
+```
+
+- After installing your have to link it:
 
 ```zsh
-# Install PHP 7.3
-brew install shivammathur/php/php@7.3
-
-# Link PHP 7.3
 brew link --overwrite --force php@7.3
+```
+
+- Test your PHP version:
+
+```zsh
+php -v
 ```
 
 ### Upgrade your PHP version
 
-Upgrade your PHP version to the latest patch release.
+You can upgrade your PHP version to the latest patch release.
 
-For example, to upgrade `PHP 7.3`.
+For example, to upgrade `PHP 7.3`:
 
 ```zsh
 brew upgrade shivammathur/php/php@7.3
@@ -63,20 +85,58 @@ brew upgrade shivammathur/php/php@7.3
 
 ### Switch between PHP versions
 
-If you have multiple PHP versions installed, you can switch between them easily.
+- If you have multiple PHP versions installed, you can switch between them easily.
 
-For example, to switch to `PHP 7.3`.
+For example, to switch to `PHP 7.3`:
 
 ```zsh
 brew link --overwrite --force php@7.3
 ```
+
+- If you get a warning like below, then do as recommended:
+
+```zsh
+Warning: Already linked: <Cellar Path>
+To relink:
+  brew unlink <formula> && brew link <formula>
+```
+
+```zsh
+brew unlink php@7.3
+brew link --overwrite --force php@7.3
+```
+
+### Restart your webserver
+
+If you are using `Apache` or `Nginx` with `php-fpm`, restart your webserver after any change in your PHP.
+
+- For Apache (`httpd`):
+
+```zsh
+brew services restart httpd
+```
+- For Nginx:
+
+```zsh
+brew services restart nginx
+```
+
+## Debugging
+
+- Make sure you ran `brew update` before installing PHP.
+
+- Run `brew doctor` and fix the warnings it reports.
+
+- Check if your issue is a known Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
+
+- If you are still facing an issue, please report them [here](https://github.com/shivammathur/homebrew-php/issues).
 
 ## License
 
 The code in this project is licensed under the [MIT license](http://choosealicense.com/licenses/mit/).
 Please see the [license file](LICENSE) for more information.
 
-Formulae for PHP versions which are supported currently in the PHP release cycle are synced from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap and their license can be found [here](LICENSE_HOMEBREW).
+Formulae for PHP versions which are supported currently in the PHP release cycle are synced from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap, and their license can be found [here](LICENSE_HOMEBREW).
 
 
 ## Contributions
