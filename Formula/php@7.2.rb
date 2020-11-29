@@ -9,10 +9,11 @@ class PhpAT72 < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "0e042ceabdbc200f5d070dfb9e8c8f51ed116c85956c1e297142d4cd5553a8c7" => :catalina
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2020-11-30", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
