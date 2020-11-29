@@ -1,0 +1,25 @@
+name: Sync dependencies for GA
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 */7 * * *'
+env:
+  HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
+jobs:
+  sync:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        os: [macos-10.15, macos-11.0]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: sync
+        run: bash ./.github/scripts/sync.sh
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

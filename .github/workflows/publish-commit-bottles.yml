@@ -61,21 +61,3 @@ jobs:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           pr: ${{github.event.inputs.pull_request}}
           message: 'bottle publish failed'
-  sync:
-    needs: upload
-    if: github.event_name != 'pull_request'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 1
-      fail-fast: false
-      matrix:
-        os: [macos-10.15, macos-11.0]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-      - name: sync
-        run: bash ./.github/scripts/sync.sh
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

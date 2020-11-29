@@ -181,18 +181,3 @@ jobs:
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           curl -u "${{github.repository_owner}}:${{secrets.GITHUB_TOKEN}}" -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${{github.repository}}/issues/"$PR_NUMBER"/labels -d '{"labels":["build-complete"]}'
-  autopublish:
-    needs: label
-    if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-
-      - name: Run automerge
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-        run: |
-          sudo sed -i '/pending/d' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-automerge.rb
-          brew pr-automerge --tap=${{ github.repository_owner }}/php --verbose --publish --autosquash --without-approval --with-label=build-complete
