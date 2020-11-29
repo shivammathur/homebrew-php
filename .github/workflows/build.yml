@@ -1,0 +1,198 @@
+name: Update and Build Formulae
+on:
+  push:
+    branches: master
+  schedule:
+    - cron:  '0 0 * * *'
+  repository_dispatch:
+  pull_request:
+env:
+  HOMEBREW_DEVELOPER: 1
+  HOMEBREW_GITHUB_ACTIONS: 1
+  HOMEBREW_NO_AUTO_UPDATE: 1
+jobs:
+  tap_syntax:
+    if: github.repository == '${{ github.repository_owner }}/homebrew-php'
+    runs-on: ubuntu-latest
+    env:
+      HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
+    steps:
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Cache Bundler RubyGems
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+        key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+        restore-keys: ${{ runner.os }}-rubygems-
+
+    - name: Install Bundler RubyGems
+      run: brew install-bundler-gems
+
+    - run: brew test-bot --only-tap-syntax
+
+  create-pr:
+    if: github.event_name != 'pull_request'
+    needs: tap_syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - 'php'
+          - 'php@5.6'
+          - 'php@7.0'
+          - 'php@7.1'
+          - 'php@7.2'
+          - 'php@7.3'
+          - 'php@7.4'
+          - 'php@8.1'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Patch formula
+        env:
+          GITHUB_MESSAGE: ${{ github.event.head_commit.message }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{ github.repository_owner }}/php
+          HOMEBREW_BINTRAY_USER: ${{ github.repository_owner }}
+          HOMEBREW_BINTRAY_REPO: php
+          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          PHP_VERSION: ${{ matrix.php }}
+        run: bash ./.github/scripts/edit.sh
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+          commit-message: Update ${{ matrix.php }}
+          committer: BrewTestBot <homebrew-test-bot@lists.sfconservancy.org>
+          author: BrewTestBot <homebrew-test-bot@lists.sfconservancy.org>
+          signoff: false
+          base: master
+          branch: update-${{ matrix.php }}
+          branch-suffix: short-commit-hash
+          delete-branch: true
+          title: 'Update ${{ matrix.php }}'
+          body: |
+            Build ${{ matrix.php }}
+          labels: ${{ matrix.php }},automated-pr
+          assignees: ${{ github.repository_owner }}
+          team-reviewers: |
+            owners
+            maintainers
+          draft: false
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+
+  tests:
+    needs: tap_syntax
+    if: github.event_name == 'pull_request' && ! contains(github.event.pull_request.labels.*.name, 'CI-syntax-only')
+    strategy:
+      matrix:
+        os: ['macos-11.0', 'macos-10.15']
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 300
+    env:
+      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+      HOMEBREW_DEVELOPER: 1
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Xcode
+        run: |
+          if [ "${{ matrix.os }}" = "macos-10.15" ]; then
+            sudo xcode-select -s /Applications/Xcode_11.7.app
+          else
+            sudo xcode-select -s /Applications/Xcode_12.2.app
+          fi
+
+      - run: brew test-bot --only-cleanup-before
+
+      - run: brew test-bot --only-setup
+
+      - name: Run brew test-bot --only-formulae
+        run: |
+          mkdir bottles
+          cd bottles
+          brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+
+      - name: Output brew test-bot --only-formulae failures
+        if: always()
+        run: |
+          cat bottles/steps_output.txt
+          rm bottles/steps_output.txt
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: logs (${{ matrix.os }})
+          path: bottles/logs
+
+      - name: Delete logs and home
+        if: always()
+        run: |
+          rm -rvf bottles/logs
+          rm -rvf bottles/home
+
+      - name: Count bottles
+        id: bottles
+        if: always()
+        run: |
+          cd bottles
+          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
+          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
+          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
+          count=$(ls *.json | wc -l | xargs echo -n)
+          echo "$count bottles"
+          echo "::set-output name=count::$count"
+
+      - name: Upload bottles
+        if: always() && steps.bottles.outputs.count > 0
+        uses: actions/upload-artifact@main
+        with:
+          name: bottles
+          path: bottles
+
+      - run: brew test-bot --only-cleanup-after
+        if: always()
+
+      - name: Post Cleanup
+        if: always()
+        run: rm -rvf bottles
+
+  label:
+    needs: tests
+    if: github.event_name == 'pull_request' && ! contains(github.event.pull_request.labels.*.name, 'CI-syntax-only')
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Add Label"
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          curl -u "${{github.repository_owner}}:${{secrets.GITHUB_TOKEN}}" -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${{github.repository}}/issues/"$PR_NUMBER"/labels -d '{"labels":["build-complete"]}'
+  autopublish:
+    needs: label
+    if: github.event_name == 'pull_request' && ! contains(github.event.pull_request.labels.*.name, 'CI-syntax-only')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Run automerge
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+        run: |
+          sudo sed -i '/pending/d' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-automerge.rb
+          brew pr-automerge --tap=${{ github.repository_owner }}/php --verbose --publish --autosquash --without-approval --with-label=build-complete

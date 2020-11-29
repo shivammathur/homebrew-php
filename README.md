@@ -136,7 +136,8 @@ brew services restart nginx
 The code in this project is licensed under the [MIT license](http://choosealicense.com/licenses/mit/).
 Please see the [license file](LICENSE) for more information.
 
-Formulae for PHP versions which are supported currently in the PHP release cycle are synced from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap, and their license can be found [here](LICENSE_HOMEBREW).
+Formulae for PHP versions which are supported currently in the PHP release cycle are synced from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap.
+This project has some [dependencies](#dependencies), and their license can be found [here](LICENSE_HOMEBREW).
 
 
 ## Contributions
@@ -151,3 +152,9 @@ If you face any issues while using this or want to suggest a feature/improvement
 - [shivammathur/homebrew-extensions](https://github.com/shivammathur/homebrew-extensions "Tap for PHP extensions")
 - [shivammathur/homebrew-phalcon](https://github.com/shivammathur/homebrew-phalcon "Tap for psr and phalcon extensions")
 - [shivammathur/setup-php](https://github.com/shivammathur/setup-php "Setup PHP in GitHub Actions")
+
+## Dependencies
+
+- [Homebrew/brew](https://github.com/Homebrew/brew "Homebrew GitHub Repo")
+- [Homebrew/homebrew-core](https://github.com/Homebrew/homebrew-core "Homebrew core tap")
+- [Homebrew/actions](https://github.com/Homebrew/actions "Homebrew GitHub Actions")
