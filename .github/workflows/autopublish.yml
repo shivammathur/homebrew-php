@@ -1,0 +1,24 @@
+name: Publish and commit bottles on schedule
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Once every 30 minutes
+    - cron: '*/60 * * * *'
+env:
+  HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
+jobs:
+  autopublish:
+    needs: label
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Run automerge
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+        run: |
+          sudo sed -i '/pending/d' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-automerge.rb
+          brew pr-automerge --tap=${{ github.repository_owner }}/php --verbose --publish --autosquash --without-approval --with-label=build-complete
