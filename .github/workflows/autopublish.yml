@@ -9,7 +9,6 @@ env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
 jobs:
   autopublish:
-    needs: label
     runs-on: ubuntu-latest
     steps:
       - name: Set up Homebrew
