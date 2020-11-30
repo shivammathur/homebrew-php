@@ -6,12 +6,10 @@ class PhpAT73 < Formula
   mirror "https://fossies.org/linux/www/php-7.3.25.tar.xz"
   sha256 "c71c00ad03079efb78d1a6b8623ca4f725be697dbd9a46debacbcc9a2475f329"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 1
-    sha256 "1b8ed3c17670f1f6424131dcf100a416ed08f1e2db318544c3d5b3f825a4a692" => :big_sur
-    sha256 "5848ebd80af2aa0dfa1ed60073eba92c354134eb133cded9f2fd176999abd4df" => :catalina
   end
 
   keg_only :versioned_formula
@@ -135,7 +133,7 @@ class PhpAT73 < Formula
       --enable-zip
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
-      --with-curl=#{Formula["curl-openssl"].opt_prefix}
+      --with-curl=#{Formula["curl"].opt_prefix}
       --with-fpm-user=_www
       --with-fpm-group=_www
       --with-freetype-dir=#{Formula["freetype"].opt_prefix}
