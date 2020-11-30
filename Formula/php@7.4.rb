@@ -6,12 +6,10 @@ class PhpAT74 < Formula
   mirror "https://fossies.org/linux/www/php-7.4.13.tar.xz"
   sha256 "aead303e3abac23106529560547baebbedba0bb2943b91d5aa08fff1f41680f4"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 1
-    sha256 "39fb1e28c0673658dc249be01d0e53973a32a8efcaebed7a01216d8c8f86a84c" => :big_sur
-    sha256 "80a0bdac0c4d852f5b977b36cc04bb6bfe645fe07a46bc3c3987c003f474210b" => :catalina
   end
 
   keg_only :versioned_formula
