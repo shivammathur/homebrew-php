@@ -6,6 +6,7 @@ class Php < Formula
   mirror "https://fossies.org/linux/www/php-8.0.0.tar.xz"
   sha256 "b5278b3eef584f0c075d15666da4e952fa3859ee509d6b0cc2ed13df13f65ebb"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/releases/feed.php"
@@ -14,9 +15,6 @@ class Php < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 1
-    sha256 "e09d0fd2dfd42b19b77d34a37b13b345d4972aae7db89570cbabcb1ccc57dd2d" => :big_sur
-    sha256 "f6ca092e1fe409a6e52fc844cd71790920ac7308fb6c211357db6a70a6305104" => :catalina
   end
 
   head do
