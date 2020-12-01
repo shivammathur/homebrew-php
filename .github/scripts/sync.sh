@@ -2,7 +2,7 @@ git config --local user.email homebrew-test-bot@lists.sfconservancy.org
 git config --local user.name BrewTestBot
 git config --local pull.rebase true
 
-for formula in apr apr-util argon2 aspell autoconf curl-openssl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
+for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
   curl -o "$(brew --prefix)/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$formula.rb &
   to_wait+=( $! )
 done
