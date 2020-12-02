@@ -45,13 +45,6 @@ class PhpAT74 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
-  uses_from_macos "xz" => :build
-  uses_from_macos "bzip2"
-  uses_from_macos "libedit"
-  uses_from_macos "libxml2"
-  uses_from_macos "libxslt"
-  uses_from_macos "zlib"
-
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
