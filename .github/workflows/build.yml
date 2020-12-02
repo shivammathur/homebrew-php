@@ -5,6 +5,7 @@ on:
   schedule:
     - cron:  '0 0 * * *'
   repository_dispatch:
+  workflow_dispatch:
   pull_request:
 env:
   HOMEBREW_DEVELOPER: 1
