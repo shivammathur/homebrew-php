@@ -6,6 +6,11 @@ unbottle() {
     sed -i -e "/bottle do/r /tmp/bottle" -e "//d" ./Formula/"$PHP_VERSION".rb
     sudo rm -f /tmp/bottle
   else
+    if [[ "$PHP_VERSION" =~ php@8.[1-9] ]]; then
+      url=$(brew cat shivammathur/php/"$PHP_VERSION" | grep -e "^  url.*" | cut -d\" -f 2)
+      checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
+      sed -i -e "s/^  sha256.*/  sha256 \"$checksum\"/g" ./Formula/"$PHP_VERSION".rb
+    fi
     sed -Ei '/    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
     sed -Ei '/    sha256.*=>/d' ./Formula/"$PHP_VERSION".rb
   fi
