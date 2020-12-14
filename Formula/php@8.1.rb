@@ -250,14 +250,6 @@ class PhpAT81 < Formula
 
     system bin/"pear", "update-channels"
 
-    # Configure JIT
-    jit_ini = etc/"php/#{php_version}/conf.d/jit.ini"
-    jit_ini.write <<~EOS
-      opcache.enable=1
-      opcache.jit_buffer_size=256M
-      opcache.jit=1235
-    EOS
-
     %w[
       opcache
     ].each do |e|
