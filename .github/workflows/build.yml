@@ -97,7 +97,7 @@ jobs:
     if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
     strategy:
       matrix:
-        os: ['macos-11.0', 'macos-10.15']
+        os: ['macos-11.0-m1', 'macos-11.0', 'macos-10.15']
       fail-fast: false
     runs-on: ${{ matrix.os }}
     timeout-minutes: 300
@@ -113,9 +113,9 @@ jobs:
       - name: Setup Xcode
         run: |
           if [ "${{ matrix.os }}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app
+            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.2.app
+            sudo xcode-select -s /Applications/Xcode_12.2.app || exit 1
           fi
 
       - run: brew test-bot --only-cleanup-before
