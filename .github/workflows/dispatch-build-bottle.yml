@@ -18,12 +18,13 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
+  HOMEBREW_CHANGE_ARCH_TO_ARM: 1
 jobs:
   bottle:
     runs-on: ${{github.event.inputs.macos}}
     timeout-minutes: 300
     env:
-      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin'
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - name: ${{github.event.inputs.formula}}
@@ -42,9 +43,9 @@ jobs:
       - name: Setup Xcode
         run: |
           if [ "${{ matrix.os }}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app
+            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.2.app
+            sudo xcode-select -s /Applications/Xcode_12.2.app || exit 1
           fi
 
       - run: brew test-bot --only-cleanup-before
@@ -52,12 +53,23 @@ jobs:
       - run: brew test-bot --only-setup
 
       - name: Run brew test-bot --only-formulae
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        if: github.event.inputs.macos != 'macos-11.0-m1'
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php ${{github.event.inputs.formula}}
+          brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+      - name: Build bottle on arm
+        if: github.event.inputs.macos == 'macos-11.0-m1'
+        run: |
+          mkdir bottles
+          cd bottles
+          formula=${{github.event.inputs.formula}}
+          brew install -s --only-dependencies ${{ github.repository_owner }}/php/"$formula"
+          brew install --verbose --build-bottle ${{ github.repository_owner }}/php/"$formula"
+          brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
+          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+          brew bottle --merge --write --no-commit *.json
+          echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
         if: always()

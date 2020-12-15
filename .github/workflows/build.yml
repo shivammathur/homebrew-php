@@ -18,21 +18,21 @@ jobs:
     env:
       HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
     steps:
-    - name: Set up Homebrew
-      id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@master
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
 
-    - name: Cache Bundler RubyGems
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.set-up-homebrew.outputs.gems-path }}
-        key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-        restore-keys: ${{ runner.os }}-rubygems-
+      - name: Cache Bundler RubyGems
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
 
-    - name: Install Bundler RubyGems
-      run: brew install-bundler-gems
+      - name: Install Bundler RubyGems
+        run: brew install-bundler-gems
 
-    - run: brew test-bot --only-tap-syntax
+      - run: brew test-bot --only-tap-syntax
 
   create-pr:
     if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
@@ -98,13 +98,18 @@ jobs:
     strategy:
       matrix:
         os: ['macos-11.0', 'macos-10.15']
+        arm: ['0']
+        include:
+          - os: 'macos-11.0-m1'
+            arm: '1'
       fail-fast: false
     runs-on: ${{ matrix.os }}
     timeout-minutes: 300
     env:
-      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin'
       HOMEBREW_DEVELOPER: 1
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      HOMEBREW_CHANGE_ARCH_TO_ARM: ${{ matrix.arm }}
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -113,9 +118,9 @@ jobs:
       - name: Setup Xcode
         run: |
           if [ "${{ matrix.os }}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app
+            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.2.app
+            sudo xcode-select -s /Applications/Xcode_12.2.app || exit 1
           fi
 
       - run: brew test-bot --only-cleanup-before
@@ -123,10 +128,23 @@ jobs:
       - run: brew test-bot --only-setup
 
       - name: Run brew test-bot --only-formulae
+        if: matrix.os != 'macos-11.0-m1'
         run: |
           mkdir bottles
           cd bottles
           brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+      - name: Build bottle on arm
+        if: matrix.os == 'macos-11.0-m1'
+        run: |
+          mkdir bottles
+          cd bottles
+          formula=$(git diff HEAD~1 --name-only | grep -Eo "php.*" | sed 's/\.[^.]*$//')
+          brew install -s --only-dependencies ${{ github.repository_owner }}/php/"$formula"
+          brew install --verbose --build-bottle ${{ github.repository_owner }}/php/"$formula"
+          brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
+          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+          brew bottle --merge --write --no-commit *.json
+          echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
         if: always()
