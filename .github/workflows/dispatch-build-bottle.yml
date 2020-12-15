@@ -18,12 +18,13 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
+  GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED: 1
 jobs:
   bottle:
     runs-on: ${{github.event.inputs.macos}}
     timeout-minutes: 300
     env:
-      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin'
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - name: ${{github.event.inputs.formula}}
@@ -38,18 +39,21 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        env:
+          GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED: ''
 
       - name: Setup Xcode
         run: |
           if [ "${{ matrix.os }}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app
+            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.2.app
+            sudo xcode-select -s /Applications/Xcode_12.2.app || exit 1
           fi
 
       - run: brew test-bot --only-cleanup-before
 
       - run: brew test-bot --only-setup
+        continue-on-error: true
 
       - name: Run brew test-bot --only-formulae
         env:
@@ -132,6 +136,8 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        env:
+          GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED: ''
 
       - name: Download bottles from GitHub Actions
         uses: actions/download-artifact@main
