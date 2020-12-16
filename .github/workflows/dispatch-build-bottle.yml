@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+          brew test-bot --keep-old --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
       - name: Build bottle on arm
         if: github.event.inputs.macos == 'macos-11.0-m1'
         run: |
@@ -67,8 +67,9 @@ jobs:
           brew install -s --only-dependencies ${{ github.repository_owner }}/php/"$formula"
           brew install --verbose --build-bottle ${{ github.repository_owner }}/php/"$formula"
           brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
-          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
-          brew bottle --merge --write --no-commit *.json
+          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php --keep-old
+          brew bottle --merge --write --no-commit *.json --keep-old
+          brew deps ${{ github.repository_owner }}/php/"$formula" | xargs brew remove --ignore-dependencies --force || true
           echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
@@ -156,7 +157,8 @@ jobs:
 
       - name: Upload and publish bottles on Bintray
         env:
-          HOMEBREW_BINTRAY_USER: brewtestbot
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          HOMEBREW_BINTRAY_USER: ${{ github.repository_owner }}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           cd ~/bottles
@@ -176,21 +178,3 @@ jobs:
           body: ':x: @${{github.actor}} bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot_body: ':x: Bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot: BrewTestBot
-  sync:
-    needs: upload
-    if: github.event_name != 'pull_request'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 1
-      fail-fast: false
-      matrix:
-        os: [macos-10.15, macos-11.0]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-      - name: sync
-        run: bash ./.github/scripts/sync.sh
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

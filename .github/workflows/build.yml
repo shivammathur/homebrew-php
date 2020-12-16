@@ -144,6 +144,7 @@ jobs:
           brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
           brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
           brew bottle --merge --write --no-commit *.json
+          brew deps ${{ github.repository_owner }}/php/"$formula" | xargs brew remove --ignore-dependencies --force || true
           echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
