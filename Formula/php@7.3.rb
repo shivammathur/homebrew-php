@@ -11,6 +11,7 @@ class PhpAT73 < Formula
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
     sha256 "983faf7e44fecceb98282285bbfb9d462ca36523abcdf0360d948a6ffcb5fc48" => :big_sur
+    sha256 "6e05b221c2e9937ba86f3a0a4b9e4d955b18eb395fa10fd1a81bcf0011ac4327" => :arm64_big_sur
     sha256 "f99b576b019f45bfcfa1ad416e82f4fce833c6386284ccd6698a2aede4c63f1c" => :catalina
   end
 
