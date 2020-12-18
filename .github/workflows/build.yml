@@ -120,12 +120,16 @@ jobs:
           if [ "${{ matrix.os }}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.2.app || exit 1
+            sudo xcode-select -s /Applications/Xcode_12.3.app || exit 1
           fi
 
       - run: brew test-bot --only-cleanup-before
 
       - run: brew test-bot --only-setup
+
+      - name: Patch brew
+        if: matrix.os == 'macos-11.0-m1'
+        run: sed -i '' "s/HOMEBREW_PREFIX != HOMEBREW_REPOSITORY/HOMEBREW_PREFIX == HOMEBREW_REPOSITORY/" $(brew --prefix)/Library/Homebrew/formula_cellar_checks.rb
 
       - name: Run brew test-bot --only-formulae
         if: matrix.os != 'macos-11.0-m1'
@@ -144,7 +148,6 @@ jobs:
           brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
           brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
           brew bottle --merge --write --no-commit *.json
-          brew deps ${{ github.repository_owner }}/php/"$formula" | xargs brew remove --ignore-dependencies --force || true
           echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
