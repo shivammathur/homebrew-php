@@ -127,10 +127,6 @@ jobs:
 
       - run: brew test-bot --only-setup
 
-      - name: Patch brew
-        if: matrix.os == 'macos-11.0-m1'
-        run: sed -i '' "s/HOMEBREW_PREFIX != HOMEBREW_REPOSITORY/HOMEBREW_PREFIX == HOMEBREW_REPOSITORY/" $(brew --prefix)/Library/Homebrew/formula_cellar_checks.rb
-
       - name: Run brew test-bot --only-formulae
         if: matrix.os != 'macos-11.0-m1'
         run: |

@@ -52,16 +52,14 @@ jobs:
 
       - run: brew test-bot --only-setup
 
-      - name: Patch brew
-        if: github.event.inputs.macos == 'macos-11.0-m1'
-        run: sed -i '' "s/HOMEBREW_PREFIX != HOMEBREW_REPOSITORY/HOMEBREW_PREFIX == HOMEBREW_REPOSITORY/" $(brew --prefix)/Library/Homebrew/formula_cellar_checks.rb
-
       - name: Run brew test-bot --only-formulae
         if: github.event.inputs.macos != 'macos-11.0-m1'
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --keep-old --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+          brew test-bot --keep-old --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php ${{github.event.inputs.formula}}
       - name: Build bottle on arm
         if: github.event.inputs.macos == 'macos-11.0-m1'
         run: |
@@ -156,7 +154,9 @@ jobs:
           path: ~/bottles/
 
       - name: Setup git
-        uses: Homebrew/actions/git-user-config@master
+        run: |
+          git config --local user.email homebrew-test-bot@lists.sfconservancy.org
+          git config --local user.name BrewTestBot
 
       - name: Upload and publish bottles on Bintray
         env:

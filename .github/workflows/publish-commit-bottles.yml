@@ -19,7 +19,7 @@ jobs:
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           issue: ${{github.event.inputs.pull_request}}
-          body: ':shipit: @${{github.actor}} has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
+          body: ':beers: @BrewTestBot has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot_body: ':robot: A scheduled task has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot: BrewTestBot
 
@@ -27,10 +27,10 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
 
-      - name: Configure Git user
-        uses: Homebrew/actions/git-user-config@master
-        with:
-          username: BrewTestBot
+      - name: Setup git
+        run: |
+          git config --local user.email homebrew-test-bot@lists.sfconservancy.org
+          git config --local user.name BrewTestBot
 
       - name: Pull bottles
         env:
