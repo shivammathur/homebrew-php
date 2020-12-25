@@ -10,14 +10,21 @@
 
 |PHP Version|Formula|
 |--- |--- |
-`PHP 5.6`|`php@5.6`|
-`PHP 7.0`|`php@7.0`|
-`PHP 7.1`|`php@7.1`|
-`PHP 7.2`|`php@7.2`|
-`PHP 7.3`|`php@7.3`|
-`PHP 7.4`|`php@7.4`|
-`PHP 8.0`|`php` or `php@8.0`|
-`PHP 8.1.0-dev`|`php@8.1`|
+PHP 5.6|`php@5.6`|
+PHP 7.0|`php@7.0`|
+PHP 7.1|`php@7.1`|
+PHP 7.2|`php@7.2`|
+PHP 7.3|`php@7.3`|
+PHP 7.4|`php@7.4`|
+PHP 8.0|`php` or `php@8.0`|
+PHP 8.1.0-dev|`php@8.1`|
+
+## OS Support
+
+|Operating System|Architecture|
+|--- |--- |
+|macOS Catalina|`x86_64`|
+|macOS Big Sur|`x86_64`, `arm64`|
 
 ## Usage
 
@@ -43,7 +50,7 @@ brew update
 
 - If you have packages from old `homebrew/php` tap, refer to [this guide](https://github.com/shivammathur/homebrew-php/wiki/Cleanup) for removing them.  
 
-### Add the tap
+### Add this tap
 
 Fetch the formulae in this tap:
 
@@ -67,7 +74,7 @@ brew install shivammathur/php/php@7.3
 brew link --overwrite --force php@7.3
 ```
 
-- Test your PHP version:
+- Restart the terminal and test your PHP version:
 
 ```zsh
 php -v
