@@ -42,7 +42,7 @@ jobs:
 
       - name: Setup Xcode
         run: |
-          if [ "${{ matrix.os }}" = "macos-10.15" ]; then
+          if [ "${{github.event.inputs.macos}}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
             sudo xcode-select -s /Applications/Xcode_12.3.app || exit 1
@@ -53,25 +53,12 @@ jobs:
       - run: brew test-bot --only-setup
 
       - name: Run brew test-bot --only-formulae
-        if: github.event.inputs.macos != 'macos-11.0-m1'
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --keep-old --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php ${{github.event.inputs.formula}}
-      - name: Build bottle on arm
-        if: github.event.inputs.macos == 'macos-11.0-m1'
-        run: |
-          mkdir bottles
-          cd bottles
-          formula=${{github.event.inputs.formula}}
-          brew install -s --only-dependencies ${{ github.repository_owner }}/php/"$formula"
-          brew install --verbose --build-bottle ${{ github.repository_owner }}/php/"$formula"
-          brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
-          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php --keep-old
-          brew bottle --merge --write --no-commit *.json --keep-old
-          echo "All steps passed" | sudo tee ./steps_output.txt
+          brew test-bot --keep-old --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
 
       - name: Output brew test-bot --only-formulae failures
         if: always()

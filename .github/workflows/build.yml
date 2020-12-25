@@ -128,23 +128,10 @@ jobs:
       - run: brew test-bot --only-setup
 
       - name: Run brew test-bot --only-formulae
-        if: matrix.os != 'macos-11.0-m1'
         run: |
           mkdir bottles
           cd bottles
           brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
-      - name: Build bottle on arm
-        if: matrix.os == 'macos-11.0-m1'
-        run: |
-          mkdir bottles
-          cd bottles
-          formula=$(git diff HEAD~1 --name-only | grep -Eo "php.*" | sed 's/\.[^.]*$//')
-          brew install -s --only-dependencies ${{ github.repository_owner }}/php/"$formula"
-          brew install --verbose --build-bottle ${{ github.repository_owner }}/php/"$formula"
-          brew audit ${{ github.repository_owner }}/php/"$formula" --online --git --skip-style
-          brew bottle --verbose --json ${{ github.repository_owner }}/php/"$formula" --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
-          brew bottle --merge --write --no-commit *.json
-          echo "All steps passed" | sudo tee ./steps_output.txt
 
       - name: Output brew test-bot --only-formulae failures
         if: always()
