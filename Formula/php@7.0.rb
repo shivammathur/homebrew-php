@@ -32,7 +32,7 @@ class PhpAT70 < Formula
   depends_on "libpq"
   depends_on "libtool"
   depends_on "libzip"
-  depends_on "mcrypt"
+  depends_on "mcrypt" unless Hardware::CPU.arm?
   depends_on "openldap"
   depends_on "openssl@1.1"
   depends_on "pcre"
@@ -150,7 +150,6 @@ class PhpAT70 < Formula
       --with-libedit#{headers_path}
       --with-libxml-dir#{headers_path}
       --with-libzip
-      --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
@@ -173,6 +172,8 @@ class PhpAT70 < Formula
       --with-xsl#{headers_path}
       --with-zlib#{headers_path}
     ]
+
+    args << "--with-mcrypt=#{Formula["mcrypt"].opt_prefix}" unless Hardware::CPU.arm?
 
     system "./configure", *args
     system "make"
