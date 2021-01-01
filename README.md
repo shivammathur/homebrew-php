@@ -1,10 +1,28 @@
-# brew tap shivammathur/php
+<p align="center">
+  <a href="https://github.com/shivammathur/homebrew-php" target="_blank">
+    <img src="https://repository-images.githubusercontent.com/229187949/f140f880-4c25-11eb-8105-aefec9dc7c66" alt="Homebrew Tap for PHP" width="560">
+  </a>
+</p>
 
-<a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP"><img alt="Build status" src="https://github.com/shivammathur/homebrew-php/workflows/Update%20and%20Build%20Formulae/badge.svg"></a>
-<a href="https://github.com/shivammathur/homebrew-php/blob/master/LICENSE" title="license"><img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg"></a>
-<a href="https://github.com/shivammathur/homebrew-php/tree/master/Formula" title="Formulae for PHP versions"><img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg"></a>
+<h1 align="center">brew tap shivammathur/php</h1>
 
-> Homebrew tap for PHP releases.
+<p align="center">
+  <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP">
+    <img alt="Build status" src="https://github.com/shivammathur/homebrew-php/workflows/Update%20and%20Build%20Formulae/badge.svg">
+  </a>
+  <a href="https://github.com/shivammathur/homebrew-php/blob/master/LICENSE" title="license">
+    <img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555">
+  </a>
+  <a href="https://github.com/shivammathur/homebrew-php/tree/master/Formula" title="Formulae for PHP versions">
+    <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.3%20to%208.1-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
+  </a>
+  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple Intel x86_64 supported">
+    <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Intel%20x86__64%20-007DC3?logo=apple&logoColor=555555&labelColor=ffffff">
+  </a>  
+  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple M1 arm64 supported">
+    <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Apple%20arm64%20-c0476d?logo=apple&logoColor=555555&labelColor=ffffff">
+  </a>
+</p>
 
 ## PHP Support
 
