@@ -2,17 +2,13 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.13.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.13.tar.xz"
-  sha256 "aead303e3abac23106529560547baebbedba0bb2943b91d5aa08fff1f41680f4"
+  url "https://www.php.net/distributions/php-7.4.14.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.14.tar.xz"
+  sha256 "f9f3c37969fcd9006c1dbb1dd76ab53f28c698a1646fa2dde8547c3f45e02886"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "e683a053e962e61766f1ea677f0196aea96c98a45c520a2f367517939105d8a7" => :big_sur
-    sha256 "37d7534ee02ee92f06f7c9a85e452af7e79528a6bbd98cec8a0e98f588c519ba" => :arm64_big_sur
-    sha256 "a1d6d804935b5c38799a8ca11d90219092ee908017f0800608969c0cb5f30f1c" => :catalina
   end
 
   keg_only :versioned_formula
@@ -45,6 +41,13 @@ class PhpAT74 < Formula
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
+
+  uses_from_macos "xz" => :build
+  uses_from_macos "bzip2"
+  uses_from_macos "libedit"
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
+  uses_from_macos "zlib"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
@@ -87,7 +90,7 @@ class PhpAT74 < Formula
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
