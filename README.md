@@ -161,7 +161,6 @@ brew services restart nginx
 The code in this project is licensed under the [MIT license](http://choosealicense.com/licenses/mit/).
 Please see the [license file](LICENSE) for more information.
 
-Formulae for PHP versions which are supported currently in the PHP release cycle are synced from [homebrew-core](https://github.com/Homebrew/homebrew-core) tap.
 This project has some [dependencies](#dependencies), and their license can be found [here](LICENSE_HOMEBREW).
 
 
