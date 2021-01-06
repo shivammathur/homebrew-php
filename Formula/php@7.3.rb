@@ -2,17 +2,13 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.25.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.25.tar.xz"
-  sha256 "c71c00ad03079efb78d1a6b8623ca4f725be697dbd9a46debacbcc9a2475f329"
+  url "https://www.php.net/distributions/php-7.3.26.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.26.tar.xz"
+  sha256 "d93052f4cb2882090b6a37fd1e0c764be1605a2461152b7f6b8f04fa48875208"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 "983faf7e44fecceb98282285bbfb9d462ca36523abcdf0360d948a6ffcb5fc48" => :big_sur
-    sha256 "6e05b221c2e9937ba86f3a0a4b9e4d955b18eb395fa10fd1a81bcf0011ac4327" => :arm64_big_sur
-    sha256 "f99b576b019f45bfcfa1ad416e82f4fce833c6386284ccd6698a2aede4c63f1c" => :catalina
   end
 
   keg_only :versioned_formula
@@ -41,11 +37,16 @@ class PhpAT73 < Formula
   depends_on "libzip"
   depends_on "openldap"
   depends_on "openssl@1.1"
-  depends_on "pcre2"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
   depends_on "webp"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "libedit"
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
+  uses_from_macos "zlib"
 
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
@@ -91,7 +92,7 @@ class PhpAT73 < Formula
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # Each extension that is built on Mojave needs a direct reference to the
@@ -154,7 +155,6 @@ class PhpAT73 < Formula
       --with-ndbm#{headers_path}
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --with-password-argon2=#{Formula["argon2"].opt_prefix}
-      --with-pcre-regex=#{Formula["pcre2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
