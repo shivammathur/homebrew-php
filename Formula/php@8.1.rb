@@ -8,6 +8,10 @@ class PhpAT81 < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
+    rebuild 106
+    sha256 "8b06cc7efe64161a76df254cedc53f7aee25ce3b78c3b896e9040f06bbfbd7b4" => :big_sur
+    sha256 "d1eeba6a1d13572755bdc7ddf8b2024400d265b78a85cb410802a17a42aaf73c" => :arm64_big_sur
+    sha256 "02602ec0e6a8d624d0ad3da2ba02a7760cd793dd581a3dc9895480bad19fbe94" => :catalina
   end
 
   keg_only :versioned_formula
