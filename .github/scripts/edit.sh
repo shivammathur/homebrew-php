@@ -2,7 +2,7 @@ unbottle() {
   if [[ "$PHP_VERSION" =~ php$|php@7.[2-4] ]]; then
     printf "  bottle do\n    root_url \"%s\"\n" "$HOMEBREW_BINTRAY_URL" > /tmp/bottle
     sed -Ei '/    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
-    sed -Ei '/    sha256.*=>/d' ./Formula/"$PHP_VERSION".rb
+    sed -Ei '/    sha256.*/d' ./Formula/"$PHP_VERSION".rb
     sed -Ei '/  revision.*/d' ./Formula/"$PHP_VERSION".rb
     sed -i -e "/bottle do/r /tmp/bottle" -e "//d" ./Formula/"$PHP_VERSION".rb
     sudo rm -f /tmp/bottle
@@ -14,7 +14,7 @@ unbottle() {
       sed -i -e "s|build_time.*|build_time=$(date +%s)\"|g" ./Formula/"$PHP_VERSION".rb
     fi
     sed -Ei '/    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
-    sed -Ei '/    sha256.*=>/d' ./Formula/"$PHP_VERSION".rb
+    sed -Ei '/    sha256.*/d' ./Formula/"$PHP_VERSION".rb
     sed -Ei '/  revision.*/d' ./Formula/"$PHP_VERSION".rb
   fi
 }
