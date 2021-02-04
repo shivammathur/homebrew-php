@@ -2,16 +2,14 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.14.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.14.tar.xz"
-  sha256 "f9f3c37969fcd9006c1dbb1dd76ab53f28c698a1646fa2dde8547c3f45e02886"
+  url "https://www.php.net/distributions/php-7.4.15.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.15.tar.xz"
+  sha256 "9b859c65f0cf7b3eff9d4a28cfab719fb3d36a1db3c20d874a79b5ec44d43cb8"
   license "PHP-3.01"
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    sha256 arm64_big_sur: "66e2d7ce66c029b89a6afe2f914ee54eee9c47fdd56f46e8b5c458f27f22de78"
-    sha256 big_sur:       "6cbee7bde1cd8395c009580b8186509b89455ad226facb20bc0ac9dca37c49e5"
-    sha256 catalina:      "840ead1650cb51295a289c7790c5a00e53530910a567c616cb067cc726de32e5"
+    root_url "https://dl.bintray.com/shivammathur/php"
   end
 
   keg_only :versioned_formula
