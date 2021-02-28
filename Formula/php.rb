@@ -14,7 +14,10 @@ class Php < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    root_url "https://dl.bintray.com/shivammathur/php"
+    rebuild 1
+    sha256 arm64_big_sur: "3d5e4a0880795e71bc447dc374cab9f85a73865b3e1f6514cfa8f5f45657f2e6"
+    sha256 big_sur:       "181216d949627ae8d2fa90255bb05ead592713c7487c865ace47d15de16b33c2"
+    sha256 catalina:      "c5f156491c539e6dc7da1abe5b0df7c76c15f91b47f1365eb58f25db627a04e2"
   end
 
   head do
