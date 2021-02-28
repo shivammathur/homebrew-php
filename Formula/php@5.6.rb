@@ -7,10 +7,6 @@ class PhpAT56 < Formula
 
   bottle do
     root_url "https://dl.bintray.com/shivammathur/php"
-    rebuild 7
-    sha256 arm64_big_sur: "b8fe6584923636814d47449fc4661702b376a0b511a1142bde624336febdd8f7"
-    sha256 big_sur:       "9bb90d031ea4894eff99c9594501d9f171dd3a408ad9cd820928eeb636931877"
-    sha256 catalina:      "49c3e4ce8e362a61c395cd53ce02fa3926434d2378fdef1ddd4875d6e2618467"
   end
 
   keg_only :versioned_formula
@@ -47,7 +43,6 @@ class PhpAT56 < Formula
 
   patch do
     url "https://raw.githubusercontent.com/shivammathur/homebrew-php/ec95dab7ee3a9e20416b4c96c511a9a31d8f43f0/Patches/openssl.patch"
-    sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
   end
 
   def install
