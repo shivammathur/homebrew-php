@@ -11,6 +11,7 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
+  HOMEBREW_BOTTLE_DOMAIN: 'https://dl.bintray.com/homebrew'
 jobs:
   tap_syntax:
     if: "!contains(github.event.head_commit.message, 'skip-build')"
