@@ -80,16 +80,16 @@ brew tap shivammathur/php
 
 > See [PHP Support](#php-support) for available formulae.
 
-- For example, to install `PHP 7.3`:
+- For example, to install `PHP 7.4`:
 
 ```zsh 
-brew install shivammathur/php/php@7.3
+brew install shivammathur/php/php@7.4
 ```
 
 - After installing your have to link it:
 
 ```zsh
-brew link --overwrite --force php@7.3
+brew link --overwrite --force php@7.4
 ```
 
 - Restart the terminal and test your PHP version:
@@ -102,20 +102,20 @@ php -v
 
 You can upgrade your PHP version to the latest patch release.
 
-For example, to upgrade `PHP 7.3`:
+For example, to upgrade `PHP 7.4`:
 
 ```zsh
-brew upgrade shivammathur/php/php@7.3
+brew upgrade shivammathur/php/php@7.4
 ```
 
 ### Switch between PHP versions
 
 - If you have multiple PHP versions installed, you can switch between them easily.
 
-For example, to switch to `PHP 7.3`:
+For example, to switch to `PHP 7.4`:
 
 ```zsh
-brew link --overwrite --force php@7.3
+brew link --overwrite --force php@7.4
 ```
 
 - If you get a warning like below, then do as recommended:
@@ -127,8 +127,8 @@ To relink:
 ```
 
 ```zsh
-brew unlink php@7.3
-brew link --overwrite --force php@7.3
+brew unlink php@7.4
+brew link --overwrite --force php@7.4
 ```
 
 ### Restart your webserver
@@ -152,9 +152,23 @@ brew services restart nginx
 
 - Run `brew doctor` and fix the warnings it reports.
 
-- Check if your issue is a known Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
+- Make sure homebrew has correct permissions. 
 
-- If you are still facing an issue, please report them [here](https://github.com/shivammathur/homebrew-php/issues).
+```zsh
+sudo chown -R "$(id -un)":"$(id -gn)" $(brew --prefix)
+```
+
+- If PHP is not working after a macOS update. Reinstall PHP along with its dependencies.
+
+For example to reinstall `PHP 7.4` and its dependencies:
+
+```zsh
+brew reinstall $(brew deps shivammathur/php/php@7.4) shivammathur/php/php@7.4
+```
+
+- Check if your issue is a Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
+
+- If you are still facing an issue, please create a discussion thread [here](https://github.com/shivammathur/homebrew-php/discussions).
 
 ## License
 
@@ -168,7 +182,7 @@ This project has some [dependencies](#dependencies), and their license can be fo
 
 Contributions are welcome!
 Please see [Contributor's Guide](.github/CONTRIBUTING.md "shivammathur/homebrew-php contribution guide") before you start.
-If you face any issues while using this or want to suggest a feature/improvement, create an issue [here](https://github.com/shivammathur/homebrew-php/issues "Issues reported").
+If you face any issues while using this tap or want to suggest a feature/improvement, create an discussion thread [here](https://github.com/shivammathur/homebrew-php/discussions "shivammathur/php discussions").
 
 
 ## Related Projects
