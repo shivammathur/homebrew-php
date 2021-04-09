@@ -6,7 +6,7 @@ class PhpAT70 < Formula
   license "PHP-3.01"
 
   bottle do
-    root_url "https://dl.bintray.com/shivammathur/php"
+    root_url "https://ghcr.io/v2/shivammathur/php"
     rebuild 8
     sha256 arm64_big_sur: "cff569b6e0e5fe977f51cf4d0458e91e98e7936b323b1bce861b206157280e5c"
     sha256 big_sur:       "2cc02b34dbec93d1fd829aefd5cbf3dd3e9bb0f97c23341363f527f056b29f5f"

@@ -1,6 +1,6 @@
 unbottle() {
-  if [[ "$PHP_VERSION" =~ php$|php@7.[2-4] ]]; then
-    printf "  bottle do\n    root_url \"%s\"\n" "$HOMEBREW_BINTRAY_URL" > /tmp/bottle
+  if [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
+    printf "  bottle do\n    root_url \"%s\"\n" "$GITHUB_PACKAGES_URL" > /tmp/bottle
     sed -Ei '/    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
     sed -Ei '/    sha256.*/d' ./Formula/"$PHP_VERSION".rb
     sed -Ei '/  revision.*/d' ./Formula/"$PHP_VERSION".rb
@@ -48,22 +48,6 @@ fetch() {
   unbottle
 }
 
-create_package() {
-  package="${PHP_VERSION//@/:}"
-  curl \
-  --user "$HOMEBREW_BINTRAY_USER":"$HOMEBREW_BINTRAY_KEY" \
-  --header "Content-Type: application/json" \
-  --data " \
-  {\"name\": \"$package\", \
-  \"vcs_url\": \"$GITHUB_REPOSITORY\", \
-  \"licenses\": [\"MIT\"], \
-  \"public_download_numbers\": true, \
-  \"public_stats\": true \
-  }" \
-  https://api.bintray.com/packages/"$HOMEBREW_BINTRAY_USER"/"$HOMEBREW_BINTRAY_REPO" >/dev/null 2>&1 || true
-}
-
-create_package
 fetch
 if [[ "$GITHUB_MESSAGE" != *--build-"$PHP_VERSION" ]] &&
    [[ "$GITHUB_MESSAGE" != *--build-all* ]]; then

@@ -13,7 +13,7 @@ class Php < Formula
   end
 
   bottle do
-    root_url "https://dl.bintray.com/shivammathur/php"
+    root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_big_sur: "57e5d17e388b7d76a1184e44488fcdd7f6cb93f14c4b9af4ca399962ff48c3e0"
     sha256 big_sur:       "2d58b492c8bb573f77a349fd4436d0d7c77cfb0f6e8ad7db73899e4a8bec1b8f"
     sha256 catalina:      "fde67fe2af3444b0b89080bf53042f03091afda6e6cb88c101ed819862adf38e"

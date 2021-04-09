@@ -6,7 +6,7 @@ class PhpAT56 < Formula
   license "PHP-3.01"
 
   bottle do
-    root_url "https://dl.bintray.com/shivammathur/php"
+    root_url "https://ghcr.io/v2/shivammathur/php"
     rebuild 8
     sha256 arm64_big_sur: "11d608f69c8fdea0395a3e69fcd87b534d1075ad0aec5ae2af098f4d8e764d34"
     sha256 big_sur:       "f9fe0b415f0e7087010aeff99796dacdea20eb17307bbb2aab5651137c1faa89"
@@ -49,6 +49,7 @@ class PhpAT56 < Formula
 
   patch do
     url "https://raw.githubusercontent.com/shivammathur/homebrew-php/ec95dab7ee3a9e20416b4c96c511a9a31d8f43f0/Patches/openssl.patch"
+    sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
   end
 
   def install

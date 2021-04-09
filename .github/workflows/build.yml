@@ -12,7 +12,6 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_BOTTLE_DOMAIN: 'https://dl.bintray.com/homebrew'
 jobs:
   tap_syntax:
     if: "!contains(github.event.head_commit.message, 'skip-build')"
@@ -59,10 +58,7 @@ jobs:
         env:
           GITHUB_MESSAGE: ${{ github.event.head_commit.message }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{ github.repository_owner }}/php
-          HOMEBREW_BINTRAY_USER: ${{ github.repository_owner }}
-          HOMEBREW_BINTRAY_REPO: php
-          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          GITHUB_PACKAGES_URL: https://ghcr.io/v2/${{ github.repository_owner }}/php
           PHP_VERSION: ${{ matrix.php }}
         run: bash ./.github/scripts/edit.sh
 
@@ -72,8 +68,8 @@ jobs:
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
           commit-message: Update ${{ matrix.php }}
-          committer: BrewTestBot <homebrew-test-bot@lists.sfconservancy.org>
-          author: BrewTestBot <homebrew-test-bot@lists.sfconservancy.org>
+          committer: BrewTestBot <1589480+BrewTestBot@users.noreply.github.com>
+          author: BrewTestBot <1589480+BrewTestBot@users.noreply.github.com>
           signoff: false
           base: master
           branch: update-${{ matrix.php }}
@@ -133,7 +129,7 @@ jobs:
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --only-formulae --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php
+          brew test-bot --only-formulae --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php"
 
       - name: Output brew test-bot --only-formulae failures
         if: always()
@@ -186,6 +182,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Add Label"
-        run: |
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          curl -u "${{github.repository_owner}}:${{secrets.GITHUB_TOKEN}}" -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/${{github.repository}}/issues/"$PR_NUMBER"/labels -d '{"labels":["build-complete"]}'
+        run: gh pr edit "$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')" --add-label "build-complete"

@@ -28,17 +28,38 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
 
+      # Workaround until the `cache` action uses the changes from
+      # https://github.com/actions/toolkit/pull/580.
+      - name: Unlink workspace
+        run: |
+          mv "${GITHUB_WORKSPACE}" "${GITHUB_WORKSPACE}-link"
+          mkdir "${GITHUB_WORKSPACE}"
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: ${{steps.set-up-homebrew.outputs.gems-path}}
+          key: ${{runner.os}}-rubygems-v2-${{steps.set-up-homebrew.outputs.gems-hash}}
+          restore-keys: ${{runner.os}}-rubygems-v2-
+
+      # Workaround until the `cache` action uses the changes from
+      # https://github.com/actions/toolkit/pull/580.
+      - name: Re-link workspace
+        run: |
+          rmdir "${GITHUB_WORKSPACE}"
+          mv "${GITHUB_WORKSPACE}-link" "${GITHUB_WORKSPACE}"
+      - name: Install gems
+        run: brew install-bundler-gems
+
       - name: Setup git
         run: |
-          git config --local user.email homebrew-test-bot@lists.sfconservancy.org
+          git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
           git config --local user.name BrewTestBot
 
       - name: Pull bottles
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          HOMEBREW_BINTRAY_USER: ${{ github.repository_owner }}
-          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-        run: brew pr-pull --debug --workflows=build.yml --tap=${{ github.repository_owner }}/php --bintray-org=${{ github.repository_owner }} --root-url=https://dl.bintray.com/${{ github.repository_owner }}/php ${{github.event.inputs.args}} ${{github.event.inputs.pull_request}}
+          HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
+          HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: brew pr-pull --debug --workflows=build.yml --no-commit --verbose --tap=${{ github.repository_owner }}/php --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.args}} ${{github.event.inputs.pull_request}}
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
@@ -62,3 +83,10 @@ jobs:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           pr: ${{github.event.inputs.pull_request}}
           message: 'bottle publish failed'
+
+      # Workaround until the `cache` action uses the changes from
+      # https://github.com/actions/toolkit/pull/580.
+      - name: Unlink workspace
+        run: |
+          rm "${GITHUB_WORKSPACE}"
+          mkdir "${GITHUB_WORKSPACE}"
