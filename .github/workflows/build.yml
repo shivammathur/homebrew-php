@@ -182,4 +182,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Add Label"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr edit "$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')" --add-label "build-complete"
