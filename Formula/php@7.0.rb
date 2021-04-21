@@ -1,24 +1,22 @@
 class PhpAT70 < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://php.net/get/php-7.0.33.tar.xz/from/this/mirror"
-  sha256 "ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
+  url "https://github.com/shivammathur/php-src-backports/archive/7.0.33.tar.gz"
+  sha256 "ff72eade3bcf9bf6dfc7de81bea2aee4979c54a3a538743ec5b7c72c8d568a0a"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 8
-    sha256 arm64_big_sur: "cff569b6e0e5fe977f51cf4d0458e91e98e7936b323b1bce861b206157280e5c"
-    sha256 big_sur:       "2cc02b34dbec93d1fd829aefd5cbf3dd3e9bb0f97c23341363f527f056b29f5f"
-    sha256 catalina:      "7eb9c692ec5003fa36bd62e840c30c275995915ed5ec5ba20835892fd888a440"
   end
 
   keg_only :versioned_formula
 
   deprecate! date: "2019-01-10", because: :versioned_formula
 
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "aspell"
