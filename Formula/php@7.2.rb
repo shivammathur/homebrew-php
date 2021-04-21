@@ -1,27 +1,22 @@
 class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.2.34.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.2.34.tar.xz"
-  sha256 "409e11bc6a2c18707dfc44bc61c820ddfd81e17481470f3405ee7822d8379903"
+  url "https://github.com/shivammathur/php-src-backports/archive/7.2.34.tar.gz"
+  sha256 "5823190fb9e45b5676dbbb98aa922ed566fa4940492cae13d4fab018e4e23c8b"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_big_sur: "e02e3e22af6cb394f61b928352aaa3aa1fa952d90c9d7cc82c629eface636149"
-    sha256 big_sur:       "112cf6050ed548274466c07d2701d288bf2d5f1aa4987cd2d27d39f6becf1842"
-    sha256 catalina:      "52b338b66ffce6fff542982ed821a91e0ca6a7b53a4e85abd7db1a42692ea470"
   end
 
   keg_only :versioned_formula
 
   deprecate! date: "2020-11-30", because: :versioned_formula
 
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
