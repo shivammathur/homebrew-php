@@ -31,7 +31,8 @@ done
 )
 
 # Check update formulae for library changes
-rm "$deps_file" && touch "$deps_file"
+rm -f "$deps_file"
+touch "$deps_file"
 while read -r formula; do
   formula_prefix="$(brew --prefix "$formula")"
   if ! [ -d "$formula_prefix"/lib ]; then
