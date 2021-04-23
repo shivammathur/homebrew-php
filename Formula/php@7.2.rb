@@ -1,16 +1,12 @@
 class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/7.2.34.tar.gz"
-  sha256 "5823190fb9e45b5676dbbb98aa922ed566fa4940492cae13d4fab018e4e23c8b"
+  url "https://www.php.net/distributions/php-7.2.34.tar.xz"
+  sha256 "409e11bc6a2c18707dfc44bc61c820ddfd81e17481470f3405ee7822d8379903"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 3
-    sha256 arm64_big_sur: "01215d285c3d56b682069f1fe833c25142af0f7f437036b836c71e6722dfa73d"
-    sha256 big_sur:       "a29ef28f07daba0fc5fd4f3b1f6de6e25a0a2878eef613ff7d7ae3f9ea3f0875"
-    sha256 catalina:      "8ec75b89867e150e40180a956692bf92e5eec3909203c9833fb728cbd1f140c6"
   end
 
   keg_only :versioned_formula
