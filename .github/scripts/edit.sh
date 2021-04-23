@@ -32,7 +32,7 @@ check_url() {
 
 fetch() {
   sudo cp "Formula/$PHP_VERSION.rb" "/tmp/$PHP_VERSION.rb"
-  if [[ "$PHP_VERSION" =~ php$|php@7.[2-4] ]]; then
+  if [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
     status_code=$(sudo curl -w "%{http_code}" -o "/tmp/$PHP_VERSION.rb.new" -sL "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/$PHP_VERSION.rb")
     if [ "$status_code" = "200" ]; then
       url="$(grep -e "^  url.*" /tmp/"$PHP_VERSION".rb.new | cut -d\" -f 2)"
