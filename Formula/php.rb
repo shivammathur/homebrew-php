@@ -57,6 +57,11 @@ class Php < Formula
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
 
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/fc256dac438bde6fc35e57eeeb8803c71a3f6f1a/Patches/php-8.0.5-80892.patch"
+    sha256 "62b82271ef6f54965af1da563bc287ca52af879299b6e086afa66931aaaae6b3"
+  end
+
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
