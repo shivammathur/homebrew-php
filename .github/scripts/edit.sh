@@ -1,14 +1,14 @@
 unbottle() {
-  sed -Ei '/    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
-  sed -Ei '/    sha256.*/d' ./Formula/"$PHP_VERSION".rb
-  sed -Ei '/  revision.*/d' ./Formula/"$PHP_VERSION".rb
+  sed -Ei '/^    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
+  sed -Ei '/^    sha256.*:.*/d' ./Formula/"$PHP_VERSION".rb
+  sed -Ei '/^  revision.*/d' ./Formula/"$PHP_VERSION".rb
 }
 
 check_changes() {
   new_url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
   old_url="$(grep -e "^  url.*" ./tmp/"$PHP_VERSION".rb | cut -d\" -f 2)"
-  new_checksum="$(grep -e "^  sha256.*" /Formula/"$PHP_VERSION".rb.new | cut -d\" -f 2)"
-  old_checksum="$(grep -e "^  sha256.*" /tmp/"$PHP_VERSION".rb.new | cut -d\" -f 2)"
+  new_checksum="$(grep -e "^  sha256.*" /Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
+  old_checksum="$(grep -e "^  sha256.*" /tmp/"$PHP_VERSION".rb | cut -d\" -f 2)"
   echo "new_url: $new_url"
   echo "old_url: $old_url"
   echo "new_checksum: $new_checksum"
