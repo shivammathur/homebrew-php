@@ -2,17 +2,13 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.18.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.18.tar.xz"
-  sha256 "ab97f22b128d21dcbc009b50a37aaea0051b2721cbcd122d9e00e6ffc3c4b7e1"
+  url "https://www.php.net/distributions/php-7.4.19.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.19.tar.xz"
+  sha256 "6c17172c4a411ccb694d9752de899bb63c72a0a3ebe5089116bc13658a1467b2"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 1
-    sha256 arm64_big_sur: "f2928f50057edca1c80fd502ea36a0064631e4e7cb94f2471babd4d375119597"
-    sha256 big_sur:       "9a727ebf74db9f2bdf5c60d7e5af8aa264518a3789669696645b1fe7aa164c19"
-    sha256 catalina:      "973580e72c95a2e4ae5b470736ea20aa3ef640aa09897e9a97dd2aa1c6f70c89"
   end
 
   keg_only :versioned_formula
@@ -56,11 +52,6 @@ class PhpAT74 < Formula
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
-
-  patch do
-    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/fc256dac438bde6fc35e57eeeb8803c71a3f6f1a/Patches/php-7.4.18-80892.patch"
-    sha256 "a7b9e95fc5b7a3f9b9dd537c2e950a67dbe8011034de04ec607afde3ef7fdaf2"
-  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
