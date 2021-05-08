@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.0.5.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.0.5.tar.xz"
-  sha256 "5dd358b35ecd5890a4f09fb68035a72fe6b45d3ead6999ea95981a107fd1f2ab"
+  url "https://www.php.net/distributions/php-8.0.6.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.6.tar.xz"
+  sha256 "e9871d3b6c391fe9e89f86f6334852dcc10eeaaa8d5565beb8436e7f0cf30e20"
   license "PHP-3.01"
 
   livecheck do
@@ -14,10 +14,6 @@ class Php < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 1
-    sha256 arm64_big_sur: "2751a1d8516488e886ce21358fdacc1a0469c3ccccb321b812578d2e0c3affda"
-    sha256 big_sur:       "3cf1d51ae6c5328504024ba1ac7a68d178dce21eb7344c9b9098ce7d093701ae"
-    sha256 catalina:      "60583ad4f905f2c5bba8686760f936cee4a6fdad124febb2edab885755aa5f8f"
   end
 
   head do
@@ -57,11 +53,6 @@ class Php < Formula
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
-
-  patch do
-    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/fc256dac438bde6fc35e57eeeb8803c71a3f6f1a/Patches/php-8.0.5-80892.patch"
-    sha256 "62b82271ef6f54965af1da563bc287ca52af879299b6e086afa66931aaaae6b3"
-  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
