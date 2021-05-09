@@ -1,17 +1,13 @@
 class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/master.tar.gz?commit=cc2c810dcf4ea25ed73d97765b5df9f270a91a4a"
+  url "https://github.com/php/php-src/archive/master.tar.gz?commit=b5c0e7e0ecdf0e7f65cb572fe3f4742c2d17ff30"
   version "8.1.0"
-  sha256 "27b89f6055b259dc482180472667b217571102b98cb2e7c946b39e693e8c592f"
+  sha256 "9e872d47f1b0692d79e84002340c2e0a29f45af33397340941cde4c7d636fbad"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 214
-    sha256 arm64_big_sur: "769d11c133180fece84bb1a3f3f383061718a90303d1103a2c7bd74477078055"
-    sha256 big_sur:       "617c4b6e4cfdade82fd29f0d0ab41038f53d1cb39ecb23d232006efaaea6be3a"
-    sha256 catalina:      "8459702aed0eaac444dd32d8c292a071253be0874d3b1c7709215f6d3df85d43"
   end
 
   keg_only :versioned_formula
