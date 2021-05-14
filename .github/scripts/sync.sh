@@ -15,11 +15,12 @@ brew install php
 
 # Update dependency formulae
 for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
+  mkdir -p /tmp/libs/"$formula" /tmp/formulae
+  sudo cp "$core_repo/Formula/$formula.rb" /tmp/formulae/
   formula_prefix="$(brew --prefix "$formula")"
   if ! [ -d "$formula_prefix"/lib ]; then
     continue
   fi
-  mkdir -p /tmp/libs/"$formula"
   curl -o "$core_repo/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/"$formula".rb
   find "$formula_prefix"/lib -maxdepth 1 -name \*.dylib -print0 | xargs -I{} -0 cp -a {} /tmp/libs/"$formula"/
 done
@@ -41,11 +42,13 @@ while read -r formula; do
   printf "\n--- %s ---\n" "$formula"
   brew reinstall "$formula" 2>/dev/null 1>&2 || true
   formula_prefix="$(brew --prefix "$formula")"
-  old_libs_hash=$(find /tmp/libs/"$formula"/ -maxdepth 1 -name '*.dylib' -exec basename {} \; | openssl sha256)
-  new_libs_hash=$(find "$formula_prefix"/lib -maxdepth 1 -name '*.dylib' -exec basename {} \; | openssl sha256)
-  echo "old hash: $old_libs_hash"
-  echo "new hash: $new_libs_hash"
-  if [ "$old_libs_hash" != "$new_libs_hash" ]; then
+  old_build_info=$(grep -Eo "(^  revision|^    rebuild) [0-9]+" -Eo /tmp/formulae/"$formula".rb | tr -d ' \n')
+  new_build_info=$(grep -Eo "(^  revision|^    rebuild) [0-9]+" -Eo "$core_repo/Formula/$formula.rb" | tr -d ' \n')
+  old_hash=$(echo "$old_build_info $(find /tmp/libs/"$formula"/ -maxdepth 1 -name '*.dylib' -exec basename {} \;)" | openssl sha256)
+  new_hash=$(echo "$new_build_info $(find "$formula_prefix"/lib -maxdepth 1 -name '*.dylib' -exec basename {} \;)" | openssl sha256)
+  echo "old hash: $old_hash"
+  echo "new hash: $new_hash"
+  if [ "$old_hash" != "$new_hash" ]; then
     echo "$formula" | sudo tee -a "$deps_file"
   fi
 done </tmp/deps_updated
