@@ -25,7 +25,7 @@ fetch() {
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
   elif [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
-    PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+)" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
+    PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
     OLD_PHP_SEMVER=$(grep -Po -m 1 "php-$PHP_MM.[0-9]+" ./Formula/"$PHP_VERSION".rb)
     NEW_PHP_SEMVER=$(curl -sL https://www.php.net/releases/feed.php | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1)
     if [ "$NEW_PHP_SEMVER" != "$OLD_PHP_SEMVER" ]; then
