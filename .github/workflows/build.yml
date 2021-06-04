@@ -119,6 +119,8 @@ jobs:
 
       - run: brew test-bot --only-cleanup-before
 
+      - run: brew install-bundler-gems
+
       - run: brew test-bot --only-setup
 
       - name: Run brew test-bot --only-formulae
