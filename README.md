@@ -43,6 +43,7 @@ PHP 8.1.0-dev|`php@8.1`|
 |--- |--- |
 |macOS Catalina|`x86_64`|
 |macOS Big Sur|`x86_64`, `arm64`|
+|macOS Monterey|`x86_64`, `arm64`|
 
 ## Usage
 
