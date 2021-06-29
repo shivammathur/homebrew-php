@@ -1,3 +1,11 @@
+release_url() {
+  if [ "$PHP_SOURCE" = "github" ]; then
+    echo 'https://github.com/php/php-src/tags'
+  else
+    echo 'https://www.php.net/releases/feed.php'
+  fi
+}
+
 unbottle() {
   sed -Ei '/^    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
   sed -Ei '/^    sha256.*:.*/d' ./Formula/"$PHP_VERSION".rb
@@ -27,7 +35,8 @@ fetch() {
   elif [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
     PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
     OLD_PHP_SEMVER=$(grep -Po -m 1 "php-$PHP_MM.[0-9]+" ./Formula/"$PHP_VERSION".rb)
-    NEW_PHP_SEMVER=$(curl -sL https://www.php.net/releases/feed.php | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1)
+    NEW_PHP_SEMVER=$(curl -sL "$(release_url)" | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1)
+    NEW_PHP_SEMVER=$(printf "$NEW_PHP_SEMVER\n$OLD_PHP_SEMVER" | sort -V | tail -1)
     if [ "$NEW_PHP_SEMVER" != "$OLD_PHP_SEMVER" ]; then
       sed -i -e "s|$OLD_PHP_SEMVER|$NEW_PHP_SEMVER|g" ./Formula/"$PHP_VERSION".rb
       url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
