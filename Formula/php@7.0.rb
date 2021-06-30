@@ -2,15 +2,11 @@ class PhpAT70 < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
   url "https://github.com/shivammathur/php-src-backports/archive/7.0.33.tar.gz"
-  sha256 "db37d9fef4b3e776885253fdc2281723f0b33e0f89bbffe1e3927801f19f362c"
+  sha256 "bb131e2ee1b1dd26fa80894cbeeaaadb93f880d5427de96059cd526d5e484ece"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 12
-    sha256 arm64_big_sur: "7590fd8f331a627e5e3b9d36807f6c337f544016aed63b1764024c3cf57e2df3"
-    sha256 big_sur:       "8508eea6614fd049f77fb037176968aa8566bad3486e94a8b534122a7b90da34"
-    sha256 catalina:      "f95098e2654b1eafbfd911366e4ffc4b1d27010fbbbbea6dfb37acf593361707"
   end
 
   keg_only :versioned_formula
