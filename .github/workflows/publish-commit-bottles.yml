@@ -34,6 +34,7 @@ jobs:
         run: |
           mv "${GITHUB_WORKSPACE}" "${GITHUB_WORKSPACE}-link"
           mkdir "${GITHUB_WORKSPACE}"
+
       - name: Cache gems
         uses: actions/cache@v2
         with:
@@ -47,6 +48,7 @@ jobs:
         run: |
           rmdir "${GITHUB_WORKSPACE}"
           mv "${GITHUB_WORKSPACE}-link" "${GITHUB_WORKSPACE}"
+
       - name: Install gems
         run: brew install-bundler-gems
 
@@ -60,7 +62,14 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
           HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: brew pr-pull --debug --workflows=build.yml --tap=${{ github.repository_owner }}/php --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.args}} ${{github.event.inputs.pull_request}}
+        run: |
+          sudo sed -i 's/Closes ##{pr}/[skip ci]/g' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-pull.rb
+          brew pr-pull --debug --workflows=build.yml --verbose --tap=${{ github.repository_owner }}/php --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.args}} ${{github.event.inputs.pull_request}}
+
+      - name: Merge PR branch
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
