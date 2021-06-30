@@ -2,15 +2,11 @@ class PhpAT56 < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
   url "https://github.com/shivammathur/php-src-backports/archive/5.6.40.tar.gz"
-  sha256 "ba815dae9ab81326a0971bb44a43baf91940d903239f3dd31b2a4e34e40e074c"
+  sha256 "126babc2c65082a18cacb900bdf30f56605bf10469c5decd8c9224985e504016"
   license "PHP-3.01"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 12
-    sha256 arm64_big_sur: "c0d1e4c1db8a3c6e7ab2e8baa38cae649d0a2df3f22459092cfe4bf3a30a6d91"
-    sha256 big_sur:       "2f033ca73aac8a792d42a7972e7ede1fb62ff5acffe956f3812e0ec41f6d8116"
-    sha256 catalina:      "4d9f09939757395308a595bca8b0c590e75e2f19ba80ce45cd1b8436d26a8b9d"
   end
 
   keg_only :versioned_formula
@@ -48,11 +44,6 @@ class PhpAT56 < Formula
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/pull/3472
   patch :DATA
-
-  patch do
-    url "https://raw.githubusercontent.com/shivammathur/homebrew-php/ec95dab7ee3a9e20416b4c96c511a9a31d8f43f0/Patches/openssl.patch"
-    sha256 "c9715b544ae249c0e76136dfadd9d282237233459694b9e75d0e3e094ab0c993"
-  end
 
   def install
     # Ensure that libxml2 will be detected correctly in older MacOS
