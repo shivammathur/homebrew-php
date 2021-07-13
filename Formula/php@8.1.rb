@@ -5,6 +5,7 @@ class PhpAT81 < Formula
   version "8.1.0"
   sha256 "6567b947ae7fe4e31270d887b3839de5c28b877c0ddd2235bd15e7989e757b60"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
