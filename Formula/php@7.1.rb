@@ -15,7 +15,11 @@ class PhpAT71 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2019-12-01", because: :versioned_formula
+  # This PHP version is not supported upstream as of 2019-12-01.
+  # Although, this was built with back-ported security patches,
+  # we recommended to use a currently supported PHP version.
+  # For more details, refer to https://www.php.net/eol.php
+  deprecate! date: "2019-12-01", because: :deprecated_upstream
 
   depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
