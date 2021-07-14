@@ -65,8 +65,6 @@ jobs:
       - name: Patch formula
         env:
           GITHUB_MESSAGE: ${{ github.event.head_commit.message }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_PACKAGES_URL: https://ghcr.io/v2/${{ github.repository_owner }}/php
           PHP_VERSION: ${{ matrix.php }}
           PHP_SOURCE: ${{github.event.inputs.php_source}}
         run: bash ./.github/scripts/edit.sh
