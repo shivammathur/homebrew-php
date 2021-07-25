@@ -103,9 +103,9 @@ jobs:
           if [ "$RUNNER_OS" = 'macOS' ]; then
             mkdir bottles
             cd bottles
-            brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2//${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+            brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
           else
-            docker exec ${{github.sha}} brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2//${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+            docker exec ${{github.sha}} brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
           fi
 
       - name: Copy bottles from container

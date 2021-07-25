@@ -143,6 +143,7 @@ class PhpAT56 < Formula
       --enable-mbregex
       --enable-mbstring
       --enable-mysqlnd
+      --enable-opcache
       --enable-pcntl
       --enable-phpdbg
       --enable-shmop
