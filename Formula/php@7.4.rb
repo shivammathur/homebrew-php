@@ -6,13 +6,14 @@ class PhpAT74 < Formula
   mirror "https://fossies.org/linux/www/php-7.4.21.tar.xz"
   sha256 "cf43384a7806241bc2ff22022619baa4abb9710f12ec1656d0173de992e32a90"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_big_sur: "fecd11d8dece3f2200cacbc0adef6d55b6897bfc662bd38535f70a41e67155f8"
     sha256 big_sur:       "9ed462a5e823e48fc82fd9c2c90be8617c5aac48aef36717e0962e942b829333"
     sha256 catalina:      "d3a46539cbdea96f5c959548625da156c731218028326e448cf0590b6025bfa8"
+    sha256 x86_64_linux:  "11949de4baed3ba49bb14c2faee4a66ac1efa20cb07592716883aabb617772be"
   end
 
   keg_only :versioned_formula

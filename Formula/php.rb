@@ -6,7 +6,7 @@ class Php < Formula
   mirror "https://fossies.org/linux/www/php-8.0.8.tar.xz"
   sha256 "dc1668d324232dec1d05175ec752dade92d29bb3004275118bc3f7fc7cbfbb1c"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://www.php.net/releases/feed.php"
@@ -18,6 +18,7 @@ class Php < Formula
     sha256 arm64_big_sur: "91341133c69a94110ee49edfeb4e39bab34882c358a19b98f7b7de2b61368cd8"
     sha256 big_sur:       "ddbbd2098676a7aa510d1fface8c5879e185f5222c7cad20c9e643bd3f35ca3e"
     sha256 catalina:      "df2698a77567d34a71c75ed6fed820252c745cd5ad6c6855059302eaa9d2d0e8"
+    sha256 x86_64_linux:  "b76c654706422621119796d4c279d11aed8c7197dea09853103875cad35f1b7f"
   end
 
   head do

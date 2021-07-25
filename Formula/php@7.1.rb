@@ -4,13 +4,14 @@ class PhpAT71 < Formula
   url "https://github.com/shivammathur/php-src-backports/archive/7.1.33.tar.gz?commit=df9264ca80d5a0ed94b8eda9e7b06e6f7f388790"
   sha256 "f4b7259b023f6f9120fa6c5be09cc7541d00119feae1511acc16fe4ba6b0ec08"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_big_sur: "c4dd32952993deba01288a0bbfdc22a7442049baa544c1ac50c4772bad7fd29b"
     sha256 big_sur:       "1cdd52ac537daba02199d9815c3b6f3aec058589d63f8d5cffa2c87144c2198e"
     sha256 catalina:      "b1150a74094ad20ca7197fb38fd0da302b0921fae81986d51a5170a33199f9ba"
+    sha256 x86_64_linux:  "ec1b0b9cad4c1f580d765be6f617d12389b166998a2848455b5dc616e8e06bde"
   end
 
   keg_only :versioned_formula
