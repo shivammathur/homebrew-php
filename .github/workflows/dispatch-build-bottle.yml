@@ -59,7 +59,7 @@ jobs:
             --env-file <(env | egrep 'HOMEBREW|GITHUB') \
             --workdir /tmp/bottles \
             --pull always \
-            homebrew/ubuntu20.04:latest \
+            homebrew/ubuntu18.04:latest \
             sleep inf
           # Fix working directory permissions
           docker exec --user linuxbrew ${{github.sha}} brew tap shivammathur/homebrew-php
