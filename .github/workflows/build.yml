@@ -330,7 +330,7 @@ jobs:
           fi
 
   label:
-    needs: tests
+    needs: build-formula
     if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build') && github.event.pull_request.user.login == github.repository_owner
     runs-on: ubuntu-latest
     steps:
