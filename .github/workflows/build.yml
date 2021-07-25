@@ -54,7 +54,7 @@ jobs:
 
   create-pr:
     if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
-    needs: tap_syntax
+    needs: tap-syntax
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
