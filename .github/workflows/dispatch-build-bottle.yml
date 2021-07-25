@@ -45,11 +45,7 @@ jobs:
 
       - name: Set environment variables
         if: runner.os == 'macOS'
-        run: |
-          echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
-          if [ "${{github.event.inputs.runner}}" = 'macos-11.0-arm' ]; then
-            echo 'GITHUB_ACTIONS_HOMEBREW_MACOS_SELF_HOSTED=1' >> $GITHUB_ENV
-          fi
+        run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
 
       - name: Run Docker container
         if: runner.os == 'Linux'
