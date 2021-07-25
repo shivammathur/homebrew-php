@@ -52,11 +52,11 @@ fetch() {
       sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     fi
   elif [[ "$PHP_VERSION" =~ php@8.[1-9] ]]; then
-    url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
-    checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/master | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
+    url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
+    checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
-    sed -i -e "s|commit.*|commit=$commit\"|g" ./Formula/"$PHP_VERSION".rb
+    sed -i -e "s|^  url.*|  url \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
   fi
   unbottle
 }
