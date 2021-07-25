@@ -11,6 +11,11 @@ on:
       upload:
         description: Whether to upload built bottles or not
         required: false
+      fail-fast:
+        description: "Whether to fail immediately on a single macOS version failure (default: true)"
+        default: "true"
+        required: false
+
 env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
@@ -20,13 +25,14 @@ jobs:
   bottle:
     strategy:
       matrix:
-        os: ['macos-11.0-m1', 'macos-11.0', 'macos-10.15']
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
+        runner: ['macos-11.0', 'macos-10.15', 'macos-11.0-m1']
+      fail-fast: ${{fromJson(github.event.inputs.fail-fast)}}
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 300
     env:
       PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin'
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
       - name: ${{github.event.inputs.formula}}
         id: print_details
@@ -42,7 +48,7 @@ jobs:
 
       - name: Setup Xcode
         run: |
-          if [ "${{ matrix.os }}" = "macos-10.15" ]; then
+          if [ "${{ matrix.runner }}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
             sudo xcode-select -s /Applications/Xcode_12.5.app || exit 1
@@ -54,13 +60,11 @@ jobs:
 
       - run: brew test-bot --only-setup
 
-      - name: Run brew test-bot --only-formulae
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Run brew test-bot --only-json-tab --only-formulae --skip-dependents
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --only-formulae --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+          brew test-bot --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
 
       - name: Output brew test-bot --only-formulae failures
         if: always()
@@ -106,6 +110,7 @@ jobs:
       - name: Post Cleanup
         if: always()
         run: |
+          brew test-bot --only-cleanup-after
           rm -rvf bottles
           if [ -L "$GITHUB_WORKSPACE" ]; then
             sudo rm -rf "$GITHUB_WORKSPACE"
