@@ -2,11 +2,10 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.0.8.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.0.8.tar.xz"
-  sha256 "dc1668d324232dec1d05175ec752dade92d29bb3004275118bc3f7fc7cbfbb1c"
+  url "https://www.php.net/distributions/php-8.0.9.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.9.tar.xz"
+  sha256 "f33c27745f2bd87344be790465ef984a972fd539dc83bd4f61d4242c607ef1ee"
   license "PHP-3.01"
-  revision 1
 
   livecheck do
     url "https://www.php.net/releases/feed.php"
@@ -15,9 +14,6 @@ class Php < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_big_sur: "91341133c69a94110ee49edfeb4e39bab34882c358a19b98f7b7de2b61368cd8"
-    sha256 big_sur:       "ddbbd2098676a7aa510d1fface8c5879e185f5222c7cad20c9e643bd3f35ca3e"
-    sha256 catalina:      "df2698a77567d34a71c75ed6fed820252c745cd5ad6c6855059302eaa9d2d0e8"
   end
 
   head do
