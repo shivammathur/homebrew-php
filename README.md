@@ -16,11 +16,16 @@
   <a href="https://github.com/shivammathur/homebrew-php/tree/master/Formula" title="Formulae for PHP versions">
     <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.1-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
   </a>
+</p>
+<p align="center">
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple Intel x86_64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Intel%20x86__64%20-007DC3?logo=apple&logoColor=555555&labelColor=ffffff">
   </a>  
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple M1 arm64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Apple%20arm64%20-c0476d?logo=apple&logoColor=555555&labelColor=ffffff">
+  </a>
+  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Linux x86_64 supported">
+    <img alt="Linux architectures supported" src="https://img.shields.io/badge/Linux-x86__64%20-f6ab01?logo=linux&logoColor=555555&labelColor=ffffff">
   </a>
 </p>
 
@@ -41,6 +46,7 @@ PHP 8.1.0-dev|`php@8.1`|
 
 |Operating System|Architecture|
 |--- |--- |
+|Linux|`x86_64`|
 |macOS Catalina|`x86_64`|
 |macOS Big Sur|`x86_64`, `arm64`|
 |macOS Monterey|`x86_64`, `arm64`|
@@ -67,7 +73,7 @@ xcode-select --install
 brew update
 ```
 
-- If you have packages from old `homebrew/php` tap, refer to [this guide](https://github.com/shivammathur/homebrew-php/wiki/Cleanup) for removing them.  
+- If you have packages from old `homebrew/php` tap, refer to [this guide](https://github.com/shivammathur/homebrew-php/wiki/Cleanup) for removing them.
 
 ### Add this tap
 
@@ -153,7 +159,7 @@ brew services restart nginx
 
 - Run `brew doctor` and fix the warnings it reports.
 
-- Make sure homebrew has correct permissions. 
+- Make sure homebrew has correct permissions.
 
 ```zsh
 sudo chown -R "$(id -un)":"$(id -gn)" $(brew --prefix)
