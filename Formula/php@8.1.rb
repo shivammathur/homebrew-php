@@ -1,9 +1,9 @@
 class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/master.tar.gz?commit=f5ee3429db3aa48a46a2c5b6e2acc36feebd9f0c"
+  url "https://github.com/php/php-src/archive/f5ee3429db3aa48a46a2c5b6e2acc36feebd9f0c.tar.gz"
   version "8.1.0"
-  sha256 "a5eaf7c877090b088a154e0ca51eb9349ba27b87d7a2cce303cb91efa7111f06"
+  sha256 "b97a7d355cf1def73447619bc846a9747d699fbade3f934f0e3bbf6a5fd2ac97"
   license "PHP-3.01"
   revision 1
 
@@ -46,13 +46,23 @@ class PhpAT81 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
-  # PHP build system incorrectly links system libraries
-  # see https://github.com/php/php-src/pull/3472
-  patch :DATA
+  uses_from_macos "bzip2"
+  uses_from_macos "libedit"
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
+  uses_from_macos "zlib"
+
+  on_macos do
+    # PHP build system incorrectly links system libraries
+    # see https://github.com/php/php-src/pull/3472
+    patch :DATA
+  end
 
   def install
-    # Ensure that libxml2 will be detected correctly in older MacOS
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+    on_macos do
+      # Ensure that libxml2 will be detected correctly in older MacOS
+      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+    end
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
@@ -91,12 +101,23 @@ class PhpAT81 < Formula
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
-    ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
-    ENV["SASL_LIBS"] = "-lsasl2"
+    ENV["KERBEROS_CFLAGS"] = " "
+    on_macos do
+      ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
+      ENV["SASL_LIBS"] = "-lsasl2"
+    end
+    on_linux do
+      ENV["SQLITE_CFLAGS"] = "-I#{Formula["sqlite"].opt_include}"
+      ENV["SQLITE_LIBS"] = "-lsqlite3"
+      ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
+    end
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+    headers_path = ""
+    on_macos do
+      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+    end
 
     args = %W[
       --prefix=#{prefix}
@@ -105,11 +126,9 @@ class PhpAT81 < Formula
       --with-config-file-path=#{config_path}
       --with-config-file-scan-dir=#{config_path}/conf.d
       --with-pear=#{pkgshare}/pear
-      --with-os-sdkpath=#{MacOS.sdk_path_if_needed}
       --enable-bcmath
       --enable-calendar
       --enable-dba
-      --enable-dtrace
       --enable-exif
       --enable-ftp
       --enable-fpm
@@ -143,7 +162,6 @@ class PhpAT81 < Formula
       --with-kerberos
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
-      --with-ldap-sasl
       --with-libxml
       --with-libedit
       --with-mhash#{headers_path}
@@ -168,6 +186,18 @@ class PhpAT81 < Formula
       --with-zip
       --with-zlib
     ]
+
+    on_macos do
+      args << "--enable-dtrace"
+      args << "--with-ldap-sasl"
+      args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
+    end
+    on_linux do
+      args << "--disable-dtrace"
+      args << "--without-ldap-sasl"
+      args << "--without-ndbm"
+      args << "--without-gdbm"
+    end
 
     system "./configure", *args
     system "make"
@@ -304,8 +334,11 @@ class PhpAT81 < Formula
       "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
-    assert_includes MachO::Tools.dylibs("#{bin}/php"),
-      "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
+    on_macos do
+      assert_includes MachO::Tools.dylibs("#{bin}/php"),
+        "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
+    end
+
     system "#{sbin}/php-fpm", "-t"
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"

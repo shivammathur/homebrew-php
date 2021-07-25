@@ -49,13 +49,23 @@ class PhpAT56 < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
-  # PHP build system incorrectly links system libraries
-  # see https://github.com/php/php-src/pull/3472
-  patch :DATA
+  uses_from_macos "bzip2"
+  uses_from_macos "libedit"
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
+  uses_from_macos "zlib"
+
+  on_macos do
+    # PHP build system incorrectly links system libraries
+    # see https://github.com/php/php-src/pull/3472
+    patch :DATA
+  end
 
   def install
-    # Ensure that libxml2 will be detected correctly in older MacOS
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+    on_macos do
+      # Ensure that libxml2 will be detected correctly in older MacOS
+      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+    end
 
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
@@ -111,7 +121,10 @@ class PhpAT56 < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+    headers_path = ""
+    on_macos do
+      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+    end
 
     args = %W[
       --prefix=#{prefix}
@@ -141,7 +154,6 @@ class PhpAT56 < Formula
       --enable-wddx
       --enable-zip
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
-      --with-bz2#{headers_path}
       --with-curl=#{Formula["curl"].opt_prefix}
       --with-fpm-user=_www
       --with-fpm-group=_www
@@ -156,15 +168,12 @@ class PhpAT56 < Formula
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-ldap-sasl#{headers_path}
-      --with-libedit#{headers_path}
-      --with-libxml-dir#{headers_path}
       --with-libzip
       --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
       --with-mysql=mysqlnd
-      --with-ndbm#{headers_path}
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
@@ -179,9 +188,27 @@ class PhpAT56 < Formula
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
       --with-unixODBC=#{Formula["unixodbc"].opt_prefix}
       --with-xmlrpc
-      --with-xsl#{headers_path}
-      --with-zlib#{headers_path}
     ]
+
+    on_macos do
+      args << "--with-bz2#{headers_path}"
+      args << "--with-libedit#{headers_path}"
+      args << "--with-libxml-dir#{headers_path}"
+      args << "--with-ndbm#{headers_path}"
+      args << "--with-xsl#{headers_path}"
+      args << "--with-zlib#{headers_path}"
+    end
+
+    on_linux do
+      args << "--with-zlib=#{Formula["zlib"].opt_prefix}"
+      args << "--with-bzip2=#{Formula["bzip2"].opt_prefix}"
+      args << "--with-libedit=#{Formula["libedit"].opt_prefix}"
+      args << "--with-libxml-dir=#{Formula["libxml2"].opt_prefix}"
+      args << "--with-xsl=#{Formula["libxslt"].opt_prefix}"
+      args << "--without-ldap-sasl"
+      args << "--without-ndbm"
+      args << "--without-gdbm"
+    end
 
     system "./configure", *args
     system "make"
@@ -317,8 +344,11 @@ class PhpAT56 < Formula
       "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
-    assert_includes MachO::Tools.dylibs("#{bin}/php"),
-      "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
+    on_macos do
+      assert_includes MachO::Tools.dylibs("#{bin}/php"),
+        "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
+    end
+
     system "#{sbin}/php-fpm", "-t"
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"
