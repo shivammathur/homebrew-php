@@ -6,11 +6,6 @@ get_release() {
   fi
 }
 
-unbottle() {
-  sed -Ei '/^    rebuild.*/d' ./Formula/"$PHP_VERSION".rb
-  sed -Ei '/^    sha256.*:.*/d' ./Formula/"$PHP_VERSION".rb
-}
-
 check_changes() {
   new_url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
   old_url="$(grep -e "^  url.*" /tmp/"$PHP_VERSION".rb | cut -d\" -f 2)"
@@ -58,7 +53,6 @@ fetch() {
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     sed -i -e "s|^  url.*|  url \"$url\"|g" ./Formula/"$PHP_VERSION".rb
   fi
-  unbottle
 }
 
 fetch
