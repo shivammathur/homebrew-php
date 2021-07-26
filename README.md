@@ -18,14 +18,14 @@
   </a>
 </p>
 <p align="center">
+  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Linux x86_64 supported">
+    <img alt="Linux architectures supported" src="https://img.shields.io/badge/Linux-x86__64%20-f6ab01?logo=linux&logoColor=555555&labelColor=ffffff">
+  </a>
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple Intel x86_64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Intel%20x86__64%20-007DC3?logo=apple&logoColor=555555&labelColor=ffffff">
   </a>  
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple M1 arm64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Apple%20arm64%20-c0476d?logo=apple&logoColor=555555&labelColor=ffffff">
-  </a>
-  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Linux x86_64 supported">
-    <img alt="Linux architectures supported" src="https://img.shields.io/badge/Linux-x86__64%20-f6ab01?logo=linux&logoColor=555555&labelColor=ffffff">
   </a>
 </p>
 
@@ -46,19 +46,32 @@ PHP 8.1.0-dev|`php@8.1`|
 
 |Operating System|Architecture|
 |--- |--- |
-|Linux|`x86_64`|
+|Linux 4.18+|`x86_64`|
 |macOS Catalina|`x86_64`|
 |macOS Big Sur|`x86_64`, `arm64`|
 |macOS Monterey|`x86_64`, `arm64`|
+
+On Linux, `GLIBC 2.27` or newer is required, so distributions with Linux kernel 4.18 and newer are supported.  
+For example: Ubuntu 18.04, Debian 10, CentOS 8, Fedora 28, and newer versions of these distributions.
 
 ## Usage
 
 ### Prerequisites
 
-- Install Xcode Command Line Utilities
+- On macOS, install Xcode Command Line Utilities:
 
-```
+```zsh
 xcode-select --install
+```
+
+- On Linux, install cURL and Git:
+
+```bash
+# Using APT
+sudo apt-get install -y curl git
+
+# Using Yum
+sudo yum install -y curl git
 ```
 
 - Install Homebrew:
