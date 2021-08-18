@@ -12,7 +12,7 @@ module.exports = async ({github, context, core}, formula_detect) => {
         console.log('No CI-syntax-only label found. Running tests job.')
         core.setOutput('syntax-only', 'false')
     }
-    const runners = ["macos-11.0-m1", "macos-11.0", "macos-10.15", "ubuntu-latest"]
+    const runners = ["macos-11-arm64", "macos-11", "macos-10.15", "ubuntu-latest"]
     core.setOutput('runners', JSON.stringify(runners))
     if (label_names.includes('CI-no-fail-fast')) {
         console.log('CI-no-fail-fast label found. Continuing tests despite failing matrix builds.')
