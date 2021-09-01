@@ -47,7 +47,9 @@ fetch() {
       sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     fi
   elif [[ "$PHP_VERSION" =~ php@8.[1-9] ]]; then
-    commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/master | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
+    master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
+    [ "${PHP_VERSION##*@}" = "$master_version" ] && branch=master || branch=PHP-"${PHP_VERSION##*@}"
+    commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
