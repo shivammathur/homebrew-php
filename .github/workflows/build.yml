@@ -68,6 +68,7 @@ jobs:
           - 'php@7.3'
           - 'php@7.4'
           - 'php@8.1'
+          - 'php@8.2'
     steps:
       - uses: actions/checkout@v2
 
@@ -94,7 +95,7 @@ jobs:
           title: 'Update ${{ matrix.php }}'
           body: |
             Build ${{ matrix.php }}
-          labels: ${{ matrix.php }},automated-pr
+          labels: ${{ matrix.php }},automated-pr,CI-force-arm,CI-force-linux
           assignees: ${{ github.repository_owner }}
           team-reviewers: |
             owners
