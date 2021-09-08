@@ -64,9 +64,9 @@ class PhpAT72 < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac? && (MacOS.version == :el_capitan || MacOS.version == :sierra)
       # Ensure that libxml2 will be detected correctly in older MacOS
-      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+      ENV["SDKROOT"] = MacOS.sdk_path
     end
 
     # Work around configure issues with Xcode 12
@@ -119,9 +119,7 @@ class PhpAT72 < Formula
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
     headers_path = ""
-    on_macos do
-      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
-    end
+    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     args = %W[
       --prefix=#{prefix}
@@ -191,7 +189,7 @@ class PhpAT72 < Formula
       --with-xmlrpc
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--enable-dtrace"
       args << "--with-bz2#{headers_path}"
       args << "--with-libedit#{headers_path}"
@@ -201,7 +199,7 @@ class PhpAT72 < Formula
       args << "--with-zlib#{headers_path}"
     end
 
-    on_linux do
+    if OS.linux?
       args << "--disable-dtrace"
       args << "--with-zlib=#{Formula["zlib"].opt_prefix}"
       args << "--with-bzip2=#{Formula["bzip2"].opt_prefix}"
