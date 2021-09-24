@@ -8,11 +8,11 @@ class PhpAT72 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 1
-    sha256 arm64_big_sur: "46ad73e1618903ac04f930123815c78e259a1a8bacbf52125084a6872d7fc0df"
-    sha256 big_sur:       "84a07beb949ca98ce7f9dafccbbab5a42c868063cf2f11d6f7b67028b9dab132"
-    sha256 catalina:      "ef9534af42b481e25cf4b17c177e6804ccdef29255b576426b5bc5a39e3ff540"
-    sha256 x86_64_linux:  "8f6815b086a3176abcc9c792bc35246d3d5f45f1e24ea72f2ba1efbb30fa0105"
+    rebuild 2
+    sha256 arm64_big_sur: "12161f889d1cd61c42a23bd7501b42d43513d5e869458662844d057544ffb455"
+    sha256 big_sur:       "a818f25b6b76f3b9b74e4c95dc22819695888451c1a03173e35ee16637ae4a8c"
+    sha256 catalina:      "67c5516dd177dc2ded55994417115f00c0368fa329609c75ef40c393698c9951"
+    sha256 x86_64_linux:  "515af23745d26c21136d4bb3888bc5ed020bb55c77ee078bf4d3281e4ed6c76c"
   end
 
   keg_only :versioned_formula
