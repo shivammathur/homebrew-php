@@ -197,7 +197,7 @@ jobs:
           if [ "${{ matrix.runner }}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_12.5.app || exit 1
+            sudo xcode-select -s /Applications/Xcode_13.0.app || exit 1
           fi
 
       - name: brew test-bot --only-cleanup-before
