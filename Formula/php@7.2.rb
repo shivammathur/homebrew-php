@@ -4,7 +4,7 @@ class PhpAT72 < Formula
   url "https://github.com/shivammathur/php-src-backports/archive/7.2.34.tar.gz?commit=7a5fd67bd0d072fe4b5f072fc91a95c4acb48893"
   sha256 "a6aac9c7631d548b7311f0872b7a9a79127792966f25bf3e61ed2e68a8a8b51a"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
