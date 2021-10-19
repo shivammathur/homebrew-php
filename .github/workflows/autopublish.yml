@@ -20,4 +20,4 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
         run: |
           sudo sed -i '/pending/d' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-automerge.rb
-          brew pr-automerge --tap=${{ github.repository_owner }}/php --verbose --publish --autosquash --without-approval --with-label=build-complete
+          brew pr-automerge --tap=${{ github.repository_owner }}/php --verbose --publish --without-approval --with-label=build-complete
