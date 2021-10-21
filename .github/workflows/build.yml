@@ -186,6 +186,7 @@ jobs:
           docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
           docker exec --workdir "$BREW_PATH" ${{github.sha}} git pull origin master
           docker exec --workdir "$CORE_PATH" ${{github.sha}} git remote set-url origin https://github.com/Homebrew/homebrew-core
+          docker exec --workdir "$CORE_PATH" ${{github.sha}} git pull origin master
           docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-url origin ${{github.event.repository.html_url}}
           docker exec --workdir "$TAP_PATH" ${{github.sha}} git fetch origin ${{github.sha}} '+refs/heads/*:refs/remotes/origin/*'
           docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-head origin --auto
