@@ -30,11 +30,11 @@ check_changes() {
 fetch() {
   sudo cp "Formula/$PHP_VERSION.rb" "/tmp/$PHP_VERSION.rb"
   if [[ "$PHP_VERSION" =~ php@(5.6|7.[0-2]) ]]; then
+    commit=$(git ls-remote https://github.com/shivammathur/php-src-backports | grep "refs/tags/${PHP_VERSION/php@}.*{}" | sed "s/\s*refs.*//")
+    sed -i -e "s|archive.*|archive/$commit.tar.gz\"|g" ./Formula/"$PHP_VERSION".rb
     url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
-    commit=$(git ls-remote https://github.com/shivammathur/php-src-backports | grep "refs/tags/${PHP_VERSION/php@}.*{}" | sed "s/\s*refs.*//")
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
-    sed -i -e "s|commit.*|commit=$commit\"|g" ./Formula/"$PHP_VERSION".rb
   elif [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
     PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
     OLD_PHP_SEMVER=$(grep -Po -m 1 "php-$PHP_MM.[0-9]+" ./Formula/"$PHP_VERSION".rb)
