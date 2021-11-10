@@ -205,6 +205,15 @@ Contributions are welcome!
 Please see [Contributor's Guide](.github/CONTRIBUTING.md "shivammathur/homebrew-php contribution guide") before you start.
 If you face any issues while using this tap or want to suggest a feature/improvement, create an discussion thread [here](https://github.com/shivammathur/homebrew-php/discussions "shivammathur/php discussions").
 
+## Sponsors
+
+We use [MacStadium](https://www.macstadium.com/opensource/members) for our CI infrastructure.
+
+<a href="https://www.macstadium.com/opensource/members"><img src="https://setup-php.com/sponsors/macstadium.png" alt="Powered by MacStadium" width="200px"></a>
+
+This project is generously supported by many other users and organisations via [GitHub Sponsors](https://github.com/sponsors/shivammathur).
+
+<a href="https://github.com/sponsors/shivammathur"><img src="https://setup-php.com/sponsors.svg?" alt="Sponsor shivammathur"></a>
 
 ## Related Projects
 
