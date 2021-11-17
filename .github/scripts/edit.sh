@@ -57,7 +57,7 @@ fetch() {
   fi
 }
 
-if [[ "$GITHUB_MESSAGE" = *--skip-"$PHP_VERSION"* ]]; then
+if [[ "$GITHUB_MESSAGE" =~ --skip-"$PHP_VERSION"( |$) ]]; then
   echo "Skipping PHP $PHP_VERSION"
   exit 0;
 fi
