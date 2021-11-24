@@ -39,8 +39,8 @@ PHP 7.1|`php@7.1`|
 PHP 7.2|`php@7.2`|
 PHP 7.3|`php@7.3`|
 PHP 7.4|`php@7.4`|
-PHP 8.0|`php` or `php@8.0`|
-PHP 8.1.0-dev|`php@8.1`|
+PHP 8.0|`php@8.0`|
+PHP 8.1|`php` or `php@8.1`|
 PHP 8.2.0-dev|`php@8.2`|
 
 ## OS Support
@@ -101,16 +101,16 @@ brew tap shivammathur/php
 
 > See [PHP Support](#php-support) for available formulae.
 
-- For example, to install `PHP 7.4`:
+- For example, to install `PHP 8.0`:
 
 ```zsh 
-brew install shivammathur/php/php@7.4
+brew install shivammathur/php/php@8.0
 ```
 
 - After installing your have to link it:
 
 ```zsh
-brew link --overwrite --force php@7.4
+brew link --overwrite --force php@8.0
 ```
 
 - Restart the terminal and test your PHP version:
@@ -123,20 +123,20 @@ php -v
 
 You can upgrade your PHP version to the latest patch release.
 
-For example, to upgrade `PHP 7.4`:
+For example, to upgrade `PHP 8.0`:
 
 ```zsh
-brew upgrade shivammathur/php/php@7.4
+brew upgrade shivammathur/php/php@8.0
 ```
 
 ### Switch between PHP versions
 
 - If you have multiple PHP versions installed, you can switch between them easily.
 
-For example, to switch to `PHP 7.4`:
+For example, to switch to `PHP 8.0`:
 
 ```zsh
-brew link --overwrite --force php@7.4
+brew link --overwrite --force php@8.0
 ```
 
 - If you get a warning like below, then do as recommended:
@@ -148,8 +148,8 @@ To relink:
 ```
 
 ```zsh
-brew unlink php@7.4
-brew link --overwrite --force php@7.4
+brew unlink php@8.0
+brew link --overwrite --force php@8.0
 ```
 
 ### Restart your webserver
@@ -181,10 +181,10 @@ sudo chown -R "$(id -un)":"$(id -gn)" $(brew --prefix)
 
 - If PHP is not working after a macOS update. Reinstall PHP along with its dependencies.
 
-For example to reinstall `PHP 7.4` and its dependencies:
+For example to reinstall `PHP 8.0` and its dependencies:
 
 ```zsh
-brew reinstall $(brew deps shivammathur/php/php@7.4) shivammathur/php/php@7.4
+brew reinstall $(brew deps shivammathur/php/php@8.0) shivammathur/php/php@8.0
 ```
 
 - Check if your issue is a Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
