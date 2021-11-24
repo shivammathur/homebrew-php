@@ -35,7 +35,7 @@ fetch() {
     url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
-  elif [[ "$PHP_VERSION" =~ php$|php@7.[3-4] ]]; then
+  elif [[ "$PHP_VERSION" =~ php$|php@7.[3-4]|php@8.[0-1] ]]; then
     PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
     OLD_PHP_SEMVER=$(grep -Po -m 1 "php-$PHP_MM.[0-9]+" ./Formula/"$PHP_VERSION".rb)
     NEW_PHP_SEMVER=$(get_release "$PHP_MM")
@@ -46,7 +46,7 @@ fetch() {
       checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
       sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     fi
-  elif [[ "$PHP_VERSION" =~ php@8.[1-9] ]]; then
+  elif [[ "$PHP_VERSION" =~ php@8.[2-9] ]]; then
     master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
     [ "${PHP_VERSION##*@}" = "$master_version" ] && branch=master || branch=PHP-"${PHP_VERSION##*@}"
     commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
