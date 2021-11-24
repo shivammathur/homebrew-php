@@ -83,7 +83,7 @@ jobs:
           if [ "${{github.event.inputs.macos}}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
-            sudo xcode-select -s /Applications/Xcode_13.0.app || exit 1
+            sudo xcode-select -s /Applications/Xcode_13.1.app || exit 1
           fi
 
       - if: runner.os == 'macOS'
