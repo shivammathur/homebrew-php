@@ -6,6 +6,7 @@ class PhpAT74 < Formula
   mirror "https://fossies.org/linux/www/php-7.4.26.tar.xz"
   sha256 "e305b3aafdc85fa73a81c53d3ce30578bc94d1633ec376add193a1e85e0f0ef8"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
