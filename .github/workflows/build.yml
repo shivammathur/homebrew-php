@@ -98,7 +98,7 @@ jobs:
           title: 'Update ${{ matrix.php }}'
           body: |
             Build ${{ matrix.php }}
-          labels: ${{ matrix.php }},automated-pr,CI-force-arm,CI-force-linux
+          labels: ${{ matrix.php }},automated-pr
           assignees: ${{ github.repository_owner }}
           team-reviewers: |
             owners

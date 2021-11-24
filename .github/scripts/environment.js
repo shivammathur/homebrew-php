@@ -36,18 +36,6 @@ module.exports = async ({github, context, core}, formula_detect) => {
     test_bot_formulae_args.push(`--deleted-formulae=${formula_detect.deleted_formulae}`)
     const test_bot_dependents_args = ["--only-formulae-dependents", "--junit"]
     test_bot_dependents_args.push(`--testing-formulae=${formula_detect.testing_formulae}`)
-    if (label_names.includes('CI-force-arm')) {
-        console.log('CI-force-arm label found. Not passing --skip-unbottled-arm to brew test-bot.')
-    } else {
-        console.log('No CI-force-arm label found. Passing --skip-unbottled-arm to brew test-bot.')
-        test_bot_formulae_args.push('--skip-unbottled-arm')
-    }
-    if (label_names.includes('CI-force-linux')) {
-        console.log('CI-force-linux label found. Not passing --skip-unbottled-linux to brew test-bot.')
-    } else {
-        console.log('No CI-force-linux label found. Passing --skip-unbottled-linux to brew test-bot.')
-        test_bot_formulae_args.push('--skip-unbottled-linux')
-    }
     if (label_names.includes('CI-test-bot-fail-fast')) {
         console.log('CI-test-bot-fail-fast label found. Passing --fail-fast to brew test-bot.')
         test_bot_formulae_args.push('--fail-fast')
