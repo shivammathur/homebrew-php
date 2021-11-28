@@ -5,7 +5,7 @@ class PhpAT82 < Formula
   version "8.2.0"
   sha256 "54fe1cb321056b9cd8787cabdd52904bd1efc38c0af5e18a4dd75a493b751b14"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -34,7 +34,6 @@ class PhpAT82 < Formula
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "krb5"
-  depends_on "libffi"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -48,6 +47,7 @@ class PhpAT82 < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
