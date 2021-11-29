@@ -110,7 +110,7 @@ brew install shivammathur/php/php@8.0
 - After installing your have to link it:
 
 ```zsh
-brew link --overwrite --force php@8.0
+brew link --overwrite --force shivammathur/php/php@8.0
 ```
 
 - Restart the terminal and test your PHP version:
@@ -136,7 +136,7 @@ brew upgrade shivammathur/php/php@8.0
 For example, to switch to `PHP 8.0`:
 
 ```zsh
-brew link --overwrite --force php@8.0
+brew link --overwrite --force shivammathur/php/php@8.0
 ```
 
 - If you get a warning like below, then do as recommended:
@@ -149,7 +149,7 @@ To relink:
 
 ```zsh
 brew unlink php@8.0
-brew link --overwrite --force php@8.0
+brew link --overwrite --force shivammathur/php/php@8.0
 ```
 
 ### Restart your webserver
