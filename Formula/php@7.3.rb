@@ -1,12 +1,11 @@
 class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.33.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
-  sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
+  url "https://github.com/shivammathur/php-src-backports/archive/83ab580850a3a77acafaecb39560d9552d998f98.tar.gz"
+  version "7.3.33"
+  sha256 "45eface7cc06451deddc0e7b3840a156ce81bff1efd9cc4b6b793948813c8c3a"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -18,11 +17,16 @@ class PhpAT73 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2021-12-06", because: :versioned_formula
+  # This PHP version is not supported upstream as of 2021-12-06.
+  # Although, this was built with back-ported security patches,
+  # we recommended to use a currently supported PHP version.
+  # For more details, refer to https://www.php.net/eol.php
+  deprecate! date: "2021-12-06", because: :deprecated_upstream
 
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
