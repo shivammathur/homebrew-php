@@ -76,6 +76,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Xcode
+        if: runner.os == 'macOS'
         run: |
           if [ "${{ matrix.runner }}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
