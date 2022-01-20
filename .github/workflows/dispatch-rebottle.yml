@@ -25,12 +25,11 @@ jobs:
   bottle:
     strategy:
       matrix:
-        runner: ['macos-11', 'macos-10.15', 'macos-11-arm64']
+        runner: ['macos-11', 'macos-10.15', 'macos-11-arm64', 'ubuntu-latest']
       fail-fast: ${{fromJson(github.event.inputs.fail-fast)}}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 300
-    env:
-      PATH: '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin'
+    env:      
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
@@ -42,31 +41,81 @@ jobs:
           echo issue=${{github.event.inputs.issue}}
           echo upload=${{github.event.inputs.upload}}
 
+      - name: Set environment variables
+        if: runner.os == 'macOS'
+        run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
+
+      - name: Run Docker container
+        if: runner.os == 'Linux'
+        env:
+          BREW_PATH: /home/linuxbrew/.linuxbrew/Homebrew
+          TAP_PATH: /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/shivammathur/homebrew-php
+        run: |
+          docker run \
+            --detach \
+            --user linuxbrew \
+            --name ${{github.sha}} \
+            --env-file <(env | egrep 'HOMEBREW|GITHUB') \
+            --workdir /tmp/bottles \
+            --pull always \
+            homebrew/ubuntu18.04:latest \
+            sleep inf
+          # Fix working directory permissions
+          docker exec --user linuxbrew ${{github.sha}} brew tap shivammathur/homebrew-php
+          docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
+          docker exec --workdir "$BREW_PATH" ${{github.sha}} git pull origin master
+          docker exec --user linuxbrew ${{github.sha}} brew update
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-url origin ${{github.event.repository.html_url}}
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git fetch origin ${{github.sha}} '+refs/heads/*:refs/remotes/origin/*'
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-head origin --auto
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git checkout --force -B master FETCH_HEAD
+
       - name: Set up Homebrew
         id: set-up-homebrew
+        if: runner.os == 'macOS'
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Xcode
         run: |
-          if [ "${{ matrix.runner }}" = "macos-10.15" ]; then
+          if [ "${{github.event.inputs.macos}}" = "macos-10.15" ]; then
             sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
           else
             sudo xcode-select -s /Applications/Xcode_13.1.app || exit 1
           fi
 
-      - run: brew test-bot --only-cleanup-before
+      - if: runner.os == 'macOS'
+        run: brew test-bot --only-cleanup-before
 
-      - run: brew install-bundler-gems
-
-      - run: brew test-bot --only-setup
-
-      - name: Run brew test-bot --only-json-tab --only-formulae --skip-dependents
+      - name: Run brew test-bot --only-setup
         run: |
-          mkdir bottles
-          cd bottles
-          brew test-bot --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+          if [ "$RUNNER_OS" = 'macOS' ]; then
+            brew test-bot --only-setup
+          else
+            docker exec ${{github.sha}} brew test-bot --only-setup
+          fi
 
-      - name: Output brew test-bot --only-formulae failures
+      - name: Run brew test-bot --only-formulae --only-json-tab --skip-dependents ${{github.event.inputs.formula}}
+        run: |
+          if [ "$RUNNER_OS" = 'macOS' ]; then
+            mkdir bottles
+            cd bottles
+            brew test-bot --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+          else
+            docker exec ${{github.sha}} brew test-bot --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+          fi
+
+      - name: Copy bottles from container
+        if: always() && runner.os == 'Linux'
+        run: docker cp ${{github.sha}}:/tmp/bottles .
+
+      - name: Failures summary for brew test-bot --only-formulae
+        if: always()
+        run: |
+          touch bottles/steps_output.txt
+          cat bottles/steps_output.txt
+          rm bottles/steps_output.txt
+
+      - name: Output brew bottle result
         if: always()
         run: |
           cat bottles/steps_output.txt
@@ -79,6 +128,19 @@ jobs:
           name: logs
           path: bottles/logs
 
+      - name: Fix bottles json
+        run: |
+          cd bottles
+          if [ "$RUNNER_OS" = 'macOS' ]; then
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
+          else
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~bottles-php~php~ {} +
+            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~bottles~php~ {} +
+          fi
+
       - name: Delete logs and home
         if: always()
         run: |
@@ -90,9 +152,6 @@ jobs:
         if: always()
         run: |
           cd bottles
-          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
-          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
-          LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
           count=$(ls *.json | wc -l | xargs echo -n)
           echo "$count bottles"
           echo "::set-output name=count::$count"
@@ -110,11 +169,12 @@ jobs:
       - name: Post Cleanup
         if: always()
         run: |
-          brew test-bot --only-cleanup-after
-          rm -rvf bottles
-          if [ -L "$GITHUB_WORKSPACE" ]; then
-            sudo rm -rf "$GITHUB_WORKSPACE"
+          if [ "$RUNNER_OS" = 'Linux' ]; then
+            docker rm -f ${{github.sha}}
+          else
+            brew test-bot --only-cleanup-after
           fi
+          rm -rvf bottles
 
       - name: Post comment on failure
         if: ${{!success() && github.event.inputs.issue > 0}}
