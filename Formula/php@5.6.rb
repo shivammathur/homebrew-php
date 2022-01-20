@@ -235,6 +235,7 @@ class PhpAT56 < Formula
 
     config_files = {
       "php.ini-development"   => "php.ini",
+      "php.ini-production"    => "php.ini-production",
       "sapi/fpm/php-fpm.conf" => "php-fpm.conf",
     }
     config_files.each_value do |dst|
