@@ -209,7 +209,12 @@ If you face any issues while using this tap or want to suggest a feature/improve
 
 We use [MacStadium](https://www.macstadium.com/opensource/members) for our CI infrastructure.
 
-<a href="https://www.macstadium.com/opensource/members"><img src="https://setup-php.com/sponsors/macstadium.png" alt="Powered by MacStadium" width="200px"></a>
+<a href="https://www.macstadium.com/opensource/members#gh-light-mode-only">
+  <img src="https://setup-php.com/sponsors/macstadium.png" alt="Mac Stadium" width="200px">
+</a>
+<a href="https://www.macstadium.com/opensource/members#gh-dark-mode-only">
+  <img src="https://setup-php.com/sponsors/macstadium-white.png" alt="Mac Stadium" width="200px">
+</a>
 
 This project is generously supported by many other users and organisations via [GitHub Sponsors](https://github.com/sponsors/shivammathur).
 
