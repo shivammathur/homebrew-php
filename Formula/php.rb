@@ -14,10 +14,11 @@ class Php < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_big_sur: "a01987ad477de365d1b571e860f4982e003b6b397ebd656bb4774bf8d99f09d0"
-    sha256 big_sur:       "1aa4bc029ed5d87282f71299c769e240d1cbf84e3c8737160afc7bcfcefe3461"
-    sha256 catalina:      "80475e9d809647333def609819388bc5aae52ed778bbb028c5f5f4265c87899f"
-    sha256 x86_64_linux:  "6be090b1b0d0a10d38f92d9dca589d6c78996d073a86143145a0e6092eafc987"
+    rebuild 1
+    sha256 arm64_big_sur: "be2f0b53342b1510ade14edc928cb9952736cbd984c3724897a8467f51f2311b"
+    sha256 big_sur:       "36676ef71c9c4e644d324f7eaec8c7307126bec30a65b658f44380017777d229"
+    sha256 catalina:      "8cdc7c03cada82a6b90a0c97a8d071841dd2bf6e138d10bd1b307f770819d980"
+    sha256 x86_64_linux:  "0575df03b6d3b108bbb5b26a2bd88ca77f2132105eaf70415556d36b2c8b110f"
   end
 
   head do
