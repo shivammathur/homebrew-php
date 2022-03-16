@@ -181,9 +181,11 @@ jobs:
         if: runner.os == 'macOS'
         run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
 
-      - name: Brew update
+      - name: Prepare Container
         if: runner.os == 'Linux'
-        run: brew update
+        run: |
+          sudo chmod 777 ${{matrix.workdir || github.workspace}}
+          brew update
 
       - name: Set up Homebrew
         id: set-up-homebrew
