@@ -163,6 +163,7 @@ jobs:
           - runner: 'macos-10.15'
           - runner: ${{needs.set-environment.outputs.linux-runner}}
             container: ${{fromJson(needs.set-environment.outputs.container)}}
+            workdir: /github/home
             timeout: 4320
       fail-fast: ${{fromJson(needs.set-environment.outputs.fail-fast)}}
     runs-on: ${{matrix.runner}}
@@ -171,6 +172,7 @@ jobs:
     defaults:
       run:
         shell: /bin/bash -e {0}
+        working-directory: ${{matrix.workdir || github.workspace}}
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -240,7 +242,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: logs-${{ matrix.runner }}
-          path: ${{github.workspace}}/bottles/logs
+          path: ${{matrix.workdir || github.workspace}}/bottles/logs
 
       - name: Delete logs and home
         if: always()
@@ -263,7 +265,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: bottles-${{ matrix.runner }}
-          path: ${{github.workspace}}/bottles/failed
+          path: ${{matrix.workdir || github.workspace}}/bottles/failed
 
       # Must be run before the `Upload bottles` step so that failed
       # bottles are not included in the `bottles` artifact.
@@ -276,7 +278,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: bottles
-          path: ${{github.workspace}}/bottles
+          path: ${{matrix.workdir || github.workspace}}/bottles
 
       - name: Post cleanup
         if: always()
