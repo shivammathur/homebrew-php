@@ -142,7 +142,7 @@ jobs:
         if: ${{!success() && github.event.inputs.issue > 0}}
         uses: Homebrew/actions/post-comment@master
         with:
-          token: ${{secrets.HOMEBREW_GITHUB_PUBLIC_REPO_TOKEN}}
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           issue: ${{github.event.inputs.issue}}
           body: ":x: @${{github.actor}} bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
           bot_body: ":x: Bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
