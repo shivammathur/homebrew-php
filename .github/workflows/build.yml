@@ -179,6 +179,10 @@ jobs:
         if: runner.os == 'macOS'
         run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
 
+      - name: Brew update
+        if: runner.os == 'Linux'
+        run: brew update
+
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
