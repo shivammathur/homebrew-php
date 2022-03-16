@@ -22,6 +22,13 @@ module.exports = async ({github, context, core}, formula_detect) => {
         console.log('No CI-no-fail-fast label found. Stopping tests on first failing matrix build.')
         core.setOutput('fail-fast', 'true')
     }
+    if (label_names.includes('CI-skip-dependents')) {
+        console.log('CI-skip-dependents label found. Skipping brew test-bot --only-formulae-dependents.')
+        core.setOutput('test-dependents', 'false')
+    } else {
+        console.log('No CI-skip-dependents label found. Running brew test-bot --only-formulae-dependents.')
+        core.setOutput('test-dependents', 'true')
+    }
     if (label_names.includes('CI-long-timeout')) {
         console.log('CI-long-timeout label found. Setting long GitHub Actions timeout.')
         core.setOutput('timeout-minutes', '4320')
