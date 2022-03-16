@@ -12,8 +12,9 @@ module.exports = async ({github, context, core}, formula_detect) => {
         console.log('No CI-syntax-only label found. Running tests job.')
         core.setOutput('syntax-only', 'false')
     }
-    const runners = ["macos-11-arm64", "macos-11", "macos-10.15", "ubuntu-latest"]
-    core.setOutput('runners', JSON.stringify(runners))
+
+    core.setOutput('linux-runner', 'ubuntu-latest')
+
     if (label_names.includes('CI-no-fail-fast')) {
         console.log('CI-no-fail-fast label found. Continuing tests despite failing matrix builds.')
         core.setOutput('fail-fast', 'false')
@@ -28,7 +29,11 @@ module.exports = async ({github, context, core}, formula_detect) => {
         console.log('No CI-long-timeout label found. Setting short GitHub Actions timeout.')
         core.setOutput('timeout-minutes', '180')
     }
-    core.setOutput('container', 'homebrew/ubuntu18.04:latest')
+    const container = {}
+    container.image = 'homebrew/ubuntu18.04:latest'
+    container.options = '--user=linuxbrew'
+    core.setOutput('container', JSON.stringify(container))
+
     const test_bot_formulae_args = ["--only-formulae", "--junit", "--only-json-tab", "--skip-dependents"]
     test_bot_formulae_args.push('--root-url="https://ghcr.io/v2/shivammathur/php"')
     test_bot_formulae_args.push(`--testing-formulae=${formula_detect.testing_formulae}`)
