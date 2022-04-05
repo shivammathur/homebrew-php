@@ -30,8 +30,10 @@ jobs:
     strategy:
       matrix:
         include:
+          - runner: macos-12
           - runner: macos-11
           - runner: macos-10.15
+          - runner: macos-12-arm64
           - runner: macos-11-arm64
           - runner: ubuntu-latest
             container:
