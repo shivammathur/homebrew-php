@@ -37,8 +37,8 @@ jobs:
           - runner: macos-11-arm64
           - runner: ubuntu-latest
             container:
-              - image: homebrew/ubuntu18.04:latest
-              - options: --user=linuxbrew
+              image: homebrew/ubuntu18.04:latest
+              options: --user=linuxbrew
             workdir: /github/home
             timeout: 4320
       fail-fast: ${{fromJson(github.event.inputs.fail-fast)}}
