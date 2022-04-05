@@ -16,6 +16,7 @@ class PhpAT74 < Formula
     root_url "https://ghcr.io/v2/shivammathur/php"
     rebuild 1
     sha256 arm64_big_sur: "cbfdd8e6d35f27635c287723ebdf3853915b0080f1359e89f53ec4d286d35ba2"
+    sha256 monterey:      "71410923987f0ac12a3bb00097b0b731ebed48a5522489d34285dd26909013cc"
     sha256 big_sur:       "4a4bac1eff27807a675c34f83be816557d21a55ff3946407ba1248c8cb3dee07"
     sha256 catalina:      "e10c2a22cf48f6ec15f49ddc231a94800a8ef12c7ebd80193b2bfeb2523da3dd"
     sha256 x86_64_linux:  "bf7f16d2aead190229b87a2efcf538b9f88e6e32cef5e3129d31b4c45caa60c8"
