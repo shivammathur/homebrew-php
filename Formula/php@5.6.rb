@@ -43,7 +43,6 @@ class PhpAT56 < Formula
   depends_on "libpq"
   depends_on "libtool"
   depends_on "libzip"
-  depends_on "mcrypt"
   depends_on "openldap"
   depends_on "openssl@1.1"
   depends_on "pcre"
@@ -170,7 +169,6 @@ class PhpAT56 < Formula
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-ldap-sasl#{headers_path}
       --with-libzip
-      --with-mcrypt=#{Formula["mcrypt"].opt_prefix}
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
