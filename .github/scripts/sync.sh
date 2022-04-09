@@ -16,7 +16,7 @@ git config --local pull.rebase true
 brew install php 2>/dev/null || true
 
 # Update dependency formulae
-for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
+for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libavif libffi libpq libsodium libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   sudo cp "$core_repo/Formula/$formula.rb" /tmp/formulae/
   formula_cellar="$(brew info "$formula" | grep "$brew_cellar" | cut -d ' ' -f 1 | tail -n 1)"
