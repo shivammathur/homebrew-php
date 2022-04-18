@@ -245,6 +245,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@main
         with:
+          if-no-files-found: ignore
           name: logs-${{ matrix.runner }}
           path: ${{matrix.workdir || github.workspace}}/bottles/logs
 

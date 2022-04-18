@@ -111,6 +111,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@main
         with:
+          if-no-files-found: ignore
           name: logs
           path: ${{matrix.workdir || github.workspace}}/bottles/logs
 
