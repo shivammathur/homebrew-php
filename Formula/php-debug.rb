@@ -1,4 +1,4 @@
-class PhpAT81Debug < Formula
+class PhpDebug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/

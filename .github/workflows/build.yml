@@ -79,6 +79,7 @@ jobs:
           - 'php@7.4'
           - 'php@8.0'
           - 'php@8.2'
+          - 'php-debug'
           - 'php@5.6-debug'
           - 'php@7.0-debug'
           - 'php@7.1-debug'
@@ -86,7 +87,6 @@ jobs:
           - 'php@7.3-debug'
           - 'php@7.4-debug'
           - 'php@8.0-debug'
-          - 'php@8.1-debug'
           - 'php@8.2-debug'
     steps:
       - uses: actions/checkout@v3
