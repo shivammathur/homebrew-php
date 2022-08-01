@@ -30,7 +30,7 @@ check_changes() {
 fetch() {
   sudo cp "Formula/$PHP_VERSION.rb" "/tmp/$PHP_VERSION.rb"
   if [[ "$PHP_VERSION" =~ php@(5.6|7.[0-3]) ]]; then
-    commit=$(git ls-remote https://github.com/shivammathur/php-src-backports | grep "refs/tags/${PHP_VERSION/php@}.*{}" | sed "s/\s*refs.*//")
+    commit=$(git ls-remote https://github.com/shivammathur/php-src-backports | grep "refs/tags/$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+").*{}" | sed "s/\s*refs.*//")
     sed -i -e "s|archive.*|archive/$commit.tar.gz\"|g" ./Formula/"$PHP_VERSION".rb
     url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
@@ -48,7 +48,8 @@ fetch() {
     fi
   elif [[ "$PHP_VERSION" =~ php@8.[2-9] ]]; then
     master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
-    [ "${PHP_VERSION##*@}" = "$master_version" ] && branch=master || branch=PHP-"${PHP_VERSION##*@}"
+    PHP_MM=$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+")
+    [ "$PHP_MM" = "$master_version" ] && branch=master || branch=PHP-"$PHP_MM"
     commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
