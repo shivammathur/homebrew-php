@@ -31,17 +31,22 @@
 
 ## PHP Support
 
-|PHP Version|Formula|
-|--- |--- |
-PHP 5.6|`php@5.6`|
-PHP 7.0|`php@7.0`|
-PHP 7.1|`php@7.1`|
-PHP 7.2|`php@7.2`|
-PHP 7.3|`php@7.3`|
-PHP 7.4|`php@7.4`|
-PHP 8.0|`php@8.0`|
-PHP 8.1|`php` or `php@8.1`|
-PHP 8.2.0-dev|`php@8.2`|
+|PHP Version|Formula|Debug version|
+|--- |--- |--- |
+PHP 5.6|`php@5.6`|`php@5.6-debug`|
+PHP 7.0|`php@7.0`|`php@7.0-debug`|
+PHP 7.1|`php@7.1`|`php@7.1-debug`|
+PHP 7.2|`php@7.2`|`php@7.2-debug`|
+PHP 7.3|`php@7.3`|`php@7.3-debug`|
+PHP 7.4|`php@7.4`|`php@7.4-debug`|
+PHP 8.0|`php@8.0`|`php@8.0-debug`|
+PHP 8.1|`php` or `php@8.1`|`php@8.1-debug`|
+PHP 8.2.0-dev|`php@8.2`|`php@8.2-debug`|
+
+### Debug versions
+
+For each PHP version there is an extra formula with debug symbols enabled. This version can be used when building
+or debugging PHP extensions and are not recommended for production usage.
 
 ## OS Support
 
