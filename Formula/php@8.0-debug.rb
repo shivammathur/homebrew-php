@@ -1,33 +1,30 @@
-class Php < Formula
+class PhpAT80Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.8.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.8.tar.xz"
-  sha256 "04c065515bc347bc68e0bb1ac7182669a98a731e4a17727e5731650ad3d8de4c"
+  url "https://www.php.net/distributions/php-8.0.21.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.21.tar.xz"
+  sha256 "e87a598f157e0cf0606e64382bb91c8b30c47d4a0fc96b2c17ad547a27869b3b"
   license "PHP-3.01"
 
   livecheck do
     url "https://www.php.net/downloads"
-    regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_monterey: "1c09c1e2a8e8f27eeec9403f2a592a1c4618f86f2fb8eb8470e03c84c1274233"
-    sha256 arm64_big_sur:  "e2af3359406cc645f6933ff6826f89361d0caf64bf7b9d93bb75c93d831b5086"
-    sha256 monterey:       "f4841c04890f7126517ec2b3f307237a12235f0606eb2de4236ce260255f8e9c"
-    sha256 big_sur:        "3027462eb040dbd3289d80daade000527b4ccd80da45c6f8c5bd6ca0987f80f8"
-    sha256 catalina:       "6eb5639f31f7487f2ef6549123e8e768c2b06af3b321be4789640bfe5309baa9"
-    sha256 x86_64_linux:   "be9c2ce7c1c0cffcd37e3e70870cb2a5c832ecae22a64018cbbb765ae37d31a5"
+    sha256 arm64_monterey: "6f6681e2de0e1faa000c27ee1f899c5e716a75831dafd575794611269333493a"
+    sha256 arm64_big_sur:  "cdcef041095ccabc806f532386700d266b55a0dfdec5ba0ab812f955f1d80158"
+    sha256 monterey:       "9d408ea8bffa2777f8ff61c15e87eeb821efdade97de549e10620951544d886f"
+    sha256 big_sur:        "c3ec8d8f74fdb074164bcf1cd82a56234a5defd2d6c88880cd6d20be2d552d5b"
+    sha256 catalina:       "4edc18fc677eef16d839c42d99dd4f2522090a01de52f5f85b6b9df297ebe3bf"
+    sha256 x86_64_linux:   "d93ba4aee55c66a53ea5636d02b50b637e4f43cfc6cb190acba9639542fb8cd4"
   end
 
-  head do
-    url "https://github.com/php/php-src.git", branch: "master"
+  keg_only :versioned_formula
 
-    depends_on "bison" => :build # bison >= 3.0.0 required to generate parsers
-    depends_on "re2c" => :build # required to generate PHP lexers
-  end
+  deprecate! date: "2023-11-26", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -79,6 +76,10 @@ class Php < Formula
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
       s.gsub! "-z `$APXS -q SYSCONFDIR`",
               "-z ''"
+
+      # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
+      s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
+              "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("@", "\\@") + "'"
     end
 
     # Update error message in apache sapi to better explain the requirements
@@ -94,7 +95,7 @@ class Php < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{version.major_minor}"
+    config_path = etc/"php/#{version.major_minor}-debug"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -128,6 +129,7 @@ class Php < Formula
       --enable-bcmath
       --enable-calendar
       --enable-dba
+      --enable-debug
       --enable-exif
       --enable-ftp
       --enable-fpm
@@ -139,6 +141,7 @@ class Php < Formula
       --enable-pcntl
       --enable-phpdbg
       --enable-phpdbg-readline
+      --enable-phpdbg-webhelper
       --enable-shmop
       --enable-soap
       --enable-sockets
@@ -264,10 +267,10 @@ class Php < Formula
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear"
+    pear_path = HOMEBREW_PREFIX/"share/pear@#{version.major_minor}-debug"
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
+      "php_ini"  => etc/"php/#{version.major_minor}-debug/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -288,7 +291,7 @@ class Php < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"php/#{version.major_minor}-debug/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -315,7 +318,7 @@ class Php < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{version.major_minor}/
+          #{etc}/php/#{version.major_minor}-debug/
     EOS
   end
 

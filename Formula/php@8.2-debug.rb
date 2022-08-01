@@ -1,36 +1,29 @@
-class Php < Formula
+class PhpAT82Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.8.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.8.tar.xz"
-  sha256 "04c065515bc347bc68e0bb1ac7182669a98a731e4a17727e5731650ad3d8de4c"
+  url "https://github.com/php/php-src/archive/53e71415154f9141dc5f3e894ed215159d366b1e.tar.gz?commit=53e71415154f9141dc5f3e894ed215159d366b1e"
+  version "8.2.0"
+  sha256 "cb66a174e5f9194d39a2313ab4f03cb8e458149c74be69de69c48c91403e4b89"
   license "PHP-3.01"
-
-  livecheck do
-    url "https://www.php.net/downloads"
-    regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_monterey: "1c09c1e2a8e8f27eeec9403f2a592a1c4618f86f2fb8eb8470e03c84c1274233"
-    sha256 arm64_big_sur:  "e2af3359406cc645f6933ff6826f89361d0caf64bf7b9d93bb75c93d831b5086"
-    sha256 monterey:       "f4841c04890f7126517ec2b3f307237a12235f0606eb2de4236ce260255f8e9c"
-    sha256 big_sur:        "3027462eb040dbd3289d80daade000527b4ccd80da45c6f8c5bd6ca0987f80f8"
-    sha256 catalina:       "6eb5639f31f7487f2ef6549123e8e768c2b06af3b321be4789640bfe5309baa9"
-    sha256 x86_64_linux:   "be9c2ce7c1c0cffcd37e3e70870cb2a5c832ecae22a64018cbbb765ae37d31a5"
+    rebuild 212
+    sha256 arm64_monterey: "04d41f3d99e9a78afa69ae22fcd74abd1addb48071bb0ed66f853caf1a285187"
+    sha256 arm64_big_sur:  "e5a96bcf38161393453549f0fc4770180cddefb94c277b212a4f1c18d5cd5406"
+    sha256 monterey:       "21ee34b0eb70d4acb510fd917e4d623af277ca5e2bfa7cf9bc5255dc3cfb5586"
+    sha256 big_sur:        "8d1868cc0d58c19849897af641fa73f1f6875889d2e616ccb7a97dff4dd8e802"
+    sha256 catalina:       "a66d50a176cea34da4b82e0067ce52493680ab3d328ae8892852c89a5c533981"
+    sha256 x86_64_linux:   "51cb5068cf91e262ca0b7893a668c0b46e19fbcf90be971a40d603ca01564a4b"
   end
 
-  head do
-    url "https://github.com/php/php-src.git", branch: "master"
+  keg_only :versioned_formula
 
-    depends_on "bison" => :build # bison >= 3.0.0 required to generate parsers
-    depends_on "re2c" => :build # required to generate PHP lexers
-  end
-
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
@@ -54,7 +47,6 @@ class Php < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
-  uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
   uses_from_macos "libffi", since: :catalina
@@ -79,6 +71,10 @@ class Php < Formula
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
       s.gsub! "-z `$APXS -q SYSCONFDIR`",
               "-z ''"
+
+      # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
+      s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
+              "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("@", "\\@") + "'"
     end
 
     # Update error message in apache sapi to better explain the requirements
@@ -94,7 +90,7 @@ class Php < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{version.major_minor}"
+    config_path = etc/"php/#{php_version}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -128,6 +124,7 @@ class Php < Formula
       --enable-bcmath
       --enable-calendar
       --enable-dba
+      --enable-debug
       --enable-exif
       --enable-ftp
       --enable-fpm
@@ -136,9 +133,11 @@ class Php < Formula
       --enable-mbregex
       --enable-mbstring
       --enable-mysqlnd
+      --enable-opcache
       --enable-pcntl
       --enable-phpdbg
       --enable-phpdbg-readline
+      --enable-phpdbg-webhelper
       --enable-shmop
       --enable-soap
       --enable-sockets
@@ -166,7 +165,7 @@ class Php < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2=#{Formula["argon2"].opt_prefix}
+      --with-password-argon2
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
@@ -264,10 +263,10 @@ class Php < Formula
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear"
+    pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
+      "php_ini"  => etc/"php/#{php_version}/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -288,7 +287,7 @@ class Php < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -315,8 +314,12 @@ class Php < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{version.major_minor}/
+          #{etc}/php/#{php_version}/
     EOS
+  end
+
+  def php_version
+    version.to_s.split(".")[0..1].join(".") + "-debug"
   end
 
   plist_options manual: "php-fpm"
@@ -345,8 +348,14 @@ class Php < Formula
     refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
     begin
-      port = free_port
-      port_fpm = free_port
+      require "socket"
+
+      server = TCPServer.new(0)
+      port = server.addr[1]
+      server_fpm = TCPServer.new(0)
+      port_fpm = server_fpm.addr[1]
+      server.close
+      server_fpm.close
 
       expected_output = /^Hello world!$/
       (testpath/"index.php").write <<~EOS

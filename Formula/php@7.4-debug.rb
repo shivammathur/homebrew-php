@@ -1,33 +1,30 @@
-class Php < Formula
+class PhpAT74Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.8.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.8.tar.xz"
-  sha256 "04c065515bc347bc68e0bb1ac7182669a98a731e4a17727e5731650ad3d8de4c"
+  url "https://www.php.net/distributions/php-7.4.30.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.30.tar.xz"
+  sha256 "ea72a34f32c67e79ac2da7dfe96177f3c451c3eefae5810ba13312ed398ba70d"
   license "PHP-3.01"
 
   livecheck do
     url "https://www.php.net/downloads"
-    regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_monterey: "1c09c1e2a8e8f27eeec9403f2a592a1c4618f86f2fb8eb8470e03c84c1274233"
-    sha256 arm64_big_sur:  "e2af3359406cc645f6933ff6826f89361d0caf64bf7b9d93bb75c93d831b5086"
-    sha256 monterey:       "f4841c04890f7126517ec2b3f307237a12235f0606eb2de4236ce260255f8e9c"
-    sha256 big_sur:        "3027462eb040dbd3289d80daade000527b4ccd80da45c6f8c5bd6ca0987f80f8"
-    sha256 catalina:       "6eb5639f31f7487f2ef6549123e8e768c2b06af3b321be4789640bfe5309baa9"
-    sha256 x86_64_linux:   "be9c2ce7c1c0cffcd37e3e70870cb2a5c832ecae22a64018cbbb765ae37d31a5"
+    sha256 arm64_monterey: "70701de358c504d28b52b47a580bb53ea4afc69e9dad9f0d010a42cccd9a60aa"
+    sha256 arm64_big_sur:  "1e8e45eca925e57344f0d1e245f94b120f2ac7abb553c1efc32117b02e0e692d"
+    sha256 monterey:       "98fb28f4d0c574410e9e1c218ea4916596ce1a433f6db8b038e28795f86c2c5a"
+    sha256 big_sur:        "5a95258c2078873d4dc7c0e044d9c654e92b858b22a370c5bd60e302f52aa50e"
+    sha256 catalina:       "5d39a88e7f09c250c5154c85ae9072b7d254e19b1998f7571d7ff0b8ab3db9f4"
+    sha256 x86_64_linux:   "faa627a55e5220fd9d62152f676cba5e70720ca53eaa5e74b553b8c1d2b0edd4"
   end
 
-  head do
-    url "https://github.com/php/php-src.git", branch: "master"
+  keg_only :versioned_formula
 
-    depends_on "bison" => :build # bison >= 3.0.0 required to generate parsers
-    depends_on "re2c" => :build # required to generate PHP lexers
-  end
+  deprecate! date: "2022-11-28", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -43,6 +40,7 @@ class Php < Formula
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "krb5"
+  depends_on "libffi"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -79,6 +77,10 @@ class Php < Formula
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
       s.gsub! "-z `$APXS -q SYSCONFDIR`",
               "-z ''"
+
+      # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
+      s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
+              "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("@", "\\@") + "'"
     end
 
     # Update error message in apache sapi to better explain the requirements
@@ -94,11 +96,11 @@ class Php < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{version.major_minor}"
+    config_path = etc/"php/#{version.major_minor}-debug"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
@@ -128,6 +130,7 @@ class Php < Formula
       --enable-bcmath
       --enable-calendar
       --enable-dba
+      --enable-debug
       --enable-exif
       --enable-ftp
       --enable-fpm
@@ -139,6 +142,7 @@ class Php < Formula
       --enable-pcntl
       --enable-phpdbg
       --enable-phpdbg-readline
+      --enable-phpdbg-webhelper
       --enable-shmop
       --enable-soap
       --enable-sockets
@@ -179,6 +183,7 @@ class Php < Formula
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
       --with-unixODBC
+      --with-xmlrpc
       --with-xsl
       --with-zip
       --with-zlib
@@ -264,10 +269,10 @@ class Php < Formula
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear"
+    pear_path = HOMEBREW_PREFIX/"share/pear@#{version.major_minor}-debug"
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
+      "php_ini"  => etc/"php/#{version.major_minor}-debug/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -288,7 +293,7 @@ class Php < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"php/#{version.major_minor}-debug/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -305,7 +310,7 @@ class Php < Formula
   def caveats
     <<~EOS
       To enable PHP in Apache add the following to httpd.conf and restart Apache:
-          LoadModule php_module #{opt_lib}/httpd/modules/libphp.so
+          LoadModule php7_module #{opt_lib}/httpd/modules/libphp7.so
 
           <FilesMatch \\.php$>
               SetHandler application/x-httpd-php
@@ -315,7 +320,7 @@ class Php < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{version.major_minor}/
+          #{etc}/php/#{version.major_minor}-debug/
     EOS
   end
 
@@ -367,10 +372,16 @@ class Php < Formula
         DirectoryIndex index.php
       EOS
 
+      php_module = if head?
+        "LoadModule php_module #{lib}/httpd/modules/libphp.so"
+      else
+        "LoadModule php7_module #{lib}/httpd/modules/libphp7.so"
+      end
+
       (testpath/"httpd.conf").write <<~EOS
         #{main_config}
         LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
-        LoadModule php_module #{lib}/httpd/modules/libphp.so
+        #{php_module}
         <FilesMatch \\.(php|phar)$>
           SetHandler application/x-httpd-php
         </FilesMatch>
