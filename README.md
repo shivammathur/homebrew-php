@@ -112,7 +112,7 @@ brew tap shivammathur/php
 brew install shivammathur/php/php@8.0
 ```
 
-- After installing your have to link it:
+- After installing you have to link it:
 
 ```zsh
 brew link --overwrite --force shivammathur/php/php@8.0
