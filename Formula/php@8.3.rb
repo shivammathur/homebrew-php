@@ -1,7 +1,7 @@
 class PhpAT83 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/1553334f7a430847c32bb91eea450cfb825897dd.tar.gz"
+  url "https://github.com/php/php-src/archive/1553334f7a430847c32bb91eea450cfb825897dd.tar.gz?commit=1553334f7a430847c32bb91eea450cfb825897dd"
   version "8.3.0"
   sha256 "54271899f4dfaf744a2202b4f1449565e1f96a434a75b7d073592e3d8ce2b9c2"
   license "PHP-3.01"
