@@ -8,13 +8,13 @@ class PhpAT83Debug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_monterey: "d0899aac612d6ebcab04f46ac188de0fb47726470316a373dcaabe0934231858"
-    sha256 arm64_big_sur:  "0f44b690a527a79a83aba619dbb39e3a4f6cc9703cb31231a3b5e5f5cceacb56"
-    sha256 monterey:       "dac13d8d505f1958f0c2d47ab28cd098a8b90d71357a8a6d2e6c8e622101ba47"
-    sha256 big_sur:        "f500d7cca3634c66e5561b71d2e1ef30c9a3d0c4baf4167f05ad80692320b189"
-    sha256 catalina:       "cffc671a1113abd6e1f55f3553f9854924fda0939c8e35fefb6906b640b64ef2"
-    sha256 x86_64_linux:   "cd669ac55a37c6379bc952b8682abb12af09317cca8cd68194a0901bb7a50836"
+    rebuild 3
+    sha256 arm64_monterey: "27858d598e79d4b398d457fd7daf631f7ce21707af4466ef8849b83120e19ec5"
+    sha256 arm64_big_sur:  "7eb2ae1898a9acac00211200350fb3eead5059f4fdd7753cea7b88569c4d51df"
+    sha256 monterey:       "ba93a7beaba0635688b686942526a2da18ba3593e37c86c6c9e08404a6bf5f12"
+    sha256 big_sur:        "1919af56026461a86620dff3f17705dab845ae296ca5e226500e17a732fe0352"
+    sha256 catalina:       "d6ef23340e667d95e2c306dc76245bcb31e1cc47c45d9dca520c8002bd574d35"
+    sha256 x86_64_linux:   "ae655e46043d9df00606b2c9f88f80a6185ce40cb260a21210b364dee4f24067"
   end
 
   keg_only :versioned_formula
