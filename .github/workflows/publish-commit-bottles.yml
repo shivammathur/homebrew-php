@@ -13,7 +13,7 @@ env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
 jobs:
   upload:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Post comment once started
         uses: Homebrew/actions/post-comment@master
