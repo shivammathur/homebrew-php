@@ -53,13 +53,10 @@ or debugging PHP extensions and are not recommended for production usage.
 
 |Operating System|Architecture|
 |--- |--- |
-|Linux 4.18+|`x86_64`|
+|Linux|`x86_64`|
 |macOS Catalina|`x86_64`|
 |macOS Big Sur|`x86_64`, `arm64`|
 |macOS Monterey|`x86_64`, `arm64`|
-
-On Linux, `GLIBC 2.27` or newer is required, so distributions with Linux kernel 4.18 and newer are supported.  
-For example: Ubuntu 18.04, Debian 10, CentOS 8, Fedora 28, and newer versions of these distributions.
 
 ## Usage
 
