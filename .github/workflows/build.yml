@@ -272,10 +272,10 @@ jobs:
           cd bottles
           count=$(ls *.json | wc -l | xargs echo -n)
           echo "$count bottles"
-          echo "count=$count" >> "$GITHUB_OUTPUT"
+          echo "count=$count" | sudo tee -a "$GITHUB_OUTPUT"
           failures=$(ls failed/*.json | wc -l | xargs echo -n)
           echo "$failures failed bottles"
-          echo "failures=$failures" >> "$GITHUB_OUTPUT"
+          echo "failures=$failures" | sudo tee -a "$GITHUB_OUTPUT"
       - name: Upload failed bottles
         if: always() && steps.bottles.outputs.failures > 0
         uses: actions/upload-artifact@main

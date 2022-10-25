@@ -159,7 +159,7 @@ jobs:
           cd bottles
           count=$(ls *.json | wc -l | xargs echo -n)
           echo "$count bottles"
-          echo "count=$count" >> "$GITHUB_OUTPUT"
+          echo "count=$count" | sudo tee -a "$GITHUB_OUTPUT"
 
       - name: Upload bottles to GitHub Actions
         if: always() && steps.bottles.outputs.count > 0
