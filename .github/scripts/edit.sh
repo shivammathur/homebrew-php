@@ -49,7 +49,12 @@ fetch() {
   elif [[ "$PHP_VERSION" =~ php@8.[2-9] ]]; then
     master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
     PHP_MM=$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+")
-    [ "$PHP_MM" = "$master_version" ] && branch=master || branch=PHP-"$PHP_MM"
+    if [ "$PHP_MM" = "$master_version" ]; then
+      branch=master
+    else
+      ref="$(git ls-remote --heads https://github.com/php/php-src "PHP-$PHP_MM.0")"
+      [[ -n "$ref" ]] && branch="PHP-$PHP_MM.0" || branch="PHP-$PHP_MM"
+    fi  
     commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
