@@ -1,9 +1,9 @@
 get_release() {
+  local url=https://www.php.net/releases/feed.php
   if [ "$PHP_SOURCE" = "github" ]; then
-    curl -sL "https://github.com/php/php-src/tags" | grep -Po -m 1 "php-$PHP_MM.[0-9]+$" | head -n 1
-  else
-    curl -sL "https://www.php.net/releases/feed.php" | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1
+    url=https://github.com/php/php-src/tags
   fi
+  curl -sL "$url" | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1
 }
 
 check_changes() {
