@@ -177,7 +177,6 @@ jobs:
           - runner: 'macos-11-arm64'
           - runner: 'macos-12'
           - runner: 'macos-11'
-          - runner: 'macos-10.15'
           - runner: ${{needs.set-environment.outputs.linux-runner}}
             container: ${{fromJson(needs.set-environment.outputs.container)}}
             workdir: /github/home
@@ -211,12 +210,8 @@ jobs:
       - name: Setup Xcode
         if: runner.os == 'macOS'
         run: |
-          if [ "${{ matrix.runner }}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
-          else
-            latest_stable_xcode_path="$(find -E /Applications -maxdepth 1 -regex '.*Xcode_13.[0-9]+.app' | sort -V | tail -1)"
-            sudo xcode-select -s "$latest_stable_xcode_path" || exit 1
-          fi
+          latest_stable_xcode_path="$(find -E /Applications -maxdepth 1 -regex '.*Xcode_13.[0-9]+.app' | sort -V | tail -1)"
+          sudo xcode-select -s "$latest_stable_xcode_path" || exit 1
 
       - run: brew test-bot --only-cleanup-before
 

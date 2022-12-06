@@ -80,12 +80,8 @@ jobs:
       - name: Setup Xcode
         if: runner.os == 'macOS'
         run: |
-          if [ "${{github.event.inputs.macos}}" = "macos-10.15" ]; then
-            sudo xcode-select -s /Applications/Xcode_11.7.app || exit 1
-          else
-            latest_stable_xcode_path="$(find -E /Applications -maxdepth 1 -regex '.*Xcode_13.[0-9]+.app' | sort -V | tail -1)"
-            sudo xcode-select -s "$latest_stable_xcode_path" || exit 1
-          fi
+          latest_stable_xcode_path="$(find -E /Applications -maxdepth 1 -regex '.*Xcode_13.[0-9]+.app' | sort -V | tail -1)"
+          sudo xcode-select -s "$latest_stable_xcode_path" || exit 1
 
       - if: runner.os == 'macOS'
         run: brew test-bot --only-cleanup-before
