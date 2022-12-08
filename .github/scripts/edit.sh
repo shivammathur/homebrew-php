@@ -6,6 +6,17 @@ get_release() {
   curl -sL "$url" | grep -Po -m 1 "php-$PHP_MM.[0-9]+" | head -n 1
 }
 
+get_support_state() {
+  local formula=$1
+  if grep -q 'shivammathur/php-src-backports' ./Formula/"$formula".rb; then
+    echo 'backports'
+  elif grep -q 'php.net/distributions' ./Formula/"$formula".rb; then
+    echo 'active'
+  else
+    echo 'nightly'
+  fi
+}
+
 check_changes() {
   new_url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
   old_url="$(grep -e "^  url.*" /tmp/"$PHP_VERSION".rb | cut -d\" -f 2)"
@@ -29,13 +40,14 @@ check_changes() {
 
 fetch() {
   sudo cp "Formula/$PHP_VERSION.rb" "/tmp/$PHP_VERSION.rb"
-  if [[ "$PHP_VERSION" =~ php@(5.6|7.[0-3]) ]]; then
+  support_state=$(get_support_state "$PHP_VERSION")
+  if [ "$support_state" = "backports" ]; then
     commit=$(git ls-remote https://github.com/shivammathur/php-src-backports | grep "refs/tags/$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+").*{}" | sed "s/\s*refs.*//")
     sed -i -e "s|archive.*|archive/$commit.tar.gz\"|g" ./Formula/"$PHP_VERSION".rb
     url="$(grep -e "^  url.*" ./Formula/"$PHP_VERSION".rb | cut -d\" -f 2)"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
-  elif [[ "$PHP_VERSION" =~ php$|php-debug|php@(7.4|8.[0-1]) ]]; then
+  elif [ "$support_state" = "active" ]; then
     PHP_MM=$(grep -Po -m 1 "php-[0-9]+.[0-9]+" ./Formula/"$PHP_VERSION".rb | cut -d '-' -f 2)
     OLD_PHP_SEMVER=$(grep -Po -m 1 "php-$PHP_MM.[0-9]+" ./Formula/"$PHP_VERSION".rb)
     NEW_PHP_SEMVER=$(get_release "$PHP_MM")
@@ -46,7 +58,7 @@ fetch() {
       checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
       sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     fi
-  elif [[ "$PHP_VERSION" =~ php@8.[2-9] ]]; then
+  elif [ "$support_state" = "nightly" ]; then
     master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
     PHP_MM=$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+")
     if [ "$PHP_MM" = "$master_version" ]; then
