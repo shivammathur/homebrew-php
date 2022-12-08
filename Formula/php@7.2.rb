@@ -1,9 +1,9 @@
 class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/9c3689734aa76c0b97ad90b6789d69a2fd2266b1.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/f07f37f1acd43b411bb7fdcc3fbd0d6c966183ae.tar.gz"
   version "7.2.34"
-  sha256 "de91ee9adeb17af6174d8a078dff4c26e6bb411959c120135fe73f9db101cac1"
+  sha256 "56c3325726abdb5fd1a4d23fd3bdb2dca33ed3293721e176acce8fcfcc1980bf"
   license "PHP-3.01"
   revision 5
 
