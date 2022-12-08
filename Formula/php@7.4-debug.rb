@@ -1,33 +1,27 @@
 class PhpAT74Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.33.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.33.tar.xz"
-  sha256 "924846abf93bc613815c55dd3f5809377813ac62a9ec4eb3778675b82a27b927"
+  url "https://github.com/shivammathur/php-src-backports/archive/411f97c2e0141c166142d2478f35c23d09236934.tar.gz"
+  version "7.4.33"
+  sha256 "e63a142fdb0ff2d6d1271f603f87aa40bf0f762b2bb81c21223ebdb1c04c8308"
   license "PHP-3.01"
-
-  livecheck do
-    url "https://www.php.net/downloads"
-    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_monterey: "47d3e9583f684d62de2f70ed6b731e9add93d624d74019a24dec6441bd3e266b"
-    sha256 arm64_big_sur:  "b7e896522b539ec2e1fb7cd7a141933c1175045d05eeef37e2954ae78fdd04a7"
-    sha256 monterey:       "31d20f2041e9c75dadc0ddbd16c338133386605c33707c3773f5ed7494035afa"
-    sha256 big_sur:        "0cb393e3073c3b4a90fb03abb60939b5d967215f912abce4b8a0a008f1201547"
-    sha256 catalina:       "c0903dab5887861d57e3381d7fd170d7d7fa3a7907220f95a1dd41dcdc3a7940"
-    sha256 x86_64_linux:   "05eac5eeefa96ef4f0bceff291f698813390ff3081d7676a98646661b658c29b"
   end
 
   keg_only :versioned_formula
 
+  # This PHP version is not supported upstream as of 2022-11-28.
+  # Although, this was built with back-ported security patches,
+  # we recommended to use a currently supported PHP version.
+  # For more details, refer to https://www.php.net/eol.php
   deprecate! date: "2022-11-28", because: :versioned_formula
 
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
