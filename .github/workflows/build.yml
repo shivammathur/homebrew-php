@@ -100,6 +100,7 @@ jobs:
       - name: Patch formula
         env:
           GITHUB_MESSAGE: ${{ github.event.head_commit.message || github.event.inputs.github_message }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PHP_VERSION: ${{ matrix.php }}
           PHP_SOURCE: ${{github.event.inputs.php_source}}
         run: bash ./.github/scripts/edit.sh

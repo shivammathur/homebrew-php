@@ -67,7 +67,7 @@ fetch() {
       ref="$(git ls-remote --heads https://github.com/php/php-src "PHP-$PHP_MM.0")"
       [[ -n "$ref" ]] && branch="PHP-$PHP_MM.0" || branch="PHP-$PHP_MM"
     fi  
-    commit="$(curl -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
+    commit="$(curl -H "Authorization: Brearer $GITHUB_TOKEN" -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
     checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
