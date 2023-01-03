@@ -202,6 +202,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo chmod 777 ${{matrix.workdir || github.workspace}}
+          sudo useradd _www
           brew update
 
       - name: Set up Homebrew
