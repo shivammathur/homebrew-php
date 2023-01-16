@@ -55,6 +55,10 @@ done
 
 # Push changes
 ls ./.github/deps/*
+
+# Make sure git is not broken
+brew reinstall $(brew deps git) git || true
+
 if [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" != "0" ]; then
   git stash
   git pull -f https://"$GITHUB_REPOSITORY_OWNER":"$GITHUB_TOKEN"@github.com/"$GITHUB_REPOSITORY".git master
