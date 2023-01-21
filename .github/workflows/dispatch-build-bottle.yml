@@ -77,12 +77,6 @@ jobs:
         if: runner.os == 'macOS'
         uses: Homebrew/actions/setup-homebrew@master
 
-      - name: Setup Xcode
-        if: runner.os == 'macOS'
-        run: |
-          latest_stable_xcode_path="$(find -E /Applications -maxdepth 1 -regex '.*Xcode_13.[0-9]+.app' | sort -V | tail -1)"
-          sudo xcode-select -s "$latest_stable_xcode_path" || exit 1
-
       - if: runner.os == 'macOS'
         run: brew test-bot --only-cleanup-before
 
