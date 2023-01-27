@@ -8,12 +8,12 @@ class PhpAT83 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 127
-    sha256 arm64_monterey: "9aa4c95f491b5eec860c0db8d175e8c306f59e8d746ecf60a52458feb0c9c96c"
-    sha256 arm64_big_sur:  "14d2535b2d74667d30f7970a54576704e1b6baed355cb49c2f5f61a01cf2bf84"
-    sha256 monterey:       "e949486780bed96ee0d9327ab758243bb18933f6c63701ab9816eeaf35272486"
-    sha256 big_sur:        "b5fb923a8edae7fbbb7ccc37a9c7be5a68fa84dd27a0700ad173bf6f8706ef9c"
-    sha256 x86_64_linux:   "ac3068bb31016c1febaf40d710765854e4d779892cb68667de24dd4715754d8c"
+    rebuild 128
+    sha256 arm64_monterey: "0bbbd90b48fa020efaf9758dacee417ccbe4328e3709eaa7062cac8f26cbf54e"
+    sha256 arm64_big_sur:  "bc8f0571a50d87af01427bc78af9ca0288abe3abe7672bc11b535d97e527a863"
+    sha256 monterey:       "7dfea070166d496cfee14857b00fa2424c211bf6c1f58eb304a8c48c100ae7d5"
+    sha256 big_sur:        "0819614e9e0727ca1daacf234eba91243c5b388703096c060d3e44c64c6964fc"
+    sha256 x86_64_linux:   "4a88150ecb6b059621e355b4e18b09ccd9c6cd7e63efa750bab8f80e52713956"
   end
 
   keg_only :versioned_formula
