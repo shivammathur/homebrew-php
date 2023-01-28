@@ -157,6 +157,8 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
 
       - name: Download bottles from GitHub Actions
         uses: actions/download-artifact@main

@@ -3,33 +3,68 @@ on:
   workflow_dispatch:
     inputs:
       runner:
-        description: Build runner (macOS version or Linux)
+        description: Build runner(s) (macOS version or Linux)
         required: true
       formula:
         description: Formula name
         required: true
       timeout:
-        description: "Build timeout (in minutes, default: 60 minutes)"
-        default: "60"
+        description: "Build timeout (in minutes, default: 180 minutes)"
+        default: "180"
         required: true
       issue:
         description: Issue number, where comment on failure would be posted
         required: false
       upload:
-        description: Whether to upload built bottles or not
+        description: "Whether to upload built bottles or not (default: false)"
         required: false
 env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_CHANGE_ARCH_TO_ARM: 1
+  HOMEBREW_RELOCATE_RPATHS: 1
+
 jobs:
-  bottle:
-    runs-on: ${{github.event.inputs.runner}}
+  prepare:
+    runs-on: ubuntu-22.04
+    outputs:
+      runners: ${{steps.runner-matrix.outputs.result}}
+    steps:
+      - name: Prepare runner matrix
+        id: runner-matrix
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const intelMacOSRegex = /^\d+(?:\.\d+)?$/;
+            const linuxRegex = /^(ubuntu-|linux-self-hosted-)/;
+            return context.payload.inputs.runner.split(",")
+                                                .map(s => s.trim())
+                                                .filter(Boolean)
+                                                .map(s => {
+              if (linuxRegex.test(s))
+                return {
+                  runner:    s,
+                  container: {
+                    image:   "ghcr.io/homebrew/ubuntu22.04:master",
+                    options: "--user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED"
+                  },
+                  workdir:   "/github/home"
+                };
+              else
+                return {runner: s};
+            });
+    bottle:
+    needs: prepare
+    strategy:
+      matrix:
+        include: ${{fromJson(needs.prepare.outputs.runners)}}
+    runs-on: ${{matrix.runner}}
+    container: ${{matrix.container}}
     timeout-minutes: ${{fromJson(github.event.inputs.timeout)}}
     defaults:
       run:
         shell: /bin/bash -e {0}
+        working-directory: ${{matrix.workdir || github.workspace}}
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -40,101 +75,59 @@ jobs:
           echo sender=${{github.event.sender.login}}
           echo formula=${{github.event.inputs.formula}}
           echo runner=${{github.event.inputs.runner}}
+          echo timeout=${{github.event.inputs.timeout}}
           echo issue=${{github.event.inputs.issue}}
           echo upload=${{github.event.inputs.upload}}
 
       - name: Set environment variables
         if: runner.os == 'macOS'
-        run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
-
-      - name: Run Docker container
-        if: runner.os == 'Linux'
-        env:
-          BREW_PATH: /home/linuxbrew/.linuxbrew/Homebrew
-          TAP_PATH: /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/shivammathur/homebrew-php
         run: |
-          docker run \
-            --detach \
-            --user linuxbrew \
-            --name ${{github.sha}} \
-            --env-file <(env | egrep 'HOMEBREW|GITHUB') \
-            --workdir /tmp/bottles \
-            --pull always \
-            homebrew/ubuntu18.04:latest \
-            sleep inf
-          # Fix working directory permissions
-          docker exec --user linuxbrew ${{github.sha}} brew tap shivammathur/homebrew-php
-          docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
-          docker exec --workdir "$BREW_PATH" ${{github.sha}} git pull origin master
-          docker exec --user linuxbrew ${{github.sha}} brew update
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-url origin ${{github.event.repository.html_url}}
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git fetch origin ${{github.sha}} '+refs/heads/*:refs/remotes/origin/*'
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-head origin --auto
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git checkout --force -B master FETCH_HEAD
+          echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
 
       - name: Set up Homebrew
         id: set-up-homebrew
-        if: runner.os == 'macOS'
         uses: Homebrew/actions/setup-homebrew@master
 
-      - if: runner.os == 'macOS'
-        run: brew test-bot --only-cleanup-before
+      - run: brew test-bot --only-cleanup-before
 
-      - name: Run brew test-bot --only-setup
+      - run: brew test-bot --only-setup
+
+      - name: Run brew test-bot --only-formulae --keep-old --only-json-tab --skip-online-checks --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.formula}}
         run: |
-          if [ "$RUNNER_OS" = 'macOS' ]; then
-            brew test-bot --only-setup
-          else
-            docker exec ${{github.sha}} brew test-bot --only-setup
-          fi
-
-      - name: Run brew test-bot --only-formulae --keep-old --only-json-tab --skip-dependents ${{github.event.inputs.formula}}
-        run: |
-          if [ "$RUNNER_OS" = 'macOS' ]; then
-            mkdir bottles
-            cd bottles
-            brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
-          else
-            docker exec ${{github.sha}} brew test-bot --keep-old --only-json-tab --only-formulae --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
-          fi
-
-      - name: Copy bottles from container
-        if: always() && runner.os == 'Linux'
-        run: docker cp ${{github.sha}}:/tmp/bottles .
+          mkdir bottles
+          cd bottles
+          brew test-bot --only-formulae --keep-old --only-json-tab --skip-online-checks --skip-dependents ${{github.event.inputs.formula}}
 
       - name: Failures summary for brew test-bot --only-formulae
         if: always()
-        run: |
-          touch bottles/steps_output.txt
-          cat bottles/steps_output.txt
-          rm bottles/steps_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/steps_output.txt
+          step_name: 'Build summary on ${{ matrix.runner }}'
+
+      - name: Output brew linkage result
+        if: always()
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/linkage_output.txt
+          step_name: '`brew linkage` output on ${{ matrix.runner }}'
 
       - name: Output brew bottle result
         if: always()
-        run: |
-          cat bottles/bottle_output.txt
-          rm bottles/bottle_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/bottle_output.txt
+          step_name: '`brew bottle` output on ${{ matrix.runner }}'
 
       - name: Upload logs
-        if: failure()
-        uses: actions/upload-artifact@main
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          if-no-files-found: ignore
-          name: logs
-          path: bottles/logs
-
-      - name: Fix bottles json
-        run: |
-          cd bottles
-          if [ "$RUNNER_OS" = 'macOS' ]; then
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles-php~php~ {} +
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i '' s~bottles~php~ {} +
-          else
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~homebrew/bottles-php~${{ github.repository_owner }}/php~ {} +
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~bottles-php~php~ {} +
-            LC_ALL=C find . -type f -name '*.json' -exec sed -i s~bottles~php~ {} +
-          fi
+          name: logs-${{ matrix.runner }}
+          path: ${{matrix.workdir || github.workspace}}/bottles/logs
 
       - name: Delete logs and home
         if: always()
@@ -149,23 +142,35 @@ jobs:
           cd bottles
           count=$(ls *.json | wc -l | xargs echo -n)
           echo "$count bottles"
-          echo "count=$count" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "::set-output name=count::$count"
+          failures=$(ls failed/*.json | wc -l | xargs echo -n)
+          echo "$failures failed bottles"
+          echo "::set-output name=failures::$failures"
 
-      - name: Upload bottles to GitHub Actions
+      - name: Upload failed bottles
+        if: always() && steps.bottles.outputs.failures > 0
+        uses: actions/upload-artifact@v3
+        with:
+          name: bottles-${{ matrix.runner }}
+          path: ${{matrix.workdir || github.workspace}}/bottles/failed
+
+      # Must be run before the `Upload bottles` step so that failed
+      # bottles are not included in the `bottles` artifact.
+      - name: Delete failed bottles
+        if: always()
+        run: rm -rvf bottles/failed
+
+      - name: Upload bottles
         if: always() && steps.bottles.outputs.count > 0
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: bottles
-          path: bottles
+          path: ${{matrix.workdir || github.workspace}}/bottles
 
-      - name: Post Cleanup
+      - name: Post cleanup
         if: always()
         run: |
-          if [ "$RUNNER_OS" = 'Linux' ]; then
-            docker rm -f ${{github.sha}}
-          else
-            brew test-bot --only-cleanup-after
-          fi
+          brew test-bot --only-cleanup-after
           rm -rvf bottles
 
       - name: Post comment on failure
@@ -174,9 +179,10 @@ jobs:
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           issue: ${{github.event.inputs.issue}}
-          body: ':x: @${{github.actor}} bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
-          bot_body: ':x: Bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
+          body: ":x: @${{github.actor}} bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
+          bot_body: ":x: Bottle request for ${{github.event.inputs.formula}} [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
           bot: BrewTestBot
+
   upload:
     runs-on: ubuntu-22.04
     needs: bottle
@@ -184,9 +190,14 @@ jobs:
     env:
       HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
     steps:
+      - name: Add brew to PATH
+        run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
+
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
 
       - name: Download bottles from GitHub Actions
         uses: actions/download-artifact@main
@@ -194,12 +205,6 @@ jobs:
           name: bottles
           path: ~/bottles/
 
-      # Workaround until the `cache` action uses the changes from
-      # https://github.com/actions/toolkit/pull/580.
-      - name: Unlink workspace
-        run: |
-          mv "${GITHUB_WORKSPACE}" "${GITHUB_WORKSPACE}-link"
-          mkdir "${GITHUB_WORKSPACE}"
       - name: Cache gems
         uses: actions/cache@v2
         with:
@@ -207,12 +212,6 @@ jobs:
           key: ${{runner.os}}-rubygems-v2-${{steps.set-up-homebrew.outputs.gems-hash}}
           restore-keys: ${{runner.os}}-rubygems-v2-
 
-      # Workaround until the `cache` action uses the changes from
-      # https://github.com/actions/toolkit/pull/580.
-      - name: Re-link workspace
-        run: |
-          rmdir "${GITHUB_WORKSPACE}"
-          mv "${GITHUB_WORKSPACE}-link" "${GITHUB_WORKSPACE}"
       - name: Install gems
         run: brew install-bundler-gems
 
@@ -221,10 +220,10 @@ jobs:
           git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
           git config --local user.name BrewTestBot
 
-      - name: Upload and publish bottles on GitHub Packages
+      - name: Upload bottles to GitHub Packages
         env:
           HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
-          HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
         run: |
           cd ~/bottles
           brew pr-upload --verbose --keep-old --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php"

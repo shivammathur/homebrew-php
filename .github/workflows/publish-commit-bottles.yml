@@ -27,27 +27,15 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
-
-      # Workaround until the `cache` action uses the changes from
-      # https://github.com/actions/toolkit/pull/580.
-      - name: Unlink workspace
-        run: |
-          mv "${GITHUB_WORKSPACE}" "${GITHUB_WORKSPACE}-link"
-          mkdir "${GITHUB_WORKSPACE}"
+        with:
+          test-bot: false
 
       - name: Cache gems
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{steps.set-up-homebrew.outputs.gems-path}}
           key: ${{runner.os}}-rubygems-v2-${{steps.set-up-homebrew.outputs.gems-hash}}
           restore-keys: ${{runner.os}}-rubygems-v2-
-
-      # Workaround until the `cache` action uses the changes from
-      # https://github.com/actions/toolkit/pull/580.
-      - name: Re-link workspace
-        run: |
-          rmdir "${GITHUB_WORKSPACE}"
-          mv "${GITHUB_WORKSPACE}-link" "${GITHUB_WORKSPACE}"
 
       - name: Install gems
         run: brew install-bundler-gems
@@ -93,10 +81,3 @@ jobs:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           pr: ${{github.event.inputs.pull_request}}
           message: 'bottle publish failed'
-
-      # Workaround until the `cache` action uses the changes from
-      # https://github.com/actions/toolkit/pull/580.
-      - name: Unlink workspace
-        run: |
-          rm "${GITHUB_WORKSPACE}"
-          mkdir "${GITHUB_WORKSPACE}"

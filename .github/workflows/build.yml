@@ -47,7 +47,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Cache Bundler RubyGems
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.set-up-homebrew.outputs.gems-path }}
           key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
@@ -150,7 +150,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check for CI labels
         id: check-labels
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         env:
           SCRIPTS_PATH: .github/scripts
         with:
@@ -203,7 +203,6 @@ jobs:
         run: |
           sudo chmod 777 ${{matrix.workdir || github.workspace}}
           sudo useradd _www
-          brew update
 
       - name: Set up Homebrew
         id: set-up-homebrew
