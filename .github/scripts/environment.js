@@ -1,5 +1,5 @@
 module.exports = async ({github, context, core}, formula_detect) => {
-    const { data: { labels: labels } } = await github.pulls.get({
+    const { data: { labels: labels } } = await github.rest.pulls.get({
         owner: context.repo.owner,
         repo: context.repo.repo,
         pull_number: context.issue.number

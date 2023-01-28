@@ -53,7 +53,7 @@ jobs:
               else
                 return {runner: s};
             });
-    bottle:
+  bottle:
     needs: prepare
     strategy:
       matrix:
