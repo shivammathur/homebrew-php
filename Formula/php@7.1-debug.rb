@@ -3,7 +3,7 @@ class PhpAT71Debug < Formula
   homepage "https://www.php.net/"
   url "https://github.com/shivammathur/php-src-backports/archive/3ec3a5352eb55a241b2e22e54e711b24f1542df0.tar.gz"
   version "7.1.33"
-  sha256 "68e64a7a50b5649f3236bb39db32aef85a1082345ad266fd0af107d69b53b0ed"
+  sha256 "3fa79ebed1b6a9f4a25a2e7d8c3cbf53c657212e3e0267b59d7b87c9acd333ed"
   license "PHP-3.01"
   revision 6
 
