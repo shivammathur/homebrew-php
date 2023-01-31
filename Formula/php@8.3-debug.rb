@@ -3,7 +3,7 @@ class PhpAT83Debug < Formula
   homepage "https://www.php.net/"
   url "https://github.com/php/php-src/archive/735edd1c177e896d5a44144615626cd2b6a62a5b.tar.gz?commit=735edd1c177e896d5a44144615626cd2b6a62a5b"
   version "8.3.0"
-  sha256 "22f4602723e17cf0e94618354f67b69e5c5fec27e5f0a6e7c198297b9a5522f1"
+  sha256 "1f78c9eda4ae7d72144b760c56c19a94a8b9b7b76f9ce89fb135ba477297a87e"
   license "PHP-3.01"
 
   bottle do
