@@ -331,7 +331,6 @@ class PhpAT56 < Formula
     version.to_s.split(".")[0..1].join(".")
   end
 
-  plist_options manual: "php-fpm"
   service do
     run [opt_sbin/"php-fpm", "--nodaemonize"]
     run_type :immediate
