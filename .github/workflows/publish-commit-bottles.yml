@@ -57,7 +57,7 @@ jobs:
       - name: Merge PR branch
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
+        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
