@@ -61,7 +61,6 @@ class PhpAT80 < Formula
 
   on_macos do
     # PHP build system incorrectly links system libraries
-    # see https://github.com/php/php-src/pull/3472
     patch :DATA
   end
 
