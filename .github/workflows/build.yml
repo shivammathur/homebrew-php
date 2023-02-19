@@ -21,7 +21,7 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_CHANGE_ARCH_TO_ARM: 1
+  HOMEBREW_NO_INSTALL_FROM_API: 1
 
 concurrency:
   group: "build-${{ github.ref }}"
@@ -32,7 +32,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip-build')"
     runs-on: ubuntu-22.04
     env:
-      HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
+      HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
     outputs:
       testing_formulae: ${{ steps.formulae-detect.outputs.testing_formulae }}
       added_formulae: ${{ steps.formulae-detect.outputs.added_formulae }}
