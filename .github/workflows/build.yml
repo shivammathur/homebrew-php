@@ -107,7 +107,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
           commit-message: Update ${{ matrix.php }}
@@ -123,9 +123,6 @@ jobs:
             Build ${{ matrix.php }}
           labels: ${{ matrix.php }},automated-pr
           assignees: ${{ github.repository_owner }}
-          team-reviewers: |
-            owners
-            maintainers
           draft: false
 
       - name: Check outputs
