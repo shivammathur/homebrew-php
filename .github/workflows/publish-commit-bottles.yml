@@ -16,6 +16,8 @@ env:
 jobs:
   upload:
     runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:master
     steps:
       - name: Post comment once started
         uses: Homebrew/actions/post-comment@master
@@ -41,6 +43,11 @@ jobs:
 
       - name: Install gems
         run: brew install-bundler-gems
+
+      - name: Install skopeo and unzip for bottle upload
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y skopeo unzip
 
       - name: Setup git
         run: |
