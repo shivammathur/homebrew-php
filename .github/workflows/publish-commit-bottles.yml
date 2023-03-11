@@ -44,10 +44,10 @@ jobs:
       - name: Install gems
         run: brew install-bundler-gems
 
-      - name: Install skopeo and unzip for bottle upload
+      - name: Install gh, skopeo, and unzip
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y skopeo unzip
+          sudo apt-get install -y gh skopeo unzip
 
       - name: Setup git
         run: |
