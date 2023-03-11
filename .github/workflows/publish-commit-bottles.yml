@@ -28,8 +28,6 @@ jobs:
           bot_body: ':robot: A scheduled task has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot: BrewTestBot
 
-      - uses: actions/checkout@v3
-
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
@@ -53,8 +51,8 @@ jobs:
 
       - name: Setup git
         run: |
-          git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
-          git config --local user.name BrewTestBot
+          git config --global user.email 1589480+BrewTestBot@users.noreply.github.com
+          git config --global user.name BrewTestBot
 
       - name: Pull bottles
         env:
@@ -68,11 +66,14 @@ jobs:
       - name: Merge PR branch
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
+        run:
+          cd ${{steps.set-up-homebrew.outputs.repository-path}} || exit 1
+          bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
+          directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Post comment on failure
