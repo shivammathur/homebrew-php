@@ -67,8 +67,8 @@ jobs:
           brew pr-pull --debug --workflows=build.yml --verbose --tap=${{ github.repository_owner }}/php --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.args}} ${{github.event.inputs.pull_request}}
 
       - name: Merge PR branch
-        env:
-          working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
+        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
+        env:          
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --auto --delete-branch --rebase
 
