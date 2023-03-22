@@ -13,6 +13,9 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_INSTALL_FROM_API: 1
+  GH_REPO: ${{github.repository}}
+  GH_NO_UPDATE_NOTIFIER: 1
+  GH_PROMPT_DISABLED: 1
 jobs:
   upload:
     runs-on: ubuntu-22.04
@@ -45,9 +48,8 @@ jobs:
         run: brew install-bundler-gems
 
       - name: Install gh, skopeo, and unzip
-        run: |
-          cd ${{steps.set-up-homebrew.outputs.repository-path}} || exit 1
-          bash .github/scripts/release-tools.sh
+        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
+        run: bash .github/scripts/release-tools.sh
 
       - name: Setup git
         run: |
@@ -65,10 +67,9 @@ jobs:
 
       - name: Merge PR branch
         env:
+          working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run:
-          cd ${{steps.set-up-homebrew.outputs.repository-path}} || exit 1
-          bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --delete-branch --rebase
+        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --auto --delete-branch --rebase
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
