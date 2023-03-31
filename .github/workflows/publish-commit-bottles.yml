@@ -52,30 +52,10 @@ jobs:
         with:
           test-bot: false
 
-      - name: Cache gems
-        uses: actions/cache@v3
-        with:
-          path: ${{steps.set-up-homebrew.outputs.gems-path}}
-          key: ${{runner.os}}-rubygems-v2-${{steps.set-up-homebrew.outputs.gems-hash}}
-          restore-keys: ${{runner.os}}-rubygems-v2-
-
-      - name: Install gems
-        run: brew install-bundler-gems
-
-      - name: Install gh, skopeo, and unzip
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: bash .github/scripts/release-tools.sh
-
       - name: Setup git
         run: |
           git config --global user.email 1589480+BrewTestBot@users.noreply.github.com
           git config --global user.name BrewTestBot
-
-      - name: Checkout PR branch
-        run: gh pr checkout '${{github.event.inputs.pull_request}}'
-        env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
 
       - name: Pull bottles
         env:
@@ -96,28 +76,11 @@ jobs:
             ${{inputs.message && format('--message="{0}"', inputs.message) || ''}} \
             '${{github.event.inputs.pull_request}}'
 
-      - name: Get current branch and remote
-        id: push-configuration
+      - name: Merge PR branch
         working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: |
-          branch="$(git branch --show-current)"
-          if [ -n "$branch" ]
-          then
-            echo "branch=$branch" >> "$GITHUB_OUTPUT"
-          else
-            echo "::error ::Not on a branch!"
-            exit 1
-          fi
-          if push_remote="$(git config --local "branch.$branch.pushRemote")"
-          then
-            echo "remote=$push_remote" >> "$GITHUB_OUTPUT"
-          elif remote="$(git config --local "branch.$branch.remote")"
-          then
-            echo "remote=$remote" >> "$GITHUB_OUTPUT"
-          else
-            echo "::error ::Could not find branch remote!"
-            exit 1
-          fi
+        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --auto --delete-branch --rebase
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
@@ -129,39 +92,16 @@ jobs:
         if: ${{!success()}}
         uses: Homebrew/actions/post-comment@master
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           issue: ${{github.event.inputs.pull_request}}
-          body: ":warning: @${{github.actor}} bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
-          bot_body: ":warning: Bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
+          body: ':warning: @${{github.actor}} bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
+          bot_body: ':warning: Bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot: BrewTestBot
 
       - name: Dismiss approvals on failure
         if: ${{!success()}}
         uses: Homebrew/actions/dismiss-approvals@master
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           pr: ${{github.event.inputs.pull_request}}
-          message: "bottle publish failed"
-
-      - name: Add CI-published-bottle-commits label
-        run: gh pr edit --add-label CI-published-bottle-commits '${{github.event.inputs.pull_request}}'
-        env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-
-      - name: Enable PR automerge
-        id: automerge
-        env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --auto --delete-branch
-
-      - name: Post comment on failure
-        if: ${{failure() && steps.automerge.conclusion == 'failure'}}
-        uses: Homebrew/actions/post-comment@master
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          issue: ${{github.event.inputs.pull_request}}
-          body: ":warning: @${{github.actor}} [Failed to enable automerge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
-          bot_body: ":warning: [Failed to enable automerge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}})."
-          bot: BrewTestBot
+          message: 'bottle publish failed'
