@@ -40,7 +40,7 @@ jobs:
       - name: Post comment once started
         uses: Homebrew/actions/post-comment@master
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           issue: ${{github.event.inputs.pull_request}}
           body: ':beers: @BrewTestBot has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
           bot_body: ':robot: A scheduled task has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
@@ -67,7 +67,6 @@ jobs:
           # Don't quote arguments that might be empty; this causes errors.
           brew pr-pull \
             --debug \
-            --no-cherry-pick \
             --workflows=build.yml \
             --tap=${{ github.repository_owner }}/php \
             --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" \
