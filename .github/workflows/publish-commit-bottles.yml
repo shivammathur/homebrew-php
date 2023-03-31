@@ -90,7 +90,7 @@ jobs:
             --no-cherry-pick \
             --workflows=tests.yml \
             --committer="$BREWTESTBOT_NAME_EMAIL" \
-            --tap=${{ github.repository_owner }}/php
+            --tap=${{ github.repository_owner }}/php \
             --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" \
             '${{inputs.autosquash && '--autosquash' || '--clean'}}' \
             ${{inputs.warn_on_upload_failure && '--warn-on-upload-failure' || ''}} \
