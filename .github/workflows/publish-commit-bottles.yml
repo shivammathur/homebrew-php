@@ -88,8 +88,7 @@ jobs:
           brew pr-pull \
             --debug \
             --no-cherry-pick \
-            --workflows=tests.yml \
-            --committer="$BREWTESTBOT_NAME_EMAIL" \
+            --workflows=build.yml \
             --tap=${{ github.repository_owner }}/php \
             --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" \
             '${{inputs.autosquash && '--autosquash' || '--clean'}}' \
