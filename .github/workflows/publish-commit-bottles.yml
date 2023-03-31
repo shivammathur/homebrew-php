@@ -149,41 +149,12 @@ jobs:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
 
-      - name: Wait until pull request branch is in sync with local repository
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: |
-          local_head="$(git rev-parse HEAD)"
-          echo "::notice ::Local repository HEAD: $local_head"
-          attempt=0
-          max_attempts=10
-          timeout=1
-          # Wait (with exponential backoff) until the PR branch is in sync
-          while [ "$attempt" -lt "$max_attempts" ]
-          do
-            remote_head="$(git ls-remote origin "pull/${{inputs.pull_request}}/head" | cut -f1)"
-            echo "::notice ::Pull request HEAD: $remote_head"
-            if [ "$local_head" = "$remote_head" ]
-            then
-              success=1
-              break
-            fi
-            echo "::notice ::Remote repository not in sync. Checking again in ${timeout}s..."
-            sleep "$timeout"
-            attempt=$(( attempt + 1 ))
-            timeout=$(( timeout * 2 ))
-          done
-          # One last check...
-          if [ -z "$success" ] && [ "$local_head" != "$(git ls-remote origin "pull/${{inputs.pull_request}}/head" | cut -f1)" ]
-          then
-            echo "::error ::No attempts remaining. Giving up."
-            exit 1
-          fi
       - name: Enable PR automerge
         id: automerge
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: gh pr merge --auto --merge '${{inputs.pull_request}}'
+        run: bash .github/scripts/retry.sh 5 5 gh pr merge ${{github.event.inputs.pull_request}} --auto --delete-branch
 
       - name: Post comment on failure
         if: ${{failure() && steps.automerge.conclusion == 'failure'}}
