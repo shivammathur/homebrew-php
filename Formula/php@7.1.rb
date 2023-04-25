@@ -12,6 +12,7 @@ class PhpAT71 < Formula
     rebuild 2
     sha256 arm64_monterey: "1e6935e83b5b7c9705c7815941516a1001a7fdd6d359f6d85a8db66c63de229d"
     sha256 arm64_big_sur:  "5111c89d9f0acd511199a0af266b1072815e5b3f461c6a8aa290ed40f92b114f"
+    sha256 ventura:        "bc9691a512544fe30564f491a9614cce6d52311295d4363a3fc615364db9b885"
     sha256 monterey:       "05f147c5f813f5f5d9a4649a9d9b4489e54f9a0e682a006a8f1184131f3e0f1e"
     sha256 big_sur:        "cb5bf4c299a6a98cd41bc9ecc7af308b2058f97ac106268a125ee9df7d1c9479"
     sha256 x86_64_linux:   "72e8abefaf49589c435b0df04e56e2aefce36efaa149e96bbc4d5360230a48f8"
