@@ -1,4 +1,5 @@
 name: Dispatch build bottle
+run-name: Build bottle of ${{ inputs.formula }} on ${{ inputs.runner }}
 on:
   workflow_dispatch:
     inputs:
@@ -11,12 +12,14 @@ on:
       timeout:
         description: "Build timeout (in minutes, default: 180 minutes)"
         default: "180"
-        required: true
+        required: false
       issue:
         description: Issue number, where comment on failure would be posted
         required: false
       upload:
-        description: "Whether to upload built bottles or not (default: false)"
+        description: "Upload built bottles? (default: false)"
+        type: boolean
+        default: false
         required: false
 env:
   HOMEBREW_DEVELOPER: 1
@@ -69,15 +72,15 @@ jobs:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
-      - name: ${{github.event.inputs.formula}}
+      - name: ${{inputs.formula}}
         id: print_details
         run: |
-          echo sender=${{github.event.sender.login}}
-          echo formula=${{github.event.inputs.formula}}
-          echo runner=${{github.event.inputs.runner}}
-          echo timeout=${{github.event.inputs.timeout}}
-          echo issue=${{github.event.inputs.issue}}
-          echo upload=${{github.event.inputs.upload}}
+          echo sender='${{github.event.sender.login}}'
+          echo formula='${{inputs.formula}}'
+          echo runner='${{inputs.runner}}'
+          echo timeout='${{inputs.timeout}}'
+          echo issue='${{inputs.issue}}'
+          echo upload='${{inputs.upload}}'
 
       - name: Set environment variables
         if: runner.os == 'macOS'
@@ -92,11 +95,18 @@ jobs:
 
       - run: brew test-bot --only-setup
 
-      - name: Run brew test-bot --only-formulae --keep-old --only-json-tab --skip-online-checks --skip-dependents --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{github.event.inputs.formula}}
+      - name: Run brew test-bot --only-formulae --keep-old --only-json-tab --skip-online-checks --skip-dependents ${{inputs.formula}}
         run: |
           mkdir bottles
           cd bottles
-          brew test-bot --only-formulae --keep-old --only-json-tab --skip-online-checks --skip-dependents ${{github.event.inputs.formula}}
+          brew test-bot \
+                      --only-formulae \
+                      --keep-old \
+                      --only-json-tab \
+                      --skip-online-checks \
+                      --skip-dependents \
+                      --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" \
+                      '${{inputs.formula}}'
 
       - name: Failures summary for brew test-bot --only-formulae
         if: always()
