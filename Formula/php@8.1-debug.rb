@@ -10,6 +10,7 @@ class PhpAT81Debug < Formula
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_monterey: "8ef0014e2a067029e5f3d0c1beb39376b48435cb5c664234e01ea959bb4e9763"
     sha256 arm64_big_sur:  "e9b1ca44fe231076bc6b89a853bc752436e3d1129c107bbe37ff9f2737c11f5f"
+    sha256 ventura:        "7af9f8edfe45e2d76b5e404942c6f7252295245213adcc88c49d0bd2c8fac1ef"
     sha256 monterey:       "835c4c6454649d11d9f12f8b9551353bc0493b405d644d614ec3efdd998bd143"
     sha256 big_sur:        "059564dce9491a44eeac1431a667bb55fe171724bbdd3e6a8ddfed1ec706948b"
     sha256 x86_64_linux:   "64cf86d3881069a01ff7331dbd75f74fc51aef56cfcb08bf93fdd0f267d8794a"
