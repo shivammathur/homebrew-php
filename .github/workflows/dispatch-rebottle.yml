@@ -30,7 +30,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: macos-12
+          - runner: macos-13-xl
+          - runner: macos-12-xl
           - runner: macos-11
           - runner: macos-12-arm64
           - runner: macos-11-arm64
