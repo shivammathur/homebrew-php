@@ -16,6 +16,7 @@ class Php < Formula
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_monterey: "9530ad74861235554f10ae158462128753db951114c94ea0fcb59db555db9d4f"
     sha256 arm64_big_sur:  "b1959f8c1b303a841129f244b76619a08b299ad47cdde7f9d212a7b0d3230a3a"
+    sha256 ventura:        "4bfa329e6537ce696521931d11a531708a22b3eb03a6771066b0d81c46f7e331"
     sha256 monterey:       "498ea8f65b81f0b3e9a8c732d1f9261d282cf2f77b4298bd312afeef49e0f484"
     sha256 big_sur:        "3e74734d0d2187423acb103b751c6ab9fbe622d57179739ad05631527d3b1b6b"
     sha256 x86_64_linux:   "f851d33b57eba22f035d9cb9da1c0837bc93d85eadd3524a52fc8ae2c4d217a5"
