@@ -11,6 +11,7 @@ class PhpAT83 < Formula
     rebuild 181
     sha256 arm64_monterey: "9acca29882d04db362a7e4b658049cdcbad24b6846ab3e71785f7db1e3604da4"
     sha256 arm64_big_sur:  "5fdad017735819c564f221e7c3b2ee712af572e0b238110219b4f62a2ef0a359"
+    sha256 ventura:        "e4f1cf98a82496505a0c76a45e14ea5057e977a0a4035b241869023ec40cb64f"
     sha256 monterey:       "4a45ff5da0b0f74573f09ac522d92eae5a00dba1b82c462bb8e8e82aa5dd70a7"
     sha256 big_sur:        "5a88b950533587f5e38885f5776adf7405611add1ffd5db8ab2265b843b38bbe"
     sha256 x86_64_linux:   "e3eef07316f5ccf8fdcebcf740982f8122a4a27958e347bb9138dc9874b8ee34"
