@@ -6,6 +6,7 @@ class PhpDebug < Formula
   mirror "https://fossies.org/linux/www/php-8.2.5.tar.xz"
   sha256 "800738c359b7f1e67e40c22713d2d90276bc85ba1c21b43d99edd43c254c5f76"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
