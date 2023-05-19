@@ -3,8 +3,9 @@ class PhpAT81 < Formula
   homepage "https://www.php.net/"
   url "https://www.php.net/distributions/php-8.1.19.tar.xz"
   mirror "https://fossies.org/linux/www/php-8.1.19.tar.xz"
-  sha256 "2126b4b340090282423dd9eeb68a510be8ebb3275b7326c009775bfda3aa848b"
+  sha256 "f42f0e93467415b2d30aa5b7ac825f0079a74207e0033010383cdc1e13657379"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
