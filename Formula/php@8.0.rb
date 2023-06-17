@@ -6,6 +6,7 @@ class PhpAT80 < Formula
   mirror "https://fossies.org/linux/www/php-8.0.29.tar.xz"
   sha256 "14db2fbf26c07d0eb2c9fab25dbde7e27726a3e88452cca671f0896bbb683ca9"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
