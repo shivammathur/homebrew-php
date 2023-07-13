@@ -1,11 +1,11 @@
 class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/40439039c224bb8cdebd1b7b3d03b8cc11e7cce7.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/7424bc30ea6ee2385f843dfb23f843b551008d17.tar.gz"
   version "7.4.33"
-  sha256 "f3406242ca682e9d694e9dea6ae5f7322134156089584fb1232269526650db4a"
+  sha256 "71139f37f15b8172db13fbebda91829c305d506787e0defd090044ce92c0231e"
   license "PHP-3.01"
-  revision 3
+  revision 4
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -47,7 +47,7 @@ class PhpAT74 < Formula
   depends_on "libzip"
   depends_on "oniguruma"
   depends_on "openldap"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   depends_on "pcre2"
   depends_on "sqlite"
   depends_on "tidy-html5"
@@ -214,7 +214,7 @@ class PhpAT74 < Formula
     end
 
     # Use OpenSSL cert bundle
-    openssl = Formula["openssl@1.1"]
+    openssl = Formula["openssl@3"]
     %w[development production].each do |mode|
       inreplace "php.ini-#{mode}", /; ?openssl\.cafile=/,
         "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
