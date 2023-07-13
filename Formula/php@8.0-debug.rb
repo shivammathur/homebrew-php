@@ -6,7 +6,7 @@ class PhpAT80Debug < Formula
   mirror "https://fossies.org/linux/www/php-8.0.29.tar.xz"
   sha256 "14db2fbf26c07d0eb2c9fab25dbde7e27726a3e88452cca671f0896bbb683ca9"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -46,7 +46,7 @@ class PhpAT80Debug < Formula
   depends_on "libzip"
   depends_on "oniguruma"
   depends_on "openldap"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   depends_on "pcre2"
   depends_on "sqlite"
   depends_on "tidy-html5"
@@ -63,6 +63,16 @@ class PhpAT80Debug < Formula
   on_macos do
     # PHP build system incorrectly links system libraries
     patch :DATA
+  end
+
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/php-src-backports/2bcb0b/patches/0002-Add-minimal-OpenSSL-3.0-patch-PHP8.0.patch"
+    sha256 "8c359c0b0cc63dc6779a4fb1b2ba5ca555eb60e962013123dcb1239aef5cee9a"
+  end
+
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/php-src-backports/2bcb0b/patches/0003-Fix-bug-79589-ssl3_read_n-unexpected-eof-while-reading-PHP8.0.patch"
+    sha256 "3383d1881379827e02b42842367666725f4f54f4364d937c6acb0ee67bce84a2"
   end
 
   def install
@@ -213,7 +223,7 @@ class PhpAT80Debug < Formula
     end
 
     # Use OpenSSL cert bundle
-    openssl = Formula["openssl@1.1"]
+    openssl = Formula["openssl@3"]
     %w[development production].each do |mode|
       inreplace "php.ini-#{mode}", /; ?openssl\.cafile=/,
         "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
