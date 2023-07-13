@@ -1,11 +1,11 @@
 class PhpAT56Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/e335ce1458e12062082ad9f736427b718e5efcc2.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/7b23b9111203a96db10f8da71dccb2285d872d8c.tar.gz"
   version "5.6.40"
-  sha256 "0af841c702c2390d1027b619b616a0ab68b906c7314fbbe07c6cae24925faa69"
+  sha256 "f63340f5ed259c1ed1efcc2c935dee875c77f2ffb778bc11ca2572e099108451"
   license "PHP-3.01"
-  revision 8
+  revision 9
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -45,7 +45,7 @@ class PhpAT56Debug < Formula
   depends_on "libtool"
   depends_on "libzip"
   depends_on "openldap"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   depends_on "pcre"
   depends_on "sqlite"
   depends_on "tidy-html5"
@@ -169,7 +169,7 @@ class PhpAT56Debug < Formula
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
       --with-mysql=mysqlnd
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+      --with-openssl=#{Formula["openssl@3"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
@@ -219,7 +219,7 @@ class PhpAT56Debug < Formula
     end
 
     # Use OpenSSL cert bundle
-    openssl = Formula["openssl@1.1"]
+    openssl = Formula["openssl@3"]
     %w[development production].each do |mode|
       inreplace "php.ini-#{mode}", /; ?openssl\.cafile=/,
         "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
