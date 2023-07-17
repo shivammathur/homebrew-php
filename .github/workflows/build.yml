@@ -203,11 +203,6 @@ jobs:
 
       - run: brew test-bot --only-setup
 
-      - name: Test with old brew commit
-        run: |
-          git -C $(brew --repo) fetch origin 9f9ae1edeb07d0e7790f18fd540ca76228a3eec2
-          git -C $(brew --repo) reset --hard 9f9ae1edeb07d0e7790f18fd540ca76228a3eec2
-
       - name: Run brew test-bot ${{ needs.set-environment.outputs.test-bot-formulae-args }}
         id: brew-test-bot-formulae
         run: |
