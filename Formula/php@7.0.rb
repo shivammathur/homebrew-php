@@ -348,10 +348,8 @@ class PhpAT70 < Formula
       "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
-    if OS.mac?
-      assert_includes MachO::Tools.dylibs("#{bin}/php"),
-              "#{Formula["libpq"].opt_lib}/libpq.5.dylib"
-    end
+    assert_includes (bin/"php").dynamically_linked_libraries,
+                    (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
     system "#{bin}/phpdbg", "-V"
