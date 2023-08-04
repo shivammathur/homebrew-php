@@ -8,7 +8,7 @@ get_release() {
 
 get_support_state() {
   local formula=$1
-  if grep -q 'shivammathur/php-src-backports' ./Formula/"$formula".rb; then
+  if grep -Eq '^  url.*shivammathur/php-src-backports' ./Formula/"$formula".rb; then
     echo 'backports'
   elif grep -q 'php.net/distributions' ./Formula/"$formula".rb; then
     echo 'active'
