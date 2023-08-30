@@ -14,7 +14,7 @@
     <img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555">
   </a>
   <a href="https://github.com/shivammathur/homebrew-php/tree/master/Formula" title="Formulae for PHP versions">
-    <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.3-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
+    <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.4-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
   </a>
 </p>
 <p align="center">
@@ -43,10 +43,11 @@
 | PHP 8.1       | `php@8.1`          | `php@8.1-debug`                |
 | PHP 8.2       | `php` or `php@8.2` | `php-debug` or `php@8.2-debug` |
 | PHP 8.3.0-dev | `php@8.3`          | `php@8.3-debug`                |
+| PHP 8.4.0-dev | `php@8.4`          | `php@8.4-debug`                |
 
 ### Debug versions
 
-For each PHP version there is an extra formula with debug symbols enabled. This version can be used when building
+For each PHP version, there is an extra formula with debug symbols enabled. This version can be used when building
 or debugging PHP extensions and are not recommended for production usage.
 
 ## OS Support
