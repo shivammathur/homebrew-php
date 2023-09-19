@@ -9,6 +9,7 @@ class PhpAT83Debug < Formula
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     rebuild 252
+    sha256 arm64_ventura:  "b23d14c751dd4095e22fe9997a5ffe48f5a2ad0c4c9b373383a50e7cd844808c"
     sha256 arm64_monterey: "4a1fd3706cc56afde89fffa85042fbd1542710107a4d9fdfd7de84a8ecddae31"
     sha256 arm64_big_sur:  "da4e8b08994ac26aababca15329ec950e017fd7140f53ef77921563043abc6a7"
     sha256 ventura:        "d17bfab639083ad5669c5445501a4f0a538a801c7a8f0b6a03616c1010928f11"
