@@ -67,6 +67,9 @@ class PhpAT73 < Formula
   end
 
   def install
+    # Work around configure issues with Xcode 15
+    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
