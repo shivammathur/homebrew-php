@@ -166,6 +166,7 @@ jobs:
     strategy:
       matrix:
         include:
+          - runner: 'macos-13-arm64'
           - runner: 'macos-12-arm64'
           - runner: 'macos-11-arm64'
           - runner: 'macos-13'
