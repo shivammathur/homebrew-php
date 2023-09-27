@@ -58,6 +58,7 @@ or debugging PHP extensions and are not recommended for production usage.
 |macOS Big Sur|`x86_64`, `arm64`|
 |macOS Monterey|`x86_64`, `arm64`|
 |macOS Ventura|`x86_64`, `arm64`|
+|macOS Sonoma|`x86_64`, `arm64`|
 
 ## Usage
 
