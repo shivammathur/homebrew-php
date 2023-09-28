@@ -32,10 +32,9 @@ jobs:
         include:
           - runner: macos-13
           - runner: macos-12
-          - runner: macos-11
+          - runner: macos-14-arm64
           - runner: macos-13-arm64
           - runner: macos-12-arm64
-          - runner: macos-11-arm64
           - runner: ubuntu-latest
             container:
               image: homebrew/ubuntu18.04:latest
