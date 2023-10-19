@@ -123,6 +123,7 @@ class PhpAT84Debug < Formula
       --enable-calendar
       --enable-dba
       --enable-debug
+      --enable-embed
       --enable-exif
       --enable-ftp
       --enable-fpm
