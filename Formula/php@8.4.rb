@@ -1,9 +1,9 @@
 class PhpAT84 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/6b73fcc2b3cfaa134c5c779d0cd39a513bb86b14.tar.gz?commit=6b73fcc2b3cfaa134c5c779d0cd39a513bb86b14"
+  url "https://github.com/php/php-src/archive/8fc3615a7a1757953e044682edfad3c99ba5ef02.tar.gz?commit=8fc3615a7a1757953e044682edfad3c99ba5ef02"
   version "8.4.0"
-  sha256 "8b51f09cd770a7769ed6dd02776e182c525c158bcb621be093e76132bbc5a3b6"
+  sha256 "141936e71ab9a7d7509b61d307ca95142cb8246f97ca3583192880dfa6a80140"
   license "PHP-3.01"
 
   bottle do
@@ -28,6 +28,7 @@ class PhpAT84 < Formula
   depends_on "argon2"
   depends_on "aspell"
   depends_on "autoconf"
+  depends_on "capstone"
   depends_on "curl"
   depends_on "freetds"
   depends_on "gd"
@@ -143,6 +144,7 @@ class PhpAT84 < Formula
       --enable-sysvshm
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
+      --with-capstone
       --with-curl
       --with-external-gd
       --with-external-pcre
