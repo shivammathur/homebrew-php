@@ -24,12 +24,12 @@ for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib 
   if ! [ -d "$formula_cellar"/lib ]; then
     continue
   fi
-  curl -o "$core_repo/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/"$prefix"/"$formula".rb
+  curl -o "$core_repo/Formula/"$prefix"/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/"$prefix"/"$formula".rb
   find "$formula_cellar"/lib -maxdepth 1 -name \*.dylib -print0 | xargs -I{} -0 cp -a {} /tmp/libs/"$formula"/
 done
 
 # Get updated formulae and reinstall them, and update brew.
-IFS=" " read -r -a formulae <<< "$(git -C "$core_repo" diff --name-only | cut -d '/' -f 2 | sed -e 's/\.[^.]*$//' | tr '\n' ' ')"
+IFS=" " read -r -a formulae <<< "$(git -C "$core_repo" diff --name-only | cut -d '/' -f 3 | sed -e 's/\.[^.]*$//' | tr '\n' ' ')"
 git -C "$core_repo" add . && git -C "$core_repo" stash && git -C "$core_repo" pull origin master
 git -C "$brew_repo" pull origin master
 brew reinstall "${formulae[@]}" || true
