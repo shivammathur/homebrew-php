@@ -22,8 +22,8 @@ jobs:
           RUNNER_LIST: ${{ github.event.inputs.runner || env.RUNNER_LIST }}
         run: |
           runner_json_array=()
-          IFS=' ' read -r -a runner_json_array <<<"${RUNNER_LIST:?}"
-          for runner in "${runner_json_array[@]}"; do
+          IFS=' ' read -r -a runner_array <<<"${RUNNER_LIST:?}"
+          for runner in "${runner_array[@]}"; do
             runner_json_array+=("{\"runner\": \"$runner\"}")
           done
           echo "runner_matrix={\"include\":[$(echo "${runner_json_array[@]}" | sed -e 's|} {|}, {|g')]}"; >> "$GITHUB_OUTPUT"
