@@ -5,6 +5,7 @@ class PhpAT81 < Formula
   mirror "https://fossies.org/linux/www/php-8.1.25.tar.xz"
   sha256 "66fdba064aa119b1463a7969571d42f4642690275d8605ab5149bcc5107e2484"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"

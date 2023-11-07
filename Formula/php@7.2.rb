@@ -5,11 +5,10 @@ class PhpAT72 < Formula
   version "7.2.34"
   sha256 "e1b87d268ac8aadb4e25df3feeb4bf4c6ced4b123ae99f66a926b94ae557ecff"
   license "PHP-3.01"
-  revision 9
+  revision 10
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
     sha256 arm64_sonoma:   "20f88a5c99fa6224a824afe1d8d306db5b0d05fd3e06eb36563d6292490ce37e"
     sha256 arm64_ventura:  "132565c735e5857a836ed8a0fe41b39d79bf6f9cf7da0221d948ffb4efb88c99"
     sha256 arm64_monterey: "73cab49c3556cffd310ddb0cc526afca03220395c848b179e3ec0ed0ccf6bf40"
