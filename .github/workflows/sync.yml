@@ -26,7 +26,7 @@ jobs:
           for runner in "${runner_array[@]}"; do
             runner_json_array+=("{\"runner\": \"$runner\"}")
           done
-          echo "runner_matrix={\"include\":[$(echo "${runner_json_array[@]}" | sed -e 's|} {|}, {|g')]}"; >> "$GITHUB_OUTPUT"
+          echo "runner_matrix={\"include\":[$(echo "${runner_json_array[@]}" | sed -e 's|} {|}, {|g')]}" >> "$GITHUB_OUTPUT"
   sync:
     needs: get-matrix
     runs-on: ${{ matrix.runner }}
