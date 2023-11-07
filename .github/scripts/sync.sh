@@ -18,12 +18,13 @@ brew install php 2>/dev/null || true
 # Update dependency formulae
 for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libavif libffi libpq libsodium libtiff libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
-  sudo cp "$core_repo/Formula/$formula.rb" /tmp/formulae/
+  [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
+  sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
   formula_cellar="$(brew info "$formula" | grep "$brew_cellar" | cut -d ' ' -f 1 | tail -n 1)"
   if ! [ -d "$formula_cellar"/lib ]; then
     continue
   fi
-  curl -o "$core_repo/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/"$formula".rb
+  curl -o "$core_repo/Formula/$formula.rb" -sL https://raw.githubusercontent.com/Homebrew/homebrew-core/master/Formula/"$prefix"/"$formula".rb
   find "$formula_cellar"/lib -maxdepth 1 -name \*.dylib -print0 | xargs -I{} -0 cp -a {} /tmp/libs/"$formula"/
 done
 
@@ -37,13 +38,14 @@ brew reinstall "${formulae[@]}" || true
 rm -f "$deps_file"
 touch "$deps_file"
 for formula in "${formulae[@]}"; do
+  [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   formula_cellar="$(brew info "$formula" | grep "$brew_cellar" | cut -d ' ' -f 1 | tail -n 1)"
   if ! [ -d "$formula_cellar"/lib ]; then
     continue
   fi
   printf "\n--- %s ---\n" "$formula"
   old_build_info=$(grep -Eo "(^  revision|^    rebuild) [0-9]+" -Eo /tmp/formulae/"$formula".rb | tr -d ' \n')
-  new_build_info=$(grep -Eo "(^  revision|^    rebuild) [0-9]+" -Eo "$core_repo/Formula/$formula.rb" | tr -d ' \n')
+  new_build_info=$(grep -Eo "(^  revision|^    rebuild) [0-9]+" -Eo "$core_repo/Formula/$prefix/$formula.rb" | tr -d ' \n')
   old_hash=$(echo "$old_build_info $(find /tmp/libs/"$formula"/ -maxdepth 1 -name '*.dylib' -exec basename {} \;)" | openssl sha256)
   new_hash=$(echo "$new_build_info $(find "$formula_cellar"/lib -maxdepth 1 -name '*.dylib' -exec basename {} \;)" | openssl sha256)
   echo "old hash: $old_hash"
