@@ -2,11 +2,10 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.2.12.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.12.tar.xz"
-  sha256 "e1526e400bce9f9f9f774603cfac6b72b5e8f89fa66971ebc3cc4e5964083132"
+  url "https://www.php.net/distributions/php-8.3.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.0.tar.xz"
+  sha256 "1db84fec57125aa93638b51bb2b15103e12ac196e2f960f0d124275b2687ea54"
   license "PHP-3.01"
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -98,7 +97,7 @@ class Php < Formula
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
@@ -106,8 +105,7 @@ class Php < Formula
     if OS.mac?
       ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
       ENV["SASL_LIBS"] = "-lsasl2"
-    end
-    if OS.linux?
+    else
       ENV["SQLITE_CFLAGS"] = "-I#{Formula["sqlite"].opt_include}"
       ENV["SQLITE_LIBS"] = "-lsqlite3"
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
@@ -115,8 +113,11 @@ class Php < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = ""
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
+
+    # `_www` only exists on macOS.
+    fpm_user = OS.mac? ? "_www" : "www-data"
+    fpm_group = OS.mac? ? "_www" : "www-data"
 
     args = %W[
       --prefix=#{prefix}
@@ -151,8 +152,8 @@ class Php < Formula
       --with-external-gd
       --with-external-pcre
       --with-ffi
-      --with-fpm-user=_www
-      --with-fpm-group=_www
+      --with-fpm-user=#{fpm_user}
+      --with-fpm-group=#{fpm_group}
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
@@ -166,7 +167,7 @@ class Php < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2=#{Formula["argon2"].opt_prefix}
+      --with-password-argon2
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
@@ -188,8 +189,7 @@ class Php < Formula
       args << "--enable-dtrace"
       args << "--with-ldap-sasl"
       args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
-    end
-    if OS.linux?
+    else
       args << "--disable-dtrace"
       args << "--without-ldap-sasl"
       args << "--without-ndbm"
