@@ -41,8 +41,8 @@
 | PHP 7.4       | `php@7.4`          | `php@7.4-debug`                |
 | PHP 8.0       | `php@8.0`          | `php@8.0-debug`                |
 | PHP 8.1       | `php@8.1`          | `php@8.1-debug`                |
-| PHP 8.2       | `php` or `php@8.2` | `php-debug` or `php@8.2-debug` |
-| PHP 8.3.0-dev | `php@8.3`          | `php@8.3-debug`                |
+| PHP 8.2       | `php@8.2`          | `php@8.2-debug`                |
+| PHP 8.3       | `php` or `php@8.3` | `php-debug` or `php@8.3-debug` |
 | PHP 8.4.0-dev | `php@8.4`          | `php@8.4-debug`                |
 
 ### Debug versions
