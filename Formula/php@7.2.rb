@@ -113,8 +113,11 @@ class PhpAT72 < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = ""
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
+
+    # `_www` only exists on macOS.
+    fpm_user = OS.mac? ? "_www" : "www-data"
+    fpm_group = OS.mac? ? "_www" : "www-data"
 
     args = %W[
       --prefix=#{prefix}
@@ -148,8 +151,8 @@ class PhpAT72 < Formula
       --enable-zip
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-curl=#{Formula["curl"].opt_prefix}
-      --with-fpm-user=_www
-      --with-fpm-group=_www
+      --with-fpm-user=#{fpm_user}
+      --with-fpm-group=#{fpm_group}
       --with-freetype-dir=#{Formula["freetype"].opt_prefix}
       --with-gd
       --with-gettext=#{Formula["gettext"].opt_prefix}
@@ -192,9 +195,7 @@ class PhpAT72 < Formula
       args << "--with-ndbm#{headers_path}"
       args << "--with-xsl#{headers_path}"
       args << "--with-zlib#{headers_path}"
-    end
-
-    if OS.linux?
+    else
       args << "--disable-dtrace"
       args << "--with-zlib=#{Formula["zlib"].opt_prefix}"
       args << "--with-bzip2=#{Formula["bzip2"].opt_prefix}"
