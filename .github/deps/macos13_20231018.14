@@ -1,4 +1,6 @@
+gettext
 glib
 gmp
 libavif
+libpq
 libsodium
