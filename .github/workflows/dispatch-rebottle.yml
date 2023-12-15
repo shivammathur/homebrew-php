@@ -99,7 +99,7 @@ jobs:
           rm bottles/bottle_output.txt
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           if-no-files-found: ignore
           name: logs
@@ -121,7 +121,7 @@ jobs:
           echo "count=$count" | sudo tee -a "$GITHUB_OUTPUT"
       - name: Upload bottles to GitHub Actions
         if: always() && steps.bottles.outputs.count > 0
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: bottles
           path: ${{matrix.workdir || github.workspace}}/bottles
@@ -162,7 +162,7 @@ jobs:
           test-bot: false
 
       - name: Download bottles from GitHub Actions
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         with:
           name: bottles
           path: ~/bottles/
