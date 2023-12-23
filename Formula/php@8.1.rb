@@ -1,9 +1,9 @@
 class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.1.26.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.26.tar.xz"
-  sha256 "17f87133596449327451ad4b8d9911bfaea59ff5109f3a6f2bb679f967a8ea0f"
+  url "https://www.php.net/distributions/php-8.1.27.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.27.tar.xz"
+  sha256 "479e65c3f05714d4aace1370e617d78e49e996ec7a7579a5be47535be61f0658"
   license "PHP-3.01"
 
   bottle do
@@ -55,12 +55,6 @@ class PhpAT81 < Formula
   on_macos do
     # PHP build system incorrectly links system libraries
     patch :DATA
-  end
-
-  # Remove in next PHP 8.1 patch release.
-  patch do
-    url "https://github.com/php/php-src/commit/6a76e5d0a2dcf46b4ab74cc3ffcbfeb860c4fdb3.patch?full_index=1"
-    sha256 "9960993a3b6759b8461fc6a181cc4dfdf93eb5da0453037b0b78dfecdeff2c4f"
   end
 
   def install
