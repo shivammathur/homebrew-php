@@ -92,6 +92,17 @@ jobs:
           - 'php@8.1-debug'
           - 'php@8.2-debug'
           - 'php@8.4-debug'
+          - 'php-debug-zts'
+          - 'php@5.6-debug-zts'
+          - 'php@7.0-debug-zts'
+          - 'php@7.1-debug-zts'
+          - 'php@7.2-debug-zts'
+          - 'php@7.3-debug-zts'
+          - 'php@7.4-debug-zts'
+          - 'php@8.0-debug-zts'
+          - 'php@8.1-debug-zts'
+          - 'php@8.2-debug-zts'
+          - 'php@8.4-debug-zts'
     steps:
       - name: Print details
         if: github.event_name == 'workflow_dispatch'
