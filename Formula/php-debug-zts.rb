@@ -14,6 +14,12 @@ class PhpDebugZts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_sonoma:   "9428670710cb85e0dcae83b89177ddd736627d577e45929190c9f0da03924f38"
+    sha256 arm64_ventura:  "a9a5a4e4d42b8c0eb469d334cbbf2ae92264d4de63b91c0dbbda84b2e0d27dd7"
+    sha256 arm64_monterey: "6e9e10b60deab0db46ca3aba47f785a54418a8eb18124174f51a99b7cb782733"
+    sha256 ventura:        "1cc3f48a58ccaa0763194d76d3e52cc80b87207ff0f7d086a8f99d84b30248eb"
+    sha256 monterey:       "1111a24ed1bbce2d8c198e9e97ecd6736367cc52e159bf821d5d62f2a4902f41"
+    sha256 x86_64_linux:   "26009abd0ced4b8dc0286b0d6d0557205aec174e65a8a2961bddef6c464b07ba"
   end
 
   head do
