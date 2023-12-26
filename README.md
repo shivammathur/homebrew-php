@@ -31,24 +31,23 @@
 
 ## PHP Support
 
-| PHP Version   | Formula            | Debug version                  |
-|---------------|--------------------|--------------------------------|
-| PHP 5.6       | `php@5.6`          | `php@5.6-debug`                |
-| PHP 7.0       | `php@7.0`          | `php@7.0-debug`                |
-| PHP 7.1       | `php@7.1`          | `php@7.1-debug`                |
-| PHP 7.2       | `php@7.2`          | `php@7.2-debug`                |
-| PHP 7.3       | `php@7.3`          | `php@7.3-debug`                |
-| PHP 7.4       | `php@7.4`          | `php@7.4-debug`                |
-| PHP 8.0       | `php@8.0`          | `php@8.0-debug`                |
-| PHP 8.1       | `php@8.1`          | `php@8.1-debug`                |
-| PHP 8.2       | `php@8.2`          | `php@8.2-debug`                |
-| PHP 8.3       | `php` or `php@8.3` | `php-debug` or `php@8.3-debug` |
-| PHP 8.4.0-dev | `php@8.4`          | `php@8.4-debug`                |
+| PHP Version   | NTS Formula        | Debug Formula                  | ZTS Formula                | Debug ZTS Formula                      |
+|---------------|--------------------|--------------------------------|----------------------------|----------------------------------------|
+| PHP 5.6       | `php@5.6`          | `php@5.6-debug`                | `php@5.6-zts`              | `php@5.6-debug-zts`                    |
+| PHP 7.0       | `php@7.0`          | `php@7.0-debug`                | `php@7.0-zts`              | `php@7.0-debug-zts`                    |
+| PHP 7.1       | `php@7.1`          | `php@7.1-debug`                | `php@7.1-zts`              | `php@7.1-debug-zts`                    |
+| PHP 7.2       | `php@7.2`          | `php@7.2-debug`                | `php@7.2-zts`              | `php@7.2-debug-zts`                    |
+| PHP 7.3       | `php@7.3`          | `php@7.3-debug`                | `php@7.3-zts`              | `php@7.3-debug-zts`                    |
+| PHP 7.4       | `php@7.4`          | `php@7.4-debug`                | `php@7.4-zts`              | `php@7.4-debug-zts`                    |
+| PHP 8.0       | `php@8.0`          | `php@8.0-debug`                | `php@8.0-zts`              | `php@8.0-debug-zts`                    |
+| PHP 8.1       | `php@8.1`          | `php@8.1-debug`                | `php@8.1-zts`              | `php@8.1-debug-zts`                    |
+| PHP 8.2       | `php@8.2`          | `php@8.2-debug`                | `php@8.2-zts`              | `php@8.2-debug-zts`                    |
+| PHP 8.3       | `php` or `php@8.3` | `php-debug` or `php@8.3-debug` | `php-zts` or `php@8.3-zts` | `php-debug-zts` or `php@8.3-debug-zts` |
+| PHP 8.4.0-dev | `php@8.4`          | `php@8.4-debug`                | `php@8.4-zts`              | `php@8.4-debug-zts`                    |
 
-### Debug versions
-
-For each PHP version, there is an extra formula with debug symbols enabled. This version can be used when building
-or debugging PHP extensions and are not recommended for production usage.
+For each PHP version, we have formulae with thread-safety support `(zts)` and debug symbols support `(debug)` and both `(debug-zts)` as well.
+The formulae with debug symbols can be used when building or debugging PHP extensions and are not recommended for production usage. 
+The formulae with thread-safety support can be used with applications that require multi-threading support.
 
 ## OS Support
 
@@ -105,16 +104,16 @@ brew tap shivammathur/php
 
 > See [PHP Support](#php-support) for available formulae.
 
-- For example, to install `PHP 8.1`:
+- For example, to install `PHP 8.3`:
 
 ```zsh 
-brew install shivammathur/php/php@8.1
+brew install shivammathur/php/php@8.3
 ```
 
 - After installing you have to link it:
 
 ```zsh
-brew link --overwrite --force shivammathur/php/php@8.1
+brew link --overwrite --force shivammathur/php/php@8.3
 ```
 
 - Restart the terminal and test your PHP version:
@@ -127,20 +126,20 @@ php -v
 
 You can upgrade your PHP version to the latest patch release.
 
-For example, to upgrade `PHP 8.1`:
+For example, to upgrade `PHP 8.3`:
 
 ```zsh
-brew upgrade shivammathur/php/php@8.1
+brew upgrade shivammathur/php/php@8.3
 ```
 
 ### Switch between PHP versions
 
 - If you have multiple PHP versions installed, you can switch between them easily.
 
-For example, to switch to `PHP 8.1`:
+For example, to switch to `PHP 8.3`:
 
 ```zsh
-brew link --overwrite --force shivammathur/php/php@8.1
+brew link --overwrite --force shivammathur/php/php@8.3
 ```
 
 - If you get a warning like below, then do as recommended:
@@ -152,8 +151,8 @@ To relink:
 ```
 
 ```zsh
-brew unlink php@8.1
-brew link --overwrite --force shivammathur/php/php@8.1
+brew unlink php@8.3
+brew link --overwrite --force shivammathur/php/php@8.3
 ```
 
 ### Restart your webserver
@@ -185,10 +184,10 @@ sudo chown -R "$(id -un)":"$(id -gn)" $(brew --prefix)
 
 - If PHP is not working after a macOS update. Reinstall PHP along with its dependencies.
 
-For example to reinstall `PHP 8.1` and its dependencies:
+For example to reinstall `PHP 8.3` and its dependencies:
 
 ```zsh
-brew reinstall $(brew deps shivammathur/php/php@8.1) shivammathur/php/php@8.1
+brew reinstall $(brew deps shivammathur/php/php@8.3) shivammathur/php/php@8.3
 ```
 
 - Check if your issue is a Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
