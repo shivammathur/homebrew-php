@@ -1,9 +1,9 @@
 class PhpAT73DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/c6e5a57ed577f9ae3bb4b57a4b7bd09bf7f6a3e6.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/c77ccbdd4695dcfe4a0bfa1708edf17e1da8ed37.tar.gz"
   version "7.3.33"
-  sha256 "047f6a5972a8ca6059dea14441000c196a766676f8a631891851d79331997da6"
+  sha256 "300884e324a6cf970c0c3fa490204e42c17f8eacf1452b4e8e13a13906dc5b22"
   license "PHP-3.01"
 
   bottle do
