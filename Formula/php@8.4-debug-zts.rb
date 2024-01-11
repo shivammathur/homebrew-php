@@ -8,13 +8,13 @@ class PhpAT84DebugZts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 7
-    sha256 arm64_sonoma:   "91e4a9a7dc2bed10ea4a71f6aa90d4c858a1ad06609e72fb9371b1970d7d4701"
-    sha256 arm64_ventura:  "0c6bc401ef3ba49e34c6eb1e6fa098403a9308772d075f9a57910c49e00936b5"
-    sha256 arm64_monterey: "01e4bedcb28824c8fc3bd34bd5a5f334cd58db6dbfba82942645042b861fd458"
-    sha256 ventura:        "224bb8aa3dd5a02cfb121711bef560a325f37e716e1f55167d148645f94a085a"
-    sha256 monterey:       "d8377b92ff23130a8bc22ca7954cb31b980b4f9e1f9b7d82d884b5bcc604b86e"
-    sha256 x86_64_linux:   "9d25877ed2663ecf74f14d290d2edd8fb1f825ddb60053c35bdde44c7634b3bf"
+    rebuild 8
+    sha256 arm64_sonoma:   "f4d3ab278273789add596b246e1414fc831a9d5df12ba3c900888a0746b617b1"
+    sha256 arm64_ventura:  "33ac053e25fd1699bdfef10da3376123cb816c8c427b1beb0101baff37550ee2"
+    sha256 arm64_monterey: "1a209c56bc3bf811d764ce521a29328604f48c2f515c6634b33c02fe1ad239d2"
+    sha256 ventura:        "f001fdd95dda94f08b3db9e99689a099cb76204818566a13a1227ac5c3198616"
+    sha256 monterey:       "65dfbb4fd12ffb84eea4b5b3a3049e32b71c4556b0a613668975a827e7d5c1bb"
+    sha256 x86_64_linux:   "c26dda7bee166e806423f03ed9d30994bcb2eb8fc28d8657e217f61a76ec6cdd"
   end
 
   keg_only :versioned_formula
