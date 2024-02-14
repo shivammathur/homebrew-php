@@ -37,7 +37,7 @@ jobs:
           - runner: macos-12-arm64
           - runner: ubuntu-latest
             container:
-              image: homebrew/ubuntu18.04:latest
+              image: homebrew/ubuntu22.04:latest
               options: --user=linuxbrew
             workdir: /github/home
             timeout: 4320
