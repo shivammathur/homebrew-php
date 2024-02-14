@@ -7,8 +7,11 @@
 <h1 align="center">brew tap shivammathur/php</h1>
 
 <p align="center">
-  <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP">
+  <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP: Builds">
     <img alt="Build status" src="https://github.com/shivammathur/homebrew-php/workflows/Update%20and%20Build%20Formulae/badge.svg">
+  </a>
+  <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP: Tests">
+    <img alt="Test status" src="https://github.com/shivammathur/homebrew-php/actions/workflows/test.yml/badge.svg">
   </a>
   <a href="https://github.com/shivammathur/homebrew-php/blob/master/LICENSE" title="license">
     <img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555">
