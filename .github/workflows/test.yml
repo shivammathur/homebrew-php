@@ -1,0 +1,44 @@
+name: 'Test Formulae'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 7 * * *'
+jobs:
+  run:    
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:      
+        operating-system: [macos-14, macos-13, macos-12]
+        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
+        debug: ['true', 'false']
+        phpts: ['ts', 'nts']
+    name: Test
+    steps:
+    - name: Remove PHP
+      run: brew uninstall --ignore-dependencies php || true
+    - name: Setup PHP
+      env:
+        update: true
+        debug: ${{ matrix.debug }}
+        phpts: ${{ matrix.phpts }}
+      uses: shivammathur/setup-php@verbose
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Test PHP
+      run: |
+        php -r "if(strpos(phpversion(), '${{ matrix.php }}') === false) {throw new Exception('Wrong PHP version Installed');}"
+        php -v && php -m
+    - name: Test PHP service
+      run: |
+        debug=
+        phpts=
+        [[ "${{ matrix.debug }}" = "true" ]] && debug='-debug'
+        [[ "${{ matrix.phpts }}" = "ts" ]] && phpts='-zts'
+        formula="php@${{ matrix.php }}$debug$phpts"
+        brew services start "$formula"
+        brew services list
+        
+        [ "$formula" = "php@8.3$debug$phpts" ] && formula="php$debug$phpts"
+        cat ~/Library/LaunchAgents/homebrew.mxcl."$formula".plist
