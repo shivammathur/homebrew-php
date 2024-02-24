@@ -213,20 +213,13 @@ If you face any issues while using this tap or want to suggest a feature/improve
 
 ## Sponsors
 
-In addition to GitHub Actions, we use [MacStadium](https://www.macstadium.com/opensource/members) and [Scaleway](https://www.scaleway.com/en/about-us/open-source-program) for our CI infrastructure.
+In addition to GitHub Actions, we use [MacStadium](https://www.macstadium.com/opensource/members) for our CI infrastructure.
 
 <a href="https://www.macstadium.com/opensource/members#gh-light-mode-only">
     <img src="https://setup-php.com/sponsors/macstadium.png" alt="Mac Stadium" width="200px">
 </a>
 <a href="https://www.macstadium.com/opensource/members#gh-dark-mode-only">
     <img src="https://setup-php.com/sponsors/macstadium-white.png" alt="Mac Stadium" width="200px">
-</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://www.scaleway.com/en/about-us/open-source-program#gh-light-mode-only">
-    <img src="https://setup-php.com/sponsors/scaleway.png" alt="Scaleway" width="236">
-</a>
-<a href="https://www.scaleway.com/en/about-us/open-source-program#gh-dark-mode-only">
-    <img src="https://setup-php.com/sponsors/scaleway-white.png" alt="Scaleway" width="236">
 </a>
 
 This project is generously supported by many other users and organisations via [GitHub Sponsors](https://github.com/sponsors/shivammathur).
