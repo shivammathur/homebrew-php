@@ -15,8 +15,10 @@ git config --local pull.rebase true
 # Install PHP if not found, this will install all the dependencies
 brew install php 2>/dev/null || true
 
+IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
+
 # Update dependency formulae
-for formula in apr apr-util argon2 aspell autoconf curl freetds gd gettext glib gmp icu4c krb5 libavif libffi libpq libsodium libtiff libzip oniguruma openldap openssl@1.1 pcre2 sqlite tidy-html5 unixodbc; do
+for formula in "${deps[@]}"; do
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
