@@ -1,7 +1,7 @@
 name: Sync dependencies for GA
 
 env:
-  RUNNER_LIST: macos-12 macos-13
+  RUNNER_LIST: macos-12 macos-13 macos-14
 
 on:
   workflow_dispatch:
