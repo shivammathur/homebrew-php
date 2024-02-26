@@ -15,10 +15,9 @@ git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
 git config --local user.name BrewTestBot
 git config --local pull.rebase true
 
-IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
+IFS=' ' read -r -a deps <<<"$(brew deps --include-requirements --formula php | tr '\n' ' ')"
 
 # Update dependency formulae
-deps+=("xz")
 brew reinstall "${deps[@]}"
 for formula in "${deps[@]}"; do
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
