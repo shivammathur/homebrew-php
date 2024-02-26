@@ -1,0 +1,45 @@
+name: Sync dependencies for GA
+
+env:
+  RUNNER_LIST: macos-12 macos-13 macos-14
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: Build runner(s) (macOS version or Linux)
+  schedule:
+    - cron: '0 10 * * *'
+jobs:
+  get-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      runner_matrix: ${{ steps.set-matrix.outputs.runner_matrix }}
+    steps:
+      - name: Set Matrix
+        id: set-matrix
+        env:
+          RUNNER_LIST: ${{ github.event.inputs.runner || env.RUNNER_LIST }}
+        run: |
+          runner_json_array=()
+          IFS=' ' read -r -a runner_array <<<"${RUNNER_LIST:?}"
+          for runner in "${runner_array[@]}"; do
+            runner_json_array+=("{\"runner\": \"$runner\"}")
+          done
+          echo "runner_matrix={\"include\":[$(echo "${runner_json_array[@]}" | sed -e 's|} {|}, {|g')]}" >> "$GITHUB_OUTPUT"
+  sync:
+    needs: get-matrix
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix: ${{fromJson(needs.get-matrix.outputs.runner_matrix)}}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: sync
+        run: bash ./.github/scripts/sync.sh
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
