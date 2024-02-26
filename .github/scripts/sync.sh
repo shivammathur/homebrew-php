@@ -12,14 +12,11 @@ git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
 git config --local user.name BrewTestBot
 git config --local pull.rebase true
 
-# Install PHP if not found, this will install all the dependencies
-brew tao shivammathur/php
-brew install shivammathur/php/php 2>/dev/null || true
-
 IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
 
 # Update dependency formulae
 for formula in "${deps[@]}"; do
+  brew install "$formula"
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
