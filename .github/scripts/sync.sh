@@ -13,7 +13,8 @@ git config --local user.name BrewTestBot
 git config --local pull.rebase true
 
 # Install PHP if not found, this will install all the dependencies
-brew install php 2>/dev/null || true
+brew tao shivammathur/php
+brew install shivammathur/php/php 2>/dev/null || true
 
 IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
 
