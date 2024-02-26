@@ -5,7 +5,7 @@ class PhpAT74 < Formula
   version "7.4.33"
   sha256 "7c9de3f869a5ccae677b6a83582d5e5d0c825af22096c4e924c10abe118315f4"
   license "PHP-3.01"
-  revision 5
+  revision 6
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
