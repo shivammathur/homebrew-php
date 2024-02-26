@@ -53,6 +53,7 @@ for formula in "${formulae[@]}"; do
   new_hash=$(echo "$new_build_info $(find "$formula_cellar"/lib -maxdepth 1 -name '*.dylib' -exec basename {} \;)" | openssl sha256)
   echo "old hash: $old_hash"
   echo "new hash: $new_hash"
+  sudo mkdir -p .github/deps
   if [ "$old_hash" != "$new_hash" ]; then
     echo "$formula" | sudo tee -a "$deps_file"
   fi
