@@ -1,7 +1,10 @@
 export HOMEBREW_CHANGE_ARCH_TO_ARM=1
-export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_DEVELOPER=1
 export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+export HOMEBREW_NO_INSTALL_FROM_API=1
 brew_cellar=$(brew --cellar)
 brew_repo="$(brew --repository)"
 core_repo="$(brew --repository homebrew/core)"
@@ -16,7 +19,7 @@ IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
 
 # Update dependency formulae
 for formula in "${deps[@]}"; do
-  brew install "$formula"
+  brew reinstall "$formula"
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
