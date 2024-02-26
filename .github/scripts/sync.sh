@@ -18,8 +18,9 @@ git config --local pull.rebase true
 IFS=' ' read -r -a deps <<<"$(brew deps --formula php | tr '\n' ' ')"
 
 # Update dependency formulae
+deps+=("xz")
+brew reinstall "${deps[@]}"
 for formula in "${deps[@]}"; do
-  brew reinstall "$formula"
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
