@@ -1,11 +1,10 @@
 class PhpAT84DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/a74da53fc4b0b075cf762cb37d71b1e22c663c64.tar.gz?commit=a74da53fc4b0b075cf762cb37d71b1e22c663c64"
+  url "https://github.com/php/php-src/archive/dce6ed3199a53f66a513359bfe026dfd4894f706.tar.gz?commit=dce6ed3199a53f66a513359bfe026dfd4894f706"
   version "8.4.0"
-  sha256 "f81c0c45824bb2ca2aeb9a3a4a7cdef1fd3e0a5fa775477448aaabed81c9cb91"
+  sha256 "4f9b262fe44f46061a46dfb250ec28a827a97f3526b21ebc2b5c4175db0a911c"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
