@@ -20,6 +20,7 @@ IFS=' ' read -r -a deps <<<"$(brew deps --include-requirements --formula php | t
 # Update dependency formulae
 brew reinstall "${deps[@]}"
 for formula in "${deps[@]}"; do
+  [ "$formula" = "openssl@3" ] && continue
   mkdir -p /tmp/libs/"$formula" /tmp/formulae
   [[ ${formula:0:3} == "lib" ]] && prefix=lib || prefix="${formula:0:1}"
   sudo cp "$core_repo/Formula/$prefix/$formula.rb" /tmp/formulae/
