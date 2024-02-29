@@ -1,11 +1,10 @@
 class PhpAT84 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/a74da53fc4b0b075cf762cb37d71b1e22c663c64.tar.gz?commit=a74da53fc4b0b075cf762cb37d71b1e22c663c64"
+  url "https://github.com/php/php-src/archive/a31edaa99b731b7a65ef7872045e20610e9989bb.tar.gz?commit=a31edaa99b731b7a65ef7872045e20610e9989bb"
   version "8.4.0"
-  sha256 "f81c0c45824bb2ca2aeb9a3a4a7cdef1fd3e0a5fa775477448aaabed81c9cb91"
+  sha256 "7399b64e54fd376a131ec8ee58553ba1adb371120c42ab3105ac76a19abe6680"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
