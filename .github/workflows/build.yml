@@ -108,7 +108,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: echo php_source=${{github.event.inputs.php_source}}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -161,7 +161,7 @@ jobs:
       test-bot-formulae-args: ${{ steps.check-labels.outputs.test-bot-formulae-args }}
       test-bot-dependents-args: ${{ steps.check-labels.outputs.test-bot-dependents-args }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check for CI labels
         id: check-labels
         uses: actions/github-script@v6
@@ -321,7 +321,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Add Label"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
