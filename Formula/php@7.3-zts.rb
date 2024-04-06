@@ -74,6 +74,13 @@ class PhpAT73Zts < Formula
     # Work around configure issues with Xcode 15
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
+    # Work around for building with Xcode 15.3
+    if DevelopmentTools.clang_build_version >= 1500
+      ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
+      ENV.append "LDFLAGS", "-lresolv"
+      inreplace "main/reentrancy.c", "readdir_r(dirp, entry)", "readdir_r(dirp, entry, result)"
+    end
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 

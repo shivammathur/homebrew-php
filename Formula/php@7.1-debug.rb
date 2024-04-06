@@ -67,6 +67,13 @@ class PhpAT71Debug < Formula
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
+    # Work around for building with Xcode 15.3
+    if DevelopmentTools.clang_build_version >= 1500
+      ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
+      ENV.append "LDFLAGS", "-lresolv"
+      inreplace "main/reentrancy.c", "readdir_r(dirp, entry)", "readdir_r(dirp, entry, result)"
+    end
+
     # Workaround for https://bugs.php.net/80310
     ENV.append "CFLAGS", "-DU_DEFINE_FALSE_AND_TRUE=1"
     ENV.append "CXXFLAGS", "-DU_DEFINE_FALSE_AND_TRUE=1"
@@ -439,6 +446,24 @@ class PhpAT71Debug < Formula
 end
 
 __END__
+diff --git a/configure.in b/configure.in
+index cd8b8794f0..b72464f020 100644
+--- a/configure.in
++++ b/configure.in
+@@ -60,7 +60,13 @@ AH_BOTTOM([
+ #endif
+
+ #if ZEND_BROKEN_SPRINTF
++#ifdef __cplusplus
++extern "C" {
++#endif
+ int zend_sprintf(char *buffer, const char *format, ...);
++#ifdef __cplusplus
++}
++#endif
+ #else
+ # define zend_sprintf sprintf
+ #endif
 diff --git a/acinclude.m4 b/acinclude.m4
 index 168c465f8d..6c087d152f 100644
 --- a/acinclude.m4

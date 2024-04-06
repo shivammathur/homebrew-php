@@ -67,6 +67,12 @@ class PhpAT74Debug < Formula
   end
 
   def install
+    # Work around for building with Xcode 15.3
+    if DevelopmentTools.clang_build_version >= 1500
+      ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
+      ENV.append "LDFLAGS", "-lresolv"
+    end
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
