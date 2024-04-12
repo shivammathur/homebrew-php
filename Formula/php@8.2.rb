@@ -1,9 +1,9 @@
 class PhpAT82 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.17.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.17.tar.xz"
-  sha256 "1cc4ef733ba58f6557db648012471f1916e5bac316303aa165535bedab08ee35"
+  url "https://www.php.net/distributions/php-8.2.18.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.18.tar.xz"
+  sha256 "44b306fc021e56441f691da6c3108788bd9e450f293b3bc70fcd64b08dd41a50"
   license "PHP-3.01"
 
   bottle do
