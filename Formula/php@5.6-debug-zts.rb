@@ -1,9 +1,9 @@
 class PhpAT56DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/19b4f1903d39f6a8919a73b7d1c0930cd5d89c72.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/bb2ce3eec92a574a46b709ea36604b2564b8c94d.tar.gz"
   version "5.6.40"
-  sha256 "f2bd7d6fdb7dee449dd694c3ead14be7ed0a2d0464f39ec55786354a28c81d6a"
+  sha256 "85e5ebda9e374c7f2970fb79804858ae30c92913c93520848b8cd2e7571aeb7e"
   license "PHP-3.01"
   revision 1
 
