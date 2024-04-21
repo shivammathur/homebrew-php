@@ -433,6 +433,19 @@ class PhpAT84Debug < Formula
 end
 
 __END__
+diff --git a/scripts/php-config.in b/scripts/php-config.in
+index 87c20089bb..879299f9cf 100644
+--- a/scripts/php-config.in
++++ b/scripts/php-config.in
+@@ -11,7 +11,7 @@ lib_dir="@orig_libdir@"
+ includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
+ ldflags="@PHP_LDFLAGS@"
+ libs="@EXTRA_LIBS@"
+-extension_dir="@EXTENSION_DIR@"
++extension_dir='@EXTENSION_DIR@'
+ man_dir=`eval echo @mandir@`
+ program_prefix="@program_prefix@"
+ program_suffix="@program_suffix@"
 diff --git a/build/php.m4 b/build/php.m4
 index 3624a33a8e..d17a635c2c 100644
 --- a/build/php.m4
