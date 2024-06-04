@@ -429,6 +429,28 @@ class PhpAT81Debug < Formula
 end
 
 __END__
+diff --git a/Zend/zend_execute_API.c b/Zend/zend_execute_API.c
+index 1e31934f..49d430c4 100644
+--- a/Zend/zend_execute_API.c
++++ b/Zend/zend_execute_API.c
+@@ -1477,7 +1477,7 @@ static void zend_set_timeout_ex(zend_long seconds, bool reset_signals) /* {{{ */
+ 			t_r.it_value.tv_sec = seconds;
+ 			t_r.it_value.tv_usec = t_r.it_interval.tv_sec = t_r.it_interval.tv_usec = 0;
+ 
+-# if defined(__CYGWIN__) || defined(__PASE__)
++# if defined(__CYGWIN__) || defined(__PASE__) || (defined(__aarch64__) && defined(__APPLE__))
+ 			setitimer(ITIMER_REAL, &t_r, NULL);
+ 		}
+ 		signo = SIGALRM;
+@@ -1541,7 +1541,7 @@ void zend_unset_timeout(void) /* {{{ */
+ 
+ 		no_timeout.it_value.tv_sec = no_timeout.it_value.tv_usec = no_timeout.it_interval.tv_sec = no_timeout.it_interval.tv_usec = 0;
+ 
+-# if defined(__CYGWIN__) || defined(__PASE__)
++# if defined(__CYGWIN__) || defined(__PASE__) || (defined(__aarch64__) && defined(__APPLE__))
+ 		setitimer(ITIMER_REAL, &no_timeout, NULL);
+ # else
+ 		setitimer(ITIMER_PROF, &no_timeout, NULL);
 diff --git a/build/php.m4 b/build/php.m4
 index 3624a33a8e..d17a635c2c 100644
 --- a/build/php.m4
