@@ -5,6 +5,7 @@ class PhpAT82Zts < Formula
   mirror "https://fossies.org/linux/www/php-8.2.20.tar.xz"
   sha256 "4474cc430febef6de7be958f2c37253e5524d5c5331a7e1765cd2d2234881e50"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -56,6 +57,12 @@ class PhpAT82Zts < Formula
   on_macos do
     # PHP build system incorrectly links system libraries
     patch :DATA
+  end
+
+  # Remove with 8.2.21
+  patch do
+    url "https://github.com/php/php-src/commit/955d717e242c3433cdf76fa353831aefae530cab.patch?full_index=1"
+    sha256 "bec8a84c3a00e1defd30cd0d7a89c52b000292be79d6ad49f3bf8ba497f2565e"
   end
 
   def install
