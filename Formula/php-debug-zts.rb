@@ -6,6 +6,7 @@ class PhpDebugZts < Formula
   mirror "https://fossies.org/linux/www/php-8.3.8.tar.xz"
   sha256 "aea358b56186f943c2bbd350c9005b9359133d47e954cfc561385319ae5bb8d7"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -65,6 +66,12 @@ class PhpDebugZts < Formula
   on_macos do
     # PHP build system incorrectly links system libraries
     patch :DATA
+  end
+
+  # Remove with 8.3.9
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/php-builder/595dc3f/config/patches/8.3/0045-method-visibility-issue.patch?full_index=1"
+    sha256 "2947d7ad1a54af20c935ec7d804bb45aec8d9e66b7f6a693a26b1ce0f2ed0a35"
   end
 
   def install
