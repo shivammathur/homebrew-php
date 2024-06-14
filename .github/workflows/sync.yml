@@ -21,12 +21,17 @@ jobs:
         env:
           RUNNER_LIST: ${{ github.event.inputs.runner || env.RUNNER_LIST }}
         run: |
-          runner_json_array=()
-          IFS=' ' read -r -a runner_array <<<"${RUNNER_LIST:?}"
-          for runner in "${runner_array[@]}"; do
-            runner_json_array+=("{\"runner\": \"$runner\"}")
-          done
-          echo "runner_matrix={\"include\":[$(echo "${runner_json_array[@]}" | sed -e 's|} {|}, {|g')]}" >> "$GITHUB_OUTPUT"
+            runner_json_array=""
+            IFS=' ' read -r -a runner_array <<<"${RUNNER_LIST:?}"
+            for runner in "${runner_array[@]}"; do
+                if [[ -z "$runner_json_array" ]]; then
+                    runner_json_array="{\"runner\": \"$runner\"}"
+                else
+                    runner_json_array+=", {\"runner\": \"$runner\"}"
+                fi
+            done
+            echo "runner_matrix={\"include\":[$runner_json_array]}" >> "$GITHUB_OUTPUT"
+
   sync:
     needs: get-matrix
     runs-on: ${{ matrix.runner }}
