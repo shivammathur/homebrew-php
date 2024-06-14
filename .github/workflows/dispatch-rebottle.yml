@@ -62,7 +62,7 @@ jobs:
 
       - name: Set environment variables
         if: runner.os == 'macOS'
-        run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
+        run: echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> "$GITHUB_ENV"
 
       - name: Prepare Container
         if: runner.os == 'Linux'
@@ -116,9 +116,9 @@ jobs:
         if: always()
         run: |
           cd bottles
-          count=$(ls *.json | wc -l | xargs echo -n)
+          count="$(find . -maxdepth 1 -name '*.json' -print | wc -l | xargs echo -n)"
           echo "$count bottles"
-          echo "count=$count" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
       - name: Upload bottles to GitHub Actions
         if: always() && steps.bottles.outputs.count > 0
         uses: actions/upload-artifact@v3

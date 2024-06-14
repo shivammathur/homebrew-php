@@ -150,12 +150,12 @@ jobs:
         if: always()
         run: |
           cd bottles
-          count=$(ls *.json | wc -l | xargs echo -n)
+          count="$(find . -maxdepth 1 -name '*.json' -print | wc -l | xargs echo -n)"
           echo "$count bottles"
-          echo "::set-output name=count::$count"
-          failures=$(ls failed/*.json | wc -l | xargs echo -n)
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          failures="$(find failed -maxdepth 1 -name '*.json' -print | wc -l | xargs echo -n)"
           echo "$failures failed bottles"
-          echo "::set-output name=failures::$failures"
+          echo "failures=$failures" >> "$GITHUB_OUTPUT"
 
       - name: Upload failed bottles
         if: always() && steps.bottles.outputs.failures > 0
@@ -201,7 +201,7 @@ jobs:
       HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
     steps:
       - name: Add brew to PATH
-        run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
+        run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> "$GITHUB_PATH"
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -216,7 +216,7 @@ jobs:
           path: ~/bottles/
 
       - name: Cache gems
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{steps.set-up-homebrew.outputs.gems-path}}
           key: ${{runner.os}}-rubygems-v2-${{steps.set-up-homebrew.outputs.gems-hash}}
