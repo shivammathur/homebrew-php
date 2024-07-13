@@ -1,9 +1,9 @@
 class PhpAT84 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/5586d0c7de00acbfb217e1c6321da918b96ef960.tar.gz?commit=5586d0c7de00acbfb217e1c6321da918b96ef960"
+  url "https://github.com/php/php-src/archive/fb5d64c3002d6a8923e698ac42091e8c65f5e404.tar.gz?commit=fb5d64c3002d6a8923e698ac42091e8c65f5e404"
   version "8.4.0"
-  sha256 "3a1a08ab5159682f1be2cc0b86d33a0e4657ac1657add6cfce2b61c4da2fa6f0"
+  sha256 "460b8af86274b3cc13f923225eb23775f5e023144220ec83af349fe2a19843f9"
   license "PHP-3.01"
   revision 1
 
@@ -65,8 +65,8 @@ class PhpAT84 < Formula
     system "./buildconf", "--force"
 
     inreplace "configure" do |s|
-      s.gsub! "APACHE_THREADED_MPM=$($APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes')",
-              "APACHE_THREADED_MPM="
+      s.gsub! "$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes' >/dev/null 2>&1",
+              "false"
       s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
       s.gsub! "-z `$APXS -q SYSCONFDIR`",
