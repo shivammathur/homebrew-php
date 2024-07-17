@@ -16,7 +16,6 @@ jobs:
     name: Test
     steps:
     - name: Set up Homebrew
-      if: matrix.operating-system == 'macos-12'
       uses: Homebrew/actions/setup-homebrew@master
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
