@@ -1,9 +1,9 @@
 class PhpAT84 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/bb8d667f8f914573e425234c9b5dc7fa4b84f0b2.tar.gz?commit=bb8d667f8f914573e425234c9b5dc7fa4b84f0b2"
+  url "https://github.com/php/php-src/archive/28080dce6255854e423cfb9350acd51d38cf26fb.tar.gz?commit=28080dce6255854e423cfb9350acd51d38cf26fb"
   version "8.4.0"
-  sha256 "d91998312afa8336987b3b0c9ee633c945a686d25486c6edb977c17dd1278fb6"
+  sha256 "da9e28aa4c31f65693c4ec5aa1f081b562d75ba5e5674e857840eedadd17a5f6"
   license "PHP-3.01"
   revision 1
 
@@ -44,6 +44,7 @@ class PhpAT84 < Formula
   depends_on "openldap"
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "readline"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -161,7 +162,6 @@ class PhpAT84 < Formula
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-libxml
-      --with-libedit
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
@@ -176,6 +176,7 @@ class PhpAT84 < Formula
       --with-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pic
       --with-pspell=#{Formula["aspell"].opt_prefix}
+      --with-readline=#{Formula["readline"].opt_prefix}
       --with-sodium
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
