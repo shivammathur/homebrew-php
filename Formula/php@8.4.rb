@@ -44,7 +44,6 @@ class PhpAT84 < Formula
   depends_on "openldap"
   depends_on "openssl@3"
   depends_on "pcre2"
-  depends_on "readline"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -162,6 +161,7 @@ class PhpAT84 < Formula
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-libxml
+      --with-libedit
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
@@ -176,7 +176,6 @@ class PhpAT84 < Formula
       --with-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pic
       --with-pspell=#{Formula["aspell"].opt_prefix}
-      --with-readline=#{Formula["readline"].opt_prefix}
       --with-sodium
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
