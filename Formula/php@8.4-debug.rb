@@ -1,9 +1,9 @@
 class PhpAT84Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/a400298d96fd817dc2ca440a7d09a71fe9416211.tar.gz?commit=a400298d96fd817dc2ca440a7d09a71fe9416211"
+  url "https://github.com/php/php-src/archive/ac3cdf54df5f69c8210e0d9adc1a13af212c04fa.tar.gz?commit=ac3cdf54df5f69c8210e0d9adc1a13af212c04fa"
   version "8.4.0"
-  sha256 "d4e289b25208b2ee6be6bdd62f5d0bb8a76119313c5329e121a2246ecb19ffa1"
+  sha256 "dcccef16556ea89dbec4c99700ab7ec514bac9edcd3795a8525ce87fe1d4e5ed"
   license "PHP-3.01"
   revision 1
 
@@ -67,9 +67,9 @@ class PhpAT84Debug < Formula
     inreplace "configure" do |s|
       s.gsub! "$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes' >/dev/null 2>&1",
               "false"
-      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
+      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'$($APXS -q LIBEXECDIR)",
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
-      s.gsub! "-z `$APXS -q SYSCONFDIR`",
+      s.gsub! "-z $($APXS -q SYSCONFDIR)",
               "-z ''"
 
       # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
