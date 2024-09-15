@@ -10,6 +10,7 @@ class PhpAT70Zts < Formula
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     rebuild 1
+    sha256 arm64_sequoia:  "8ec6d79ee55268d4f7ffcf0d365606954f777831c039793ed1f12fb85fe74db7"
     sha256 arm64_sonoma:   "512421a6b95336da94fed44b9ad0c37b8dc53162390b133a02111e880b4e1aec"
     sha256 arm64_ventura:  "2f6b0e9ff54cda1a81310e7df4d09e0b27e47cd3f8eec64c59c7c27fb50ad75f"
     sha256 arm64_monterey: "b7b2a2cd94cbf958770ff36949ea5f6eb00f4a184641b4cec3efb3217250f0cb"
