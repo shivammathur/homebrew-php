@@ -59,8 +59,6 @@ jobs:
     if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
     needs: tap-syntax
     runs-on: ubuntu-22.04
-    container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
     strategy:
       fail-fast: false
       matrix:
@@ -115,14 +113,12 @@ jobs:
         run: echo php_source=${{github.event.inputs.php_source}}
 
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
         with:
-          core: true
+          core: false
           cask: false
           test-bot: false
 
