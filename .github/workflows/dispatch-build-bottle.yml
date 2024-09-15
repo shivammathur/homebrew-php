@@ -141,10 +141,11 @@ jobs:
           path: ${{ env.BOTTLES_DIR }}
           merge-multiple: true
 
-      - name: Setup git
-        run: |
-          git config --local user.email 1589480+BrewTestBot@users.noreply.github.com
-          git config --local user.name BrewTestBot
+      - name: Configure Git user
+        id: git-user-config
+        uses: Homebrew/actions/git-user-config@master
+        with:
+          username: BrewTestBot
 
       - name: Upload bottles to GitHub Packages
         env:
