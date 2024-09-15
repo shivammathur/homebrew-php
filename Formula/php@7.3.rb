@@ -38,6 +38,7 @@ class PhpAT73 < Formula
   depends_on "curl"
   depends_on "freetds"
   depends_on "freetype"
+  depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
   depends_on "icu4c"
@@ -45,6 +46,7 @@ class PhpAT73 < Formula
   depends_on "libpng"
   depends_on "libpq"
   depends_on "libsodium"
+  depends_on "libxpm"
   depends_on "libzip"
   depends_on "openldap"
   depends_on "openssl@3"
@@ -159,7 +161,7 @@ class PhpAT73 < Formula
       --with-fpm-user=#{fpm_user}
       --with-fpm-group=#{fpm_group}
       --with-freetype-dir=#{Formula["freetype"].opt_prefix}
-      --with-gd
+      --with-gd=#{Formula["gd"].opt_prefix}
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
@@ -190,6 +192,7 @@ class PhpAT73 < Formula
       --with-unixODBC=#{Formula["unixodbc"].opt_prefix}
       --with-webp-dir=#{Formula["webp"].opt_prefix}
       --with-xmlrpc
+      --with-xpm-dir=#{Formula["libxpm"].opt_prefix}
     ]
 
     if OS.mac?
