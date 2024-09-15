@@ -30,11 +30,10 @@ jobs:
     strategy:
       matrix:
         include:
+          - runner: macos-15
           - runner: macos-14
           - runner: macos-13
-          - runner: macos-12
           - runner: macos-13-arm64
-          - runner: macos-12-arm64
           - runner: ubuntu-latest
             container:
               image: homebrew/ubuntu22.04:latest
