@@ -59,6 +59,8 @@ jobs:
     if: github.event_name != 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
     needs: tap-syntax
     runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:master
     strategy:
       fail-fast: false
       matrix:
