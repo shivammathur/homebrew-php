@@ -37,25 +37,19 @@ jobs:
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
     steps:
-      - name: Post comment once started
-        uses: Homebrew/actions/post-comment@master
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          issue: ${{github.event.inputs.pull_request}}
-          body: ':beers: @BrewTestBot has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
-          bot_body: ':robot: A scheduled task has [triggered a merge](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
-          bot: BrewTestBot
-
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
         with:
+          core: true
+          cask: false
           test-bot: false
 
-      - name: Setup git
-        run: |
-          git config --global user.email 1589480+BrewTestBot@users.noreply.github.com
-          git config --global user.name BrewTestBot
+      - name: Configure Git user
+        id: git-user-config
+        uses: Homebrew/actions/git-user-config@master
+        with:
+          username: BrewTestBot
 
       - name: Pull bottles
         env:
@@ -86,21 +80,3 @@ jobs:
         with:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Post comment on failure
-        if: ${{!success()}}
-        uses: Homebrew/actions/post-comment@master
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          issue: ${{github.event.inputs.pull_request}}
-          body: ':warning: @${{github.actor}} bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
-          bot_body: ':warning: Bottle publish [failed](${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}).'
-          bot: BrewTestBot
-
-      - name: Dismiss approvals on failure
-        if: ${{!success()}}
-        uses: Homebrew/actions/dismiss-approvals@master
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          pr: ${{github.event.inputs.pull_request}}
-          message: 'bottle publish failed'

@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Prepare runner matrix
         id: runner-matrix
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const intelMacOSRegex = /^\d+(?:\.\d+)?$/;
@@ -114,7 +114,7 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     needs: bottle
-    if: github.event.inputs.upload
+    if: inputs.upload
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
     defaults:
@@ -158,4 +158,3 @@ jobs:
         with:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}
-
