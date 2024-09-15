@@ -51,10 +51,11 @@ jobs:
                     image:   "ghcr.io/homebrew/ubuntu22.04:master",
                     options: "--user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED"
                   },
-                  workdir:   "/github/home"
+                  workdir:   "/github/home",
+                  cleanup:   false
                 };
               else
-                return {runner: s};
+                return {runner: s, cleanup: true};
             });
   bottle:
     needs: prepare
