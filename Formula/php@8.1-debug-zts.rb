@@ -432,6 +432,19 @@ class PhpAT81DebugZts < Formula
 end
 
 __END__
+diff --git a/ext/xml/compat.c b/ext/xml/compat.c
+index 242cc4ba7c40c..5f55dc62b3687 100644
+--- a/ext/xml/compat.c
++++ b/ext/xml/compat.c
+@@ -375,7 +375,7 @@ _get_entity(void *user, const xmlChar *name)
+ 		if (ret == NULL)
+ 			ret = xmlGetDocEntity(parser->parser->myDoc, name);
+ 
+-		if (ret == NULL || (parser->parser->instate != XML_PARSER_ENTITY_VALUE && parser->parser->instate != XML_PARSER_ATTRIBUTE_VALUE)) {
++		if (ret == NULL || parser->parser->instate == XML_PARSER_CONTENT) {
+ 			if (ret == NULL || ret->etype == XML_INTERNAL_GENERAL_ENTITY || ret->etype == XML_INTERNAL_PARAMETER_ENTITY || ret->etype == XML_INTERNAL_PREDEFINED_ENTITY) {
+ 				/* Predefined entities will expand unless no cdata handler is present */
+ 				if (parser->h_default && ! (ret && ret->etype == XML_INTERNAL_PREDEFINED_ENTITY && parser->h_cdata)) {
 diff --git a/Zend/zend_execute_API.c b/Zend/zend_execute_API.c
 index 1e31934f..49d430c4 100644
 --- a/Zend/zend_execute_API.c
