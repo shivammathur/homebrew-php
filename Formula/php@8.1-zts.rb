@@ -58,6 +58,11 @@ class PhpAT81Zts < Formula
     patch :DATA
   end
 
+  patch do
+    url "https://raw.githubusercontent.com/shivammathur/php-src-backports/cdffd95a7e107a6345814e3778cde795ad596044/patches/0007-Fix-PEAR-installation-with-libxml2.13.patch?full_index=1"
+    sha256 "7fc8056131e9fa95fe10430a47f8c6dddf7bce859b046dcbba9cc7aabcc56469"
+  end
+
   def install
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
