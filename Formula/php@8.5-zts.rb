@@ -8,6 +8,11 @@ class PhpAT85Zts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_sequoia: "4c036c4db3908241a79ef47808f7dc0da188aaf591b3ff4e422e26911d026bd7"
+    sha256 arm64_sonoma:  "3294b9d202710b1682a1ddb3be890d4a36e7fe55e5a45b8a4eb135c8d1427d6c"
+    sha256 arm64_ventura: "0806228bae60b229964b383822ec13f7cf17682bedfd714b09669dc5585ec5ae"
+    sha256 ventura:       "6eed75c20ec5160e7a1038784857c4bf394ced59d16a1e44c943f87a29fe51db"
+    sha256 x86_64_linux:  "a1b31305a680b1d04756df2fe653a76de1075be87e70f015fb4f1748a8bdd87a"
   end
 
   keg_only :versioned_formula
