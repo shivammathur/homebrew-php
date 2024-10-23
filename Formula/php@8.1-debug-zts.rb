@@ -5,6 +5,7 @@ class PhpAT81DebugZts < Formula
   mirror "https://fossies.org/linux/www/php-8.1.30.tar.xz"
   sha256 "f24a6007f0b25a53cb7fbaee69c85017e0345b62089c2425a0afb7e177192ed1"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -35,7 +36,7 @@ class PhpAT81DebugZts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@75"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -60,12 +61,16 @@ class PhpAT81DebugZts < Formula
     patch :DATA
   end
 
-  patch do
-    url "https://raw.githubusercontent.com/shivammathur/php-src-backports/cdffd95a7e107a6345814e3778cde795ad596044/patches/0007-Fix-PEAR-installation-with-libxml2.13.patch?full_index=1"
-    sha256 "7fc8056131e9fa95fe10430a47f8c6dddf7bce859b046dcbba9cc7aabcc56469"
-  end
-
   def install
+    # Backport fix for libxml2 >= 2.13
+    # Ref: https://github.com/php/php-src/commit/67259e451d5d58b4842776c5696a66d74e157609
+    inreplace "ext/xml/compat.c",
+              "!= XML_PARSER_ENTITY_VALUE && parser->parser->instate != XML_PARSER_ATTRIBUTE_VALUE)",
+              "== XML_PARSER_CONTENT)"
+
+    # Work around to support `icu4c` 75, which needs C++17.
+    ENV["ICU_CXXFLAGS"] = "-std=c++17"
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
