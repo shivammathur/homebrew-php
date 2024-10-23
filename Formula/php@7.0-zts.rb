@@ -1,11 +1,11 @@
 class PhpAT70Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/9458fb565dbcc2e4b2985338dc5aec723e8bcb48.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/e74d83cb136282e1fda676bf22a7cc7f5578626b.tar.gz"
   version "7.0.33"
-  sha256 "f1bce76ef47494b173d2456c600cf5661bfae28de17fe9c607daf6b1dee47667"
+  sha256 "a40f969f584fb35b1caf1d2f5c45dfceee92f7e9d8e61b26b806f7537c5c645b"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -39,7 +39,7 @@ class PhpAT70Zts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@75"
   depends_on "jpeg"
   depends_on "krb5"
   depends_on "libpng"
@@ -79,9 +79,16 @@ class PhpAT70Zts < Formula
       inreplace "main/reentrancy.c", "readdir_r(dirp, entry)", "readdir_r(dirp, entry, result)"
     end
 
+    # icu4c 61.1 compatibility
+    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
+
     # Workaround for https://bugs.php.net/80310
     ENV.append "CFLAGS", "-DU_DEFINE_FALSE_AND_TRUE=1"
     ENV.append "CXXFLAGS", "-DU_DEFINE_FALSE_AND_TRUE=1"
+
+    # Work around to support `icu4c` 75, which needs C++17.
+    ENV.append "CXX", "-std=c++17"
+    ENV.libcxx if ENV.compiler == :clang
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
@@ -113,12 +120,6 @@ class PhpAT70Zts < Formula
 
     # API compatibility with tidy-html5 v5.0.0 - https://github.com/htacg/tidy-html5/issues/224
     inreplace "ext/tidy/tidy.c", "buffio.h", "tidybuffio.h"
-
-    # Required due to icu4c dependency
-    ENV.cxx11
-
-    # icu4c 61.1 compatibility
-    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
 
     config_path = etc/"php/#{php_version}"
     # Prevent system pear config from inhibiting pear install
@@ -175,7 +176,7 @@ class PhpAT70Zts < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c"].opt_prefix}
+      --with-icu-dir=#{Formula["icu4c@75"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU
