@@ -23,7 +23,7 @@ class PhpAT74DebugZts < Formula
   # Although, this was built with back-ported security patches,
   # we recommended to use a currently supported PHP version.
   # For more details, refer to https://www.php.net/eol.php
-  deprecate! date: "2022-11-28", because: :versioned_formula
+  deprecate! date: "2022-11-28", because: :deprecated_upstream
 
   depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]

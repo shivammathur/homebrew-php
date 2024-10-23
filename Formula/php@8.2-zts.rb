@@ -17,6 +17,10 @@ class PhpAT82Zts < Formula
 
   keg_only :versioned_formula
 
+  # Security Support Until 31 Dec 2026
+  # https://www.php.net/supported-versions.php
+  deprecate! date: "2026-12-31", because: :unsupported
+
   depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
