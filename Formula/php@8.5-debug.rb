@@ -1,10 +1,11 @@
 class PhpAT85Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/7f5e96d030f2d5f36b043451ef89b8bcb367a397.tar.gz?commit=7f5e96d030f2d5f36b043451ef89b8bcb367a397"
+  url "https://github.com/php/php-src/archive/e64e531e3daff1a34d5fcf90846e069867020cb9.tar.gz?commit=e64e531e3daff1a34d5fcf90846e069867020cb9"
   version "8.5.0"
-  sha256 "fc27e8af42a48895a6d9c49d59c8a97792c98181973cc89bab4c1a83a2c46738"
+  sha256 "d7834b027448b01566ceb6b38d986a2c71ba45fcca4277e7f12a4f564d61f72e"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -32,7 +33,7 @@ class PhpAT85Debug < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@75"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
