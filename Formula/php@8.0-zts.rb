@@ -5,7 +5,7 @@ class PhpAT80Zts < Formula
   version "8.0.30"
   sha256 "ea4a8d291f031921fafddd4878d12db1329391d9e8450ccb96aebb823a230aae"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -39,7 +39,7 @@ class PhpAT80Zts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@75"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -71,6 +71,9 @@ class PhpAT80Zts < Formula
       ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
       ENV.append "LDFLAGS", "-lresolv"
     end
+
+    # Work around to support `icu4c` 75, which needs C++17.
+    ENV["ICU_CXXFLAGS"] = "-std=c++17"
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
