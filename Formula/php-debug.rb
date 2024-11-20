@@ -2,9 +2,9 @@ class PhpDebug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.3.13.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.13.tar.xz"
-  sha256 "89adb978cca209124fe53fd6327bc4966ca21213a7fa2e9504f854e340873018"
+  url "https://www.php.net/distributions/php-8.4.1.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.1.tar.xz"
+  sha256 "94c8a4fd419d45748951fa6d73bd55f6bdf0adaefb8814880a67baa66027311f"
   license "PHP-3.01"
 
   livecheck do
@@ -14,11 +14,6 @@ class PhpDebug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_sequoia: "edb31e41c33510e93d98b706210a5419136eb7783bd67d0b8761f9b71fd02efd"
-    sha256 arm64_sonoma:  "1aa1916562afed9457185b631a66d44dd9736e59823ed68383944cb3841cdcf1"
-    sha256 arm64_ventura: "e6e8d65672a244b32299efb2c7967821e2f4a7eb2033a96fbbb9c0d6ca344eed"
-    sha256 ventura:       "e2a99bc802fbdcc01b0d9f6fcb310ccc54413d5e75fcaf4e4c2b5bd8d90b87dc"
-    sha256 x86_64_linux:  "2b1cc942214d86f9d615ac5ff31a61795e65702b5aec4aec158bf713178b8970"
   end
 
   head do
@@ -37,12 +32,13 @@ class PhpDebug < Formula
   depends_on "argon2"
   depends_on "aspell"
   depends_on "autoconf"
+  depends_on "capstone"
   depends_on "curl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -73,11 +69,11 @@ class PhpDebug < Formula
     system "./buildconf", "--force"
 
     inreplace "configure" do |s|
-      s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes'`",
-              "APACHE_THREADED_MPM="
-      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
+      s.gsub! "$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes' >/dev/null 2>&1",
+              "false"
+      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'$($APXS -q LIBEXECDIR)",
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
-      s.gsub! "-z `$APXS -q SYSCONFDIR`",
+      s.gsub! "-z $($APXS -q SYSCONFDIR)",
               "-z ''"
     end
 
@@ -150,6 +146,7 @@ class PhpDebug < Formula
       --enable-sysvshm
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
+      --with-capstone
       --with-curl
       --with-external-gd
       --with-external-pcre
@@ -431,10 +428,10 @@ end
 
 __END__
 diff --git a/build/php.m4 b/build/php.m4
-index 3624a33a8e..d17a635c2c 100644
+index 176d4d4144..f71d642bb4 100644
 --- a/build/php.m4
 +++ b/build/php.m4
-@@ -425,7 +425,7 @@ dnl
+@@ -429,7 +429,7 @@ dnl
  dnl Adds a path to linkpath/runpath (LDFLAGS).
  dnl
  AC_DEFUN([PHP_ADD_LIBPATH],[
@@ -443,15 +440,15 @@ index 3624a33a8e..d17a635c2c 100644
      PHP_EXPAND_PATH($1, ai_p)
      ifelse([$2],,[
        _PHP_ADD_LIBPATH_GLOBAL([$ai_p])
-@@ -470,7 +470,7 @@ dnl
- dnl Add an include path. If before is 1, add in the beginning of INCLUDES.
+@@ -476,7 +476,7 @@ dnl paths are prepended to the beginning of INCLUDES.
  dnl
- AC_DEFUN([PHP_ADD_INCLUDE],[
--  if test "$1" != "/usr/include"; then
-+  if test "$1" != "$PHP_OS_SDKPATH/usr/include"; then
-     PHP_EXPAND_PATH($1, ai_p)
-     PHP_RUN_ONCE(INCLUDEPATH, $ai_p, [
-       if test "$2"; then
+ AC_DEFUN([PHP_ADD_INCLUDE], [
+ for include_path in m4_normalize(m4_expand([$1])); do
+-  AS_IF([test "$include_path" != "/usr/include"], [
++  AS_IF([test "$include_path" != "$PHP_OS_SDKPATH/usr/include"], [
+     PHP_EXPAND_PATH([$include_path], [ai_p])
+     PHP_RUN_ONCE([INCLUDEPATH], [$ai_p], [m4_ifnblank([$2],
+       [INCLUDES="-I$ai_p $INCLUDES"],
 diff --git a/configure.ac b/configure.ac
 index 36c6e5e3e2..71b1a16607 100644
 --- a/configure.ac
