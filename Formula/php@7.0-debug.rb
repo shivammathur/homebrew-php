@@ -5,7 +5,7 @@ class PhpAT70Debug < Formula
   version "7.0.33"
   sha256 "a40f969f584fb35b1caf1d2f5c45dfceee92f7e9d8e61b26b806f7537c5c645b"
   license "PHP-3.01"
-  revision 12
+  revision 13
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -38,7 +38,7 @@ class PhpAT70Debug < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "jpeg"
   depends_on "krb5"
   depends_on "libpng"
@@ -174,7 +174,7 @@ class PhpAT70Debug < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c@75"].opt_prefix}
+      --with-icu-dir=#{Formula["icu4c@76"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU
