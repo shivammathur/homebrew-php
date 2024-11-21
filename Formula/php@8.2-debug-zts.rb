@@ -1,9 +1,9 @@
 class PhpAT82DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.25.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.25.tar.xz"
-  sha256 "330b54876ea1d05ade12ee9726167332058bccd58dffa1d4e12117f6b4f616b9"
+  url "https://www.php.net/distributions/php-8.2.26.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.26.tar.xz"
+  sha256 "54747400cb4874288ad41a785e6147e2ff546cceeeb55c23c00c771ac125c6ef"
   license "PHP-3.01"
 
   bottle do
@@ -35,7 +35,7 @@ class PhpAT82DebugZts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
