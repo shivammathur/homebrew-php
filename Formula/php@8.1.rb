@@ -1,11 +1,10 @@
 class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.1.30.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.30.tar.xz"
-  sha256 "f24a6007f0b25a53cb7fbaee69c85017e0345b62089c2425a0afb7e177192ed1"
+  url "https://www.php.net/distributions/php-8.1.31.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.31.tar.xz"
+  sha256 "c4f244d46ba51c72f7d13d4f66ce6a9e9a8d6b669c51be35e01765ba58e7afca"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -36,7 +35,7 @@ class PhpAT81 < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -57,7 +56,15 @@ class PhpAT81 < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    # Apply MacPorts patch for Xcode 16. Upstream fix doesn't cleanly apply
+    # Ref: https://github.com/php/php-src/commit/e2e2b3ab62686af85fb079a403b5dda75595f6dd
+    patch do
+      url "https://raw.githubusercontent.com/macports/macports-ports/f6c30c5b3a810d4154ab8c85bb23274baa020fe1/lang/php/files/patch-php81-zend_string_equal_val.diff"
+      sha256 "382b1815dda418f539799c05674c3bfc22ec7e1da7494afd9f883938b4b3a1e2"
+    end
+
     # PHP build system incorrectly links system libraries
+    # see https://github.com/php/php-src/issues/10680
     patch :DATA
   end
 
