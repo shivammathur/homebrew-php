@@ -5,7 +5,7 @@ class PhpAT73Zts < Formula
   version "7.3.33"
   sha256 "4924cb54e5ecd0c84a6fe723f5eb05141cad9cd210abee42a1dab564867c9cc8"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -39,7 +39,7 @@ class PhpAT73Zts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "jpeg"
   depends_on "krb5"
   depends_on "libpng"
@@ -173,7 +173,7 @@ class PhpAT73Zts < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c@75"].opt_prefix}
+      --with-icu-dir=#{Formula["icu4c@76"].opt_prefix}
       --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU
