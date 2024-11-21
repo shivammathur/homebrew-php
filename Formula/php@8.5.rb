@@ -5,7 +5,7 @@ class PhpAT85 < Formula
   version "8.5.0"
   sha256 "5058376be8162a6f9cd16da4011a1b8c148dace39e444741803f8a5010c44774"
   license "PHP-3.01"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -34,7 +34,7 @@ class PhpAT85 < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@75"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
