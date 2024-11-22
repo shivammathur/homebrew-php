@@ -45,8 +45,8 @@
 | PHP 8.0       | `php@8.0`          | `php@8.0-debug`                | `php@8.0-zts`              | `php@8.0-debug-zts`                    |
 | PHP 8.1       | `php@8.1`          | `php@8.1-debug`                | `php@8.1-zts`              | `php@8.1-debug-zts`                    |
 | PHP 8.2       | `php@8.2`          | `php@8.2-debug`                | `php@8.2-zts`              | `php@8.2-debug-zts`                    |
-| PHP 8.3       | `php` or `php@8.3` | `php-debug` or `php@8.3-debug` | `php-zts` or `php@8.3-zts` | `php-debug-zts` or `php@8.3-debug-zts` |
-| PHP 8.4.0-dev | `php@8.4`          | `php@8.4-debug`                | `php@8.4-zts`              | `php@8.4-debug-zts`                    |
+| PHP 8.3       | `php@8.3`          | `php@8.3-debug`                | `php@8.3-zts`              | `php@8.3-debug-zts`                    |
+| PHP 8.4       | `php` or `php@8.4` | `php-debug` or `php@8.4-debug` | `php-zts` or `php@8.4-zts` | `php-debug-zts` or `php@8.4-debug-zts` |
 | PHP 8.5.0-dev | `php@8.5`          | `php@8.5-debug`                | `php@8.5-zts`              | `php@8.5-debug-zts`                    |
 
 For each PHP version, we have formulae with thread-safety support `(zts)` and debug symbols support `(debug)` and both `(debug-zts)` as well.
@@ -108,16 +108,16 @@ brew tap shivammathur/php
 
 > See [PHP Support](#php-support) for available formulae.
 
-- For example, to install `PHP 8.3`:
+- For example, to install `PHP 8.4`:
 
 ```zsh 
-brew install shivammathur/php/php@8.3
+brew install shivammathur/php/php@8.4
 ```
 
 - After installing you have to link it:
 
 ```zsh
-brew link --overwrite --force shivammathur/php/php@8.3
+brew link --overwrite --force shivammathur/php/php@8.4
 ```
 
 - Restart the terminal and test your PHP version:
@@ -130,20 +130,20 @@ php -v
 
 You can upgrade your PHP version to the latest patch release.
 
-For example, to upgrade `PHP 8.3`:
+For example, to upgrade `PHP 8.4`:
 
 ```zsh
-brew upgrade shivammathur/php/php@8.3
+brew upgrade shivammathur/php/php@8.4
 ```
 
 ### Switch between PHP versions
 
 - If you have multiple PHP versions installed, you can switch between them easily.
 
-For example, to switch to `PHP 8.3`:
+For example, to switch to `PHP 8.4`:
 
 ```zsh
-brew link --overwrite --force shivammathur/php/php@8.3
+brew link --overwrite --force shivammathur/php/php@8.4
 ```
 
 - If you get a warning like below, then do as recommended:
@@ -155,8 +155,8 @@ To relink:
 ```
 
 ```zsh
-brew unlink php@8.3
-brew link --overwrite --force shivammathur/php/php@8.3
+brew unlink php@8.4
+brew link --overwrite --force shivammathur/php/php@8.4
 ```
 
 ### Restart your webserver
@@ -188,10 +188,10 @@ sudo chown -R "$(id -un)":"$(id -gn)" $(brew --prefix)
 
 - If PHP is not working after a macOS update. Reinstall PHP along with its dependencies.
 
-For example to reinstall `PHP 8.3` and its dependencies:
+For example to reinstall `PHP 8.4` and its dependencies:
 
 ```zsh
-brew reinstall $(brew deps shivammathur/php/php@8.3) shivammathur/php/php@8.3
+brew reinstall $(brew deps shivammathur/php/php@8.4) shivammathur/php/php@8.4
 ```
 
 - Check if your issue is a Homebrew's [common issue](https://docs.brew.sh/Common-Issues).
