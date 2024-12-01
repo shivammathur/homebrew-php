@@ -1,9 +1,9 @@
 class PhpAT85 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/5c05e6c24746da1b6362b70b2361ab78792450d3.tar.gz?commit=5c05e6c24746da1b6362b70b2361ab78792450d3"
+  url "https://github.com/php/php-src/archive/b06f2bc67c3e47dfb686a8ef4e1e7a3447b9cd5d.tar.gz?commit=b06f2bc67c3e47dfb686a8ef4e1e7a3447b9cd5d"
   version "8.5.0"
-  sha256 "9b080b655762ccc32d64ec06cee9c402ee0e7edef6d1957f404dbf54f4c5974b"
+  sha256 "9080cb0a4b5cc20a060db787c52e7afa1f634d60b9125b1f928abe973a4bba5a"
   license "PHP-3.01"
   revision 2
 
