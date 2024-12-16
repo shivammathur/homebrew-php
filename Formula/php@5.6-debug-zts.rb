@@ -1,9 +1,9 @@
 class PhpAT56DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/5a280bbf377e3926cd68960065dcbdf387dda812.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/8e9bde45d8f4cfcf72f5a730f4fccf907eb5c35b.tar.gz"
   version "5.6.40"
-  sha256 "4709aa659ca0ec0033c3743c8083c2331a36334e56dade3a6c43983c240bcbc5"
+  sha256 "e6dc16ae13225a59b718ffd44481f67d2df8bdef2af625f19229a1c08cf52303"
   license "PHP-3.01"
   revision 2
 
@@ -25,14 +25,13 @@ class PhpAT56DebugZts < Formula
   # For more details, refer to https://www.php.net/eol.php
   deprecate! date: "2018-12-31", because: :deprecated_upstream
 
-  depends_on "bison@2.7" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkgconf" => :build
   depends_on "re2c" => :build
+  depends_on "shivammathur/php/bison@2.7" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "aspell"
-  depends_on "autoconf@2.69"
   depends_on "curl"
   depends_on "freetds"
   depends_on "freetype"
@@ -51,6 +50,7 @@ class PhpAT56DebugZts < Formula
   depends_on "openldap"
   depends_on "openssl@3"
   depends_on "pcre"
+  depends_on "shivammathur/php/autoconf@2.69"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
