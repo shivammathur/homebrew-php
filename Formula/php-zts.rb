@@ -101,7 +101,7 @@ class PhpZts < Formula
     ENV["lt_cv_path_SED"] = "sed"
 
     # Identify build provider in php -v output and phpinfo()
-    ENV["PHP_BUILD_PROVIDER"] = "shivammathur/homebrew-php"
+    ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
 
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "
