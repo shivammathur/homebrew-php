@@ -1,4 +1,5 @@
 name: Dispatch rebottle
+run-name: Rebuild bottles of ${{ inputs.formula }}
 on:
   workflow_dispatch:
     inputs:
