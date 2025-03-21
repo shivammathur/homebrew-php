@@ -5,7 +5,7 @@ class PhpAT85DebugZts < Formula
   version "8.5.0"
   sha256 "f8bd31f5517d337f71f85e2e75f9725f95b2bcbb94f7f407dad9fd7c462e30b7"
   license "PHP-3.01"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -34,7 +34,7 @@ class PhpAT85DebugZts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
