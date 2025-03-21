@@ -5,6 +5,7 @@ class PhpAT82DebugZts < Formula
   mirror "https://fossies.org/linux/www/php-8.2.28.tar.xz"
   sha256 "af8c9153153a7f489153b7a74f2f29a5ee36f5cb2c6c6929c98411a577e89c91"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -35,7 +36,7 @@ class PhpAT82DebugZts < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
