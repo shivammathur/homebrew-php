@@ -215,15 +215,7 @@ class PhpDebugZts < Formula
     args << "--disable-cgi"
     args << "--disable-cli"
     args << "--disable-phpdbg"
-
-    if OS.mac?
-      args << "--disable-opcache-jit"
-      args << "--enable-embed=static"
-      args << "--enable-shared=no"
-      args << "--enable-static"
-    else
-      args << "--enable-embed"
-    end
+    args << "--enable-embed"
 
     system "./configure", *args
     system "make"
