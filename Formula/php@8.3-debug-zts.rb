@@ -5,6 +5,7 @@ class PhpAT83DebugZts < Formula
   mirror "https://fossies.org/linux/www/php-8.3.21.tar.xz"
   sha256 "4dfb329f209a552c3716394fc123bb62e80a468b55ce27fc8cb0fd5f30b9dcd6"
   license "PHP-3.01"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -209,15 +210,7 @@ class PhpAT83DebugZts < Formula
     args << "--disable-cgi"
     args << "--disable-cli"
     args << "--disable-phpdbg"
-
-    if OS.mac?
-      args << "--disable-opcache-jit"
-      args << "--enable-embed=static"
-      args << "--enable-shared=no"
-      args << "--enable-static"
-    else
-      args << "--enable-embed"
-    end
+    args << "--enable-embed"
 
     system "./configure", *args
     system "make"
