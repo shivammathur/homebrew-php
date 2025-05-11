@@ -6,6 +6,7 @@ class PhpZts < Formula
   mirror "https://fossies.org/linux/www/php-8.4.7.tar.xz"
   sha256 "e29f4c23be2816ed005aa3f06bbb8eae0f22cc133863862e893515fc841e65e3"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -214,15 +215,7 @@ class PhpZts < Formula
     args << "--disable-cgi"
     args << "--disable-cli"
     args << "--disable-phpdbg"
-
-    if OS.mac?
-      args << "--disable-opcache-jit"
-      args << "--enable-embed=static"
-      args << "--enable-shared=no"
-      args << "--enable-static"
-    else
-      args << "--enable-embed"
-    end
+    args << "--enable-embed"
 
     system "./configure", *args
     system "make"
