@@ -14,6 +14,7 @@ class PhpAT80Debug < Formula
     sha256 arm64_sonoma:  "d9d52ce557aba987ba4cb5c8eb2acc390d460f52e15d87c94ef0ece2c9f896b4"
     sha256 arm64_ventura: "fa9a0a95d1a5ec68948608a1e1f0d8fc3daf7106cdbc3ca9167d4b604875309b"
     sha256 ventura:       "751c8f64861917fd58333a64b082f86966a91b461fee1374ca9db8b315259ecd"
+    sha256 arm64_linux:   "6c2ddd1dbe5d69def04b4e4918fd1d236c3967b9f69c2b444f97e98c3f694d87"
     sha256 x86_64_linux:  "35d0c7f8f023c39978d643fdb64225040e3f9c210c5e6b6a228554b83cd74c3c"
   end
 
