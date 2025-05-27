@@ -15,6 +15,7 @@ class AutoconfAT269 < Formula
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "96301e5356fdc3b29a198b42020b3eba440e646ba621d7e067937465b5f2769e"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "96301e5356fdc3b29a198b42020b3eba440e646ba621d7e067937465b5f2769e"
     sha256 cellar: :any_skip_relocation, ventura:       "9a959c1c602064858b64d1d173a0bb98c1b044fc6d973d3ce77852a5c554f0b9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f840457847410bca99793975a5800888bfd09d8434d9bf85171fdd0b2fee6cd7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "1f8008ef7b62aa1069c98033fed971c441efc5aa33cdc827ba2299ffd7df01a2"
   end
 
