@@ -14,6 +14,7 @@ module.exports = async ({github, context, core}, formula_detect) => {
     }
 
     core.setOutput('linux-runner', 'ubuntu-latest')
+    core.setOutput('linux-arm64-runner', 'ubuntu-22.04-arm')
 
     if (label_names.includes('CI-no-fail-fast')) {
         console.log('CI-no-fail-fast label found. Continuing tests despite failing matrix builds.')

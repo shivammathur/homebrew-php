@@ -26,6 +26,7 @@ env:
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_INSTALL_FROM_API: 1
+  HOMEBREW_ARM64_TESTING: 1
 jobs:
   bottle:
     strategy:
@@ -36,6 +37,12 @@ jobs:
           - runner: macos-13
           - runner: macos-13-arm64
           - runner: ubuntu-latest
+            container:
+              image: homebrew/ubuntu22.04:latest
+              options: --user=linuxbrew
+            workdir: /github/home
+            timeout: 4320
+          - runner: ubuntu-22.04-arm
             container:
               image: homebrew/ubuntu22.04:latest
               options: --user=linuxbrew
