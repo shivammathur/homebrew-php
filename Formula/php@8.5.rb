@@ -14,6 +14,7 @@ class PhpAT85 < Formula
     sha256 arm64_sonoma:  "a0f2490d59b0d6cc9e93037d1ba1cca3546ba2f87b6eef2c7d2b044d5a4429e4"
     sha256 arm64_ventura: "cf37ca02111a1ff1ce227a713c948e0c7d05d9a94b0457594a9bee17dae7e1d3"
     sha256 ventura:       "bc192a18fea3a052cd1d0920ab4789832d47ec08a149c285fa79c9a92f7e3b60"
+    sha256 arm64_linux:   "808db49457e686b286f99536df8848ed52e15efc4b81128614bfff1eba14dfde"
     sha256 x86_64_linux:  "4eb093687fa8aa3deacf1c5986e21e3d7c76642709ddb10e5bec1c4b57a92bb5"
   end
 
