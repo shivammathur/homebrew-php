@@ -14,6 +14,7 @@ class PhpAT71Zts < Formula
     sha256 arm64_sonoma:  "624d1e63d44bf1dfc2fdfd9ae7b1abf6fa569b779e7a571c024d72ac884d0d65"
     sha256 arm64_ventura: "d26ab2371c343b552fae9c665edd9f8145ba7835ee94a40e7dbce50625a6edd6"
     sha256 ventura:       "9115882dce360100eeb193a4d441c2859962889b059ae6fd614e58741b4ba3b3"
+    sha256 arm64_linux:   "e15a25e98b70dbcc65c0f42f986392cb5cb9839f3afe6039fdb6f61bcd2a607b"
     sha256 x86_64_linux:  "c36f78126c408db74e4a3d3c204304db5a06a613fdfc7d2b4226768ed1493927"
   end
 
