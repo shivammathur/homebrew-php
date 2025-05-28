@@ -167,6 +167,7 @@ jobs:
     outputs:
       syntax-only: ${{ steps.check-labels.outputs.syntax-only }}
       linux-runner: ${{ steps.check-labels.outputs.linux-runner }}
+      linux-arm64-runner: ${{ steps.check-labels.outputs.linux-arm64-runner }}
       fail-fast: ${{ steps.check-labels.outputs.fail-fast }}
       test-dependents: ${{ steps.check-labels.outputs.test-dependents }}
       timeout-minutes: ${{ steps.check-labels.outputs.timeout-minutes }}
