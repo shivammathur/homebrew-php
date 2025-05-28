@@ -420,7 +420,12 @@ class PhpAT80Zts < Formula
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
       Process.kill("TERM", pid)
-      Process.wait(pid)
+      begin
+        Timeout.timeout(5) { Process.wait(pid) }
+      rescue Timeout::Error
+        Process.kill("KILL", pid)
+        Process.wait(pid)
+      end
 
       fpm_pid = fork do
         exec sbin/"php-fpm", "-y", "fpm.conf"
