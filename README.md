@@ -26,7 +26,7 @@
   </a>
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple Intel x86_64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Intel%20x86__64%20-007DC3?logo=apple&logoColor=555555&labelColor=ffffff">
-  </a>  
+  </a>
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple M1 arm64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Apple%20arm64%20-c0476d?logo=apple&logoColor=555555&labelColor=ffffff">
   </a>
@@ -50,14 +50,14 @@
 | PHP 8.5.0-dev | `php@8.5`          | `php@8.5-debug`                | `php@8.5-zts`              | `php@8.5-debug-zts`                    |
 
 For each PHP version, we have formulae with thread-safety support `(zts)` and debug symbols support `(debug)` and both `(debug-zts)` as well.
-The formulae with debug symbols can be used when building or debugging PHP extensions and are not recommended for production usage. 
+The formulae with debug symbols can be used when building or debugging PHP extensions and are not recommended for production usage.
 The formulae with thread-safety support can be used with applications that require multi-threading support.
 
 ## OS Support
 
 |Operating System|Architecture|
 |--- |--- |
-|Linux|`x86_64`|
+|Linux|`x86_64`, `arm64`|
 |macOS Ventura|`x86_64`, `arm64`|
 |macOS Sonoma|`x86_64`, `arm64`|
 |macOS Sequoia|`x86_64`, `arm64`|
@@ -110,7 +110,7 @@ brew tap shivammathur/php
 
 - For example, to install `PHP 8.4`:
 
-```zsh 
+```zsh
 brew install shivammathur/php/php@8.4
 ```
 
