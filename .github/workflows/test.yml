@@ -4,11 +4,11 @@ on:
   schedule:
     - cron: '30 7 * * *'
 jobs:
-  run:    
+  run:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
-      matrix:      
+      matrix:
         operating-system: [macos-14]
         php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
         debug: ['true', 'false']
@@ -16,7 +16,7 @@ jobs:
     name: Test
     steps:
     - name: Set up Homebrew
-      uses: Homebrew/actions/setup-homebrew@master
+      uses: Homebrew/actions/setup-homebrew@main
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
     - name: Setup PHP
@@ -41,6 +41,6 @@ jobs:
         formula="php@${{ matrix.php }}$debug$phpts"
         brew services start "$formula"
         brew services list
-        
+
         [ "$formula" = "php@8.4$debug$phpts" ] && formula="php$debug$phpts"
         cat ~/Library/LaunchAgents/homebrew.mxcl."$formula".plist
