@@ -86,7 +86,7 @@ jobs:
           echo upload='${{inputs.upload}}'
 
       - name: Pre-test steps
-        uses: Homebrew/actions/pre-build@master
+        uses: Homebrew/actions/pre-build@main
         with:
           bottles-directory: ${{ env.BOTTLES_DIR }}
           cleanup: ${{ matrix.cleanup }}
@@ -105,7 +105,7 @@ jobs:
 
       - name: Post-build steps
         if: always()
-        uses: Homebrew/actions/post-build@master
+        uses: Homebrew/actions/post-build@main
         with:
           runner: ${{ matrix.runner }}
           cleanup: ${{ matrix.cleanup }}
@@ -127,7 +127,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
@@ -142,7 +142,7 @@ jobs:
 
       - name: Configure Git user
         id: git-user-config
-        uses: Homebrew/actions/git-user-config@master
+        uses: Homebrew/actions/git-user-config@main
         with:
           username: BrewTestBot
 
@@ -155,7 +155,7 @@ jobs:
           brew pr-upload --verbose --keep-old --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php"
 
       - name: Push commits
-        uses: Homebrew/actions/git-try-push@master
+        uses: Homebrew/actions/git-try-push@main
         with:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}

@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
@@ -121,7 +121,7 @@ jobs:
 
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: false
           cask: false
@@ -201,7 +201,7 @@ jobs:
     if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
     strategy:
       matrix:
-        include:          
+        include:
           - runner: 'macos-13-arm64'
             cleanup: true
           - runner: 'macos-15'
@@ -234,7 +234,7 @@ jobs:
       BOTTLES_DIR: ${{matrix.workdir || github.workspace}}/bottles
     steps:
       - name: Pre-test steps
-        uses: Homebrew/actions/pre-build@master
+        uses: Homebrew/actions/pre-build@main
         with:
           bottles-directory: ${{ env.BOTTLES_DIR }}
           cleanup: ${{ matrix.cleanup }}
@@ -247,7 +247,7 @@ jobs:
 
       - name: Post-build steps
         if: always()
-        uses: Homebrew/actions/post-build@master
+        uses: Homebrew/actions/post-build@main
         with:
           runner: ${{ matrix.runner }}
           cleanup: ${{ matrix.cleanup }}

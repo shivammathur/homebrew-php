@@ -26,7 +26,7 @@ on:
 env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_NO_INSTALL_FROM_API: 1  
+  HOMEBREW_NO_INSTALL_FROM_API: 1
   GH_REPO: ${{github.repository}}
   GH_DEBUG: 1
   GH_NO_UPDATE_NOTIFIER: 1
@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
@@ -47,7 +47,7 @@ jobs:
 
       - name: Configure Git user
         id: git-user-config
-        uses: Homebrew/actions/git-user-config@master
+        uses: Homebrew/actions/git-user-config@main
         with:
           username: BrewTestBot
 
@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Push commits
-        uses: Homebrew/actions/git-try-push@master
+        uses: Homebrew/actions/git-try-push@main
         with:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}
