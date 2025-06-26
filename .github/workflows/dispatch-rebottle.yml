@@ -145,3 +145,8 @@ jobs:
         with:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           token: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Sync branches
+        run: gh workflow run sync-default-branches.yml
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
