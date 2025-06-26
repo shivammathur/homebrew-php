@@ -3,7 +3,7 @@ name: Update and Build Formulae
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron:  '0 0 1-31/2 * *'
   repository_dispatch:
@@ -34,7 +34,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip-build')"
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:main
     env:
       HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
     outputs:
@@ -144,7 +144,7 @@ jobs:
           committer: BrewTestBot <1589480+BrewTestBot@users.noreply.github.com>
           author: BrewTestBot <1589480+BrewTestBot@users.noreply.github.com>
           signoff: false
-          base: master
+          base: main
           branch: update-${{ matrix.php }}
           branch-suffix: short-commit-hash
           delete-branch: true

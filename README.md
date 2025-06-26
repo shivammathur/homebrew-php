@@ -13,10 +13,10 @@
   <a href="https://github.com/shivammathur/homebrew-php" title="Homebrew tap to install PHP: Tests">
     <img alt="Test status" src="https://github.com/shivammathur/homebrew-php/actions/workflows/test.yml/badge.svg">
   </a>
-  <a href="https://github.com/shivammathur/homebrew-php/blob/master/LICENSE" title="license">
+  <a href="https://github.com/shivammathur/homebrew-php/blob/main/LICENSE" title="license">
     <img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555">
   </a>
-  <a href="https://github.com/shivammathur/homebrew-php/tree/master/Formula" title="Formulae for PHP versions">
+  <a href="https://github.com/shivammathur/homebrew-php/tree/main/Formula" title="Formulae for PHP versions">
     <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.5-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
   </a>
 </p>
@@ -85,7 +85,7 @@ sudo yum install -y curl git
 - Install Homebrew:
 
 ```zsh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/main/install.sh)"
 ```
 
 - If previously installed, update homebrew and the formulae:

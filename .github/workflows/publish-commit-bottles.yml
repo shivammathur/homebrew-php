@@ -35,7 +35,7 @@ jobs:
   upload:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:main
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
