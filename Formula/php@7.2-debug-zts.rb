@@ -431,7 +431,7 @@ class PhpAT72DebugZts < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       end
-      sleep 3
+      sleep 5
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
