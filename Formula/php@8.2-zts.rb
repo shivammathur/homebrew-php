@@ -1,11 +1,10 @@
 class PhpAT82Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.28.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.28.tar.xz"
-  sha256 "af8c9153153a7f489153b7a74f2f29a5ee36f5cb2c6c6929c98411a577e89c91"
+  url "https://www.php.net/distributions/php-8.2.29.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.29.tar.xz"
+  sha256 "475f991afd2d5b901fb410be407d929bc00c46285d3f439a02c59e8b6fe3589c"
   license "PHP-3.01"
-  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
