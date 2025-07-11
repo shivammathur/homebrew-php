@@ -3,7 +3,7 @@ class PhpAT70 < Formula
   homepage "https://secure.php.net/"
   url "https://github.com/shivammathur/php-src-backports/archive/d91f3b4e4ff74ed2432010dca9ae9ce5de781670.tar.gz"
   version "7.0.33"
-  sha256 "2d80d4186c14aa7e75cca38105359eda808a512a57824462e84e96d5b1be6b5c"
+  sha256 "3590bcb90a75c32ba8b10d692d26838caedbc267a57db23931694abc9598c873"
   license "PHP-3.01"
   revision 15
 
