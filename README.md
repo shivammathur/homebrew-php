@@ -216,10 +216,10 @@ If you face any issues while using this tap or want to suggest a feature/improve
 
 In addition to GitHub Actions, we use [MacStadium](https://www.macstadium.com/opensource/members) for our CI infrastructure.
 
-<a href="https://www.macstadium.com/opensource/members#gh-light-mode-only">
+<a href="https://www.macstadium.com/company/opensource#gh-light-mode-only">
     <img src="https://setup-php.com/sponsors/macstadium.png" alt="Mac Stadium" width="200px">
 </a>
-<a href="https://www.macstadium.com/opensource/members#gh-dark-mode-only">
+<a href="https://www.macstadium.com/company/opensource#gh-dark-mode-only">
     <img src="https://setup-php.com/sponsors/macstadium-white.png" alt="Mac Stadium" width="200px">
 </a>
 
