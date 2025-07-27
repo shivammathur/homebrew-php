@@ -2,9 +2,9 @@ class PhpDebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.4.10.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.10.tar.xz"
-  sha256 "14983a9ef8800e6bc2d920739fd386054402f7976ca9cd7f711509496f0d2632"
+  url "https://www.php.net/distributions/php-8.4.11.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.11.tar.xz"
+  sha256 "55f7d9e99b8e2d4e0e193b2f0275501e6d9c1ebd29cadbea6a0da48a8587e3e0"
   license "PHP-3.01"
 
   livecheck do
