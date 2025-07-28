@@ -137,7 +137,6 @@ class PhpAT85Zts < Formula
       --enable-mbregex
       --enable-mbstring
       --enable-mysqlnd
-      --enable-opcache
       --enable-pcntl
       --enable-phpdbg
       --enable-phpdbg-readline
@@ -303,22 +302,6 @@ class PhpAT85Zts < Formula
     end
 
     system bin/"pear", "update-channels"
-
-    %w[
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~EOS
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        EOS
-      end
-    end
   end
 
   def caveats
@@ -351,8 +334,6 @@ class PhpAT85Zts < Formula
   end
 
   test do
-    assert_match(/^Zend OPcache$/, shell_output("#{bin}/php -i"),
-      "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes (bin/"php").dynamically_linked_libraries,
