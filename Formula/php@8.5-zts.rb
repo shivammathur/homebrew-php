@@ -279,7 +279,6 @@ class PhpAT85Zts < Formula
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
     extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
 
     # fix pear config to install outside cellar
     pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
