@@ -1,9 +1,9 @@
 class PhpAT83DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.3.23.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.23.tar.xz"
-  sha256 "08be64700f703bca6ff1284bf1fdaffa37ae1b9734b6559f8350248e8960a6db"
+  url "https://www.php.net/distributions/php-8.3.24.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.24.tar.xz"
+  sha256 "388ee5fd111097e97bae439bff46aec4ea27f816d3f0c2cb5490a41410d44251"
   license "PHP-3.01"
 
   bottle do
