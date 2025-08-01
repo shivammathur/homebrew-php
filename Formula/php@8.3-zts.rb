@@ -421,7 +421,7 @@ class PhpAT83Zts < Formula
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
-      Process.kill("KILL", pid)
+      Process.kill("TERM", pid)
       Process.wait(pid)
 
       fpm_pid = fork do
