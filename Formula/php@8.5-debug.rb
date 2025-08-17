@@ -1,9 +1,9 @@
 class PhpAT85Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/60047025db8451ba4a37ded3be4dc9c4afbfbeaa.tar.gz?commit=60047025db8451ba4a37ded3be4dc9c4afbfbeaa"
+  url "https://github.com/php/php-src/archive/d92675b6c1e77bf5c97cfaa01b5d5cf61910eff3.tar.gz?commit=d92675b6c1e77bf5c97cfaa01b5d5cf61910eff3"
   version "8.5.0"
-  sha256 "a1dceeb9588ce6a4649434c2609f0f53a33714687b86b21220de952f90964c2f"
+  sha256 "75c4de139b1815b4d482ac921e4aa3f3d8e6ab97a6af18bda49b17580e9e58f3"
   license "PHP-3.01"
   revision 3
 
