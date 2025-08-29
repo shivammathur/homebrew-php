@@ -2,24 +2,24 @@ class PhpZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.4.12.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.12.tar.xz"
-  sha256 "c1b7978cbb5054eed6c749bde4444afc16a3f2268101fb70a7d5d9b1083b12ad"
+  url "https://www.php.net/distributions/php-8.4.11.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.11.tar.xz"
+  sha256 "04cd331380a8683a5c2503938eb51764d48d507c53ad4208d2c82e0eed779a00"
   license "PHP-3.01"
 
   livecheck do
-    url "https://www.php.net/downloads"
+    url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_sequoia: "c6609124b3d009a047e2cd99f4698f9356edcb8869de85e8055668c7e731a9a9"
-    sha256 arm64_sonoma:  "499e78b6bc31942d928ee211840d2465a19e80f8e7d1c8ca45b59e5b81f5e991"
-    sha256 arm64_ventura: "ee6fb0868af1690b854890e783f081be321c769ac358866f7e605080622ed2d7"
-    sha256 ventura:       "da6dd75212a9bcbed42fd50fe9d7b07132c64c405ff0cf434ea684eaeeef3467"
-    sha256 arm64_linux:   "f3b189b8057bae5cb98bcbbfb1cb3165d6c829b8f38ee308fb32c2564058bbb4"
-    sha256 x86_64_linux:  "6c8c22f1b7b8bdfa58e0631bd8f913cd1751e0f8750c4e36803c485c8e0a6db3"
+    sha256 arm64_sequoia: "eab4e8d77015c2f855c7c742fc847a129d93210b31b66b302395addbf2e2a3b0"
+    sha256 arm64_sonoma:  "a05257e5c5edf2524a879c665b25f91c8881f21c3e187696ac400eed9310f86c"
+    sha256 arm64_ventura: "969ef7852425af6d9aaded7605bc5b82394d58a164c44eef77417f9bc7e08fea"
+    sha256 ventura:       "4905fcb25caac6fb342b06d5732921e04d74af63e73af7a97367ba10f11f732e"
+    sha256 arm64_linux:   "25b2ca13e875b3a2eda4cc0c813b5d238b61236df889c4845d7ebfc88a714f3a"
+    sha256 x86_64_linux:  "1671bd68e6fcff9cb3268bce56c83f76c00964c2e84190d78a214ea86bbdf4eb"
   end
 
   head do
