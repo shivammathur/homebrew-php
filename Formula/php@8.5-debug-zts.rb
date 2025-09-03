@@ -31,6 +31,7 @@ class PhpAT85DebugZts < Formula
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
+  depends_on "cyrus-sasl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
