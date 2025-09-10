@@ -66,8 +66,15 @@ class PhpAT73DebugZts < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gcc"
+
     # PHP build system incorrectly links system libraries
+    # see https://github.com/php/php-src/issues/10680
     patch :DATA
+  end
+
+  fails_with :clang do
+    cause "Performs worse due to lack of general global register variables"
   end
 
   patch do
@@ -75,7 +82,14 @@ class PhpAT73DebugZts < Formula
     sha256 "938f26a35673938935d1145191ded7006077e75aaf0de0122fefd630eecb63ae"
   end
 
+  # https://github.com/Homebrew/homebrew-core/issues/235820
+  # https://clang.llvm.org/docs/UsersManual.html#gcc-extensions-not-implemented-yet
+
   def install
+    # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
+    # We lack a DSL to enable -O2 so just use -O3 which is similar.
+    ENV.O3 if OS.mac?
+
     # Work around configure issues with Xcode 15
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
