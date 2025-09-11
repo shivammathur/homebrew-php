@@ -101,6 +101,9 @@ class PhpAT74 < Formula
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
+    # cURL needs the value to be long,
+    inreplace "ext/curl/interface.c", /CURLOPT_VERBOSE,\s+0/, "CURLOPT_VERBOSE, 0L"
+
     inreplace "configure" do |s|
       s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes'`",
               "APACHE_THREADED_MPM="
