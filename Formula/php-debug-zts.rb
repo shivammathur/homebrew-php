@@ -64,11 +64,29 @@ class PhpDebugZts < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gcc"
+
     # PHP build system incorrectly links system libraries
+    # see https://github.com/php/php-src/issues/10680
     patch :DATA
   end
 
+  # https://github.com/Homebrew/homebrew-core/issues/235820
+  # https://clang.llvm.org/docs/UsersManual.html#gcc-extensions-not-implemented-yet
+  fails_with :clang do
+    cause "Performs worse due to lack of general global register variables"
+  end
+
   def install
+    # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
+    # We lack a DSL to enable -O2 so just use -O3 which is similar.
+    ENV.O3 if OS.mac?
+
+    if OS.mac? && Hardware::CPU.arm? && ENV.compiler.to_s.start_with?("gcc")
+      # Fix for gcc as it uses emulated TLS.
+      inreplace "TSRM/TSRM.c", "defined(__APPLE__) && defined(__x86_64__)", "defined(__APPLE__)"
+    end
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
