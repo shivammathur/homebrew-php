@@ -83,6 +83,11 @@ class PhpZts < Formula
     # We lack a DSL to enable -O2 so just use -O3 which is similar.
     ENV.O3 if OS.mac?
 
+    if OS.mac? && Hardware::CPU.arm? && ENV.compiler.to_s.start_with?("gcc")
+      # Fix for gcc as it uses emulated TLS.
+      inreplace "TSRM/TSRM.c", "defined(__APPLE__) && defined(__x86_64__)", "defined(__APPLE__)"
+    end
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
@@ -468,67 +473,6 @@ class PhpZts < Formula
 end
 
 __END__
-diff --git a/TSRM/TSRM.c b/TSRM/TSRM.c
-index 81136bee4da..9789c9824da 100644
---- a/TSRM/TSRM.c
-+++ b/TSRM/TSRM.c
-@@ -795,11 +795,20 @@ TSRM_API size_t tsrm_get_ls_cache_tcb_offset(void)
- #elif defined(__aarch64__)
- 	size_t ret;
- 
--# ifdef __APPLE__
-+# if defined(__APPLE__) && defined(__clang__)
- 	// Points to struct TLVDecriptor for _tsrm_ls_cache in macOS.
- 	asm("adrp %0, #__tsrm_ls_cache@TLVPPAGE\n\t"
- 	    "ldr %0, [%0, #__tsrm_ls_cache@TLVPPAGEOFF]"
- 	     : "=r" (ret));
-+# elif defined(__APPLE__) && defined(__GNUC__)
-+	// Points to struct ___emutls_v for _tsrm_ls_cache in macOS.
-+	asm("adrp  x0, ___emutls_v._tsrm_ls_cache@PAGE\n\t"
-+		 "add   x0, x0, ___emutls_v._tsrm_ls_cache@PAGEOFF\n\t"
-+		 "bl    ___emutls_get_address\n\t"
-+		 "mov   %0, x0"
-+		  : "=r"(ret)
-+		  :
-+		  : "x0", "x30", "cc", "memory");
- # elif defined(TSRM_TLS_MODEL_DEFAULT)
- 	/* Surplus Static TLS space isn't guaranteed. */
- 	ret = 0;
-diff --git a/ext/opcache/jit/zend_jit_ir.c b/ext/opcache/jit/zend_jit_ir.c
-index cd75856acb1..a9c45a5bcb2 100644
---- a/ext/opcache/jit/zend_jit_ir.c
-+++ b/ext/opcache/jit/zend_jit_ir.c
-@@ -3433,7 +3433,7 @@ static void zend_jit_setup(bool reattached)
- 			zend_accel_error_noreturn(ACCEL_LOG_FATAL, "Could not enable JIT: offset >= size");
- 		}
- 	} while(0);
--# elif defined(__APPLE__) && defined(__x86_64__)
-+# elif defined(__APPLE__) && defined(__x86_64__) && defined(__clang__)
- 	tsrm_ls_cache_tcb_offset = tsrm_get_ls_cache_tcb_offset();
- 	if (tsrm_ls_cache_tcb_offset == 0) {
- 		size_t *ti;
-@@ -3443,6 +3443,20 @@ static void zend_jit_setup(bool reattached)
- 		tsrm_tls_offset = ti[2];
- 		tsrm_tls_index = ti[1] * 8;
- 	}
-+# elif defined(__APPLE__) && defined(__x86_64__) && defined(__GNUC__)
-+  tsrm_ls_cache_tcb_offset = tsrm_get_ls_cache_tcb_offset();
-+  if (tsrm_ls_cache_tcb_offset == 0) {
-+    void *addr;
-+    __asm__(
-+      "leaq ___emutls_v._tsrm_ls_cache(%%rip), %%rdi\n\t"
-+      "call ___emutls_get_address@PLT\n\t"
-+      "movq %%rax, %0"
-+      : "=r"(addr)
-+      :
-+      : "rdi", "rax");
-+    tsrm_tls_offset = 0;
-+    tsrm_tls_index  = 0;
-+  }
- # elif defined(__GNUC__) && defined(__x86_64__)
- 	tsrm_ls_cache_tcb_offset = tsrm_get_ls_cache_tcb_offset();
- 	if (tsrm_ls_cache_tcb_offset == 0) {
-
 diff --git a/build/php.m4 b/build/php.m4
 index 176d4d4144..f71d642bb4 100644
 --- a/build/php.m4
