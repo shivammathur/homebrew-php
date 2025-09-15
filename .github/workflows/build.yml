@@ -204,6 +204,8 @@ jobs:
         include:
           - runner: 'macos-13-arm64'
             cleanup: true
+          - runner: 'macos-26'
+            cleanup: true
           - runner: 'macos-15'
             cleanup: true
           - runner: 'macos-14'
