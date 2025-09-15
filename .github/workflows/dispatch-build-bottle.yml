@@ -161,6 +161,6 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Sync branches
-        run: gh workflow run sync-default-branches.yml
+        run: gh workflow run sync-default-branches.yml -R ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
