@@ -80,6 +80,13 @@ class PhpDebug < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
+  # Fix naming clash with libxml macro
+  # https://github.com/php/php-src/pull/19832
+  patch do
+    url "https://github.com/php/php-src/commit/24a03a2fb14f4b1b16fd2bdb296fc874a4e49cac.patch?full_index=1.patch?full_index=1"
+    sha256 "84daba52c50deca17ffa739e43dcc0ac3a8c264e42b61891bf8f9effd299a3da"
+  end
+
   def install
     # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
     # We lack a DSL to enable -O2 so just use -O3 which is similar.
