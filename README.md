@@ -55,12 +55,12 @@ The formulae with thread-safety support can be used with applications that requi
 
 ## OS Support
 
-|Operating System|Architecture|
-|--- |--- |
-|Linux|`x86_64`, `arm64`|
-|macOS Ventura|`x86_64`, `arm64`|
-|macOS Sonoma|`x86_64`, `arm64`|
-|macOS Sequoia|`x86_64`, `arm64`|
+| Operating System | Architecture      |
+|------------------|-------------------|
+| Linux            | `x86_64`, `arm64` |
+| macOS Sonoma     | `x86_64`, `arm64` |
+| macOS Sequoia    | `x86_64`, `arm64` |
+| macOS Tahoe      | `x86_64`, `arm64` |
 
 ## Usage
 
