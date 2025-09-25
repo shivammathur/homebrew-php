@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.4.12.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.12.tar.xz"
-  sha256 "c1b7978cbb5054eed6c749bde4444afc16a3f2268101fb70a7d5d9b1083b12ad"
+  url "https://www.php.net/distributions/php-8.4.13.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.13.tar.xz"
+  sha256 "b4f27adf30bcf262eacf93c78250dd811980f20f3b90d79a3dc11248681842df"
   license "PHP-3.01"
 
   livecheck do
@@ -93,9 +93,6 @@ class Php < Formula
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    # cURL needs the value to be long,
-    inreplace "ext/curl/interface.c", /CURLOPT_VERBOSE,\s+0/, "CURLOPT_VERBOSE, 0L"
 
     inreplace "configure" do |s|
       s.gsub! "$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes' >/dev/null 2>&1",
