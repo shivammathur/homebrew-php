@@ -17,7 +17,7 @@
     <img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555">
   </a>
   <a href="https://github.com/shivammathur/homebrew-php/tree/main/Formula" title="Formulae for PHP versions">
-    <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.5-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
+    <img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-5.6%20to%208.6-777bb3.svg?logo=php&logoColor=white&labelColor=555555">
   </a>
 </p>
 <p align="center">
@@ -48,6 +48,7 @@
 | PHP 8.3       | `php@8.3`          | `php@8.3-debug`                | `php@8.3-zts`              | `php@8.3-debug-zts`                    |
 | PHP 8.4       | `php` or `php@8.4` | `php-debug` or `php@8.4-debug` | `php-zts` or `php@8.4-zts` | `php-debug-zts` or `php@8.4-debug-zts` |
 | PHP 8.5.0-dev | `php@8.5`          | `php@8.5-debug`                | `php@8.5-zts`              | `php@8.5-debug-zts`                    |
+| PHP 8.6.0-dev | `php@8.6`          | `php@8.6-debug`                | `php@8.6-zts`              | `php@8.6-debug-zts`                    |
 
 For each PHP version, we have formulae with thread-safety support `(zts)` and debug symbols support `(debug)` and both `(debug-zts)` as well.
 The formulae with debug symbols can be used when building or debugging PHP extensions and are not recommended for production usage.
