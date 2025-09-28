@@ -14,8 +14,6 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
-        with:
-          test-bot: false
 
       - name: Run automerge
         env:
