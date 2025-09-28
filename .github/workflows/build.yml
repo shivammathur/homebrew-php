@@ -48,7 +48,6 @@ jobs:
         with:
           core: true
           cask: false
-          test-bot: true
 
       - run: brew test-bot --only-tap-syntax
 
@@ -125,7 +124,6 @@ jobs:
         with:
           core: false
           cask: false
-          test-bot: false
 
       - name: Patch formula
         env:

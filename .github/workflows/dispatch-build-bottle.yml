@@ -131,7 +131,6 @@ jobs:
         with:
           core: true
           cask: false
-          test-bot: false
 
       - name: Download bottles from GitHub Actions
         uses: actions/download-artifact@v4
