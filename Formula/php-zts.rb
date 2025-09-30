@@ -48,6 +48,7 @@ class PhpZts < Formula
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
+  depends_on "net-snmp"
   depends_on "oniguruma"
   depends_on "openldap"
   depends_on "openssl@3"
@@ -185,6 +186,7 @@ class PhpZts < Formula
       --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pdo-sqlite
       --with-pgsql=#{Formula["libpq"].opt_prefix}
+      --with-snmp=#{Formula["net-snmp"].opt_prefix}
       --with-pic
       --with-pspell=#{Formula["aspell"].opt_prefix}
       --with-sodium
@@ -367,9 +369,7 @@ class PhpZts < Formula
     system "#{sbin}/php-fpm", "-t"
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"
-    # Prevent SNMP extension to be added
-    refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
-      "SNMP extension doesn't work reliably with Homebrew on High Sierra")
+
     begin
       port = free_port
       port_fpm = free_port
@@ -378,7 +378,9 @@ class PhpZts < Formula
       (testpath/"index.php").write <<~EOS
         <?php
         echo 'Hello world!' . PHP_EOL;
-        var_dump(ldap_connect());
+        var_dump(ldap_connect());        
+        $session = new SNMP(SNMP::VERSION_1, '127.0.0.1', 'public');
+        var_dump(@$session->get('sysDescr.0'));
       EOS
       main_config = <<~EOS
         Listen #{port}
