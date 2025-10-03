@@ -1,9 +1,9 @@
 class PhpAT86Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/a3f0861f2e5c287b200bd5692e00569b10bb9173.tar.gz?commit=a3f0861f2e5c287b200bd5692e00569b10bb9173"
+  url "https://github.com/php/php-src/archive/28fd7597bae7c5ab326614364d58b592b4d9a6ea.tar.gz?commit=28fd7597bae7c5ab326614364d58b592b4d9a6ea"
   version "8.6.0"
-  sha256 "9c1bc56952dd5bd685653c09ab418cfb6de030491f8df86e7200a47cc49809ac"
+  sha256 "486bb1af693b267bae65b1509593b7f7e1f2e3bdc4427d8b3a7b8fdac08bce02"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
