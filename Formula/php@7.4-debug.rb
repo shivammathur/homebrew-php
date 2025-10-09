@@ -1,11 +1,11 @@
 class PhpAT74Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/78eed5e70e3c16e2d310ccd95b9e247891033cf5.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/4f5713607d60ffc702eb22aa84a199616cae9051.tar.gz"
   version "7.4.33"
-  sha256 "2514d5ba7da9f9546a3be16c88f11ab59fa89796a3cf2b6b3f747c596c7c8b21"
+  sha256 "6df3a2d0e2b7d7683408d530d832468a1034d1c821a29645bcfa66c852382691"
   license "PHP-3.01"
-  revision 11
+  revision 12
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -82,13 +82,7 @@ class PhpAT74Debug < Formula
       ENV.append "LDFLAGS", "-lresolv"
     end
 
-    if OS.mac? && ENV.compiler.to_s.start_with?("gcc")
-      ENV.append "CFLAGS", "-Wno-incompatible-pointer-types"
-      ENV.append "CPPFLAGS", "-DL_ctermid=1024"
-      inreplace "ext/gd/gd.c", "func_p)()", "func_p)(...)"
-      inreplace "ext/gd/gd_ctx.c", "func_p)()", "func_p)(...)"
-      inreplace "ext/standard/scanf.c", "zend_long (*fn)()", "zend_long (*fn)(...)"
-    end
+    ENV.append "CFLAGS", "-Wno-incompatible-pointer-types" if OS.mac? && ENV.compiler.to_s.start_with?("gcc")
 
     # Work around to support `icu4c` 75, which needs C++17.
     ENV["ICU_CXXFLAGS"] = "-std=c++17"
