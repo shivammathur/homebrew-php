@@ -1,0 +1,53 @@
+name: Bump formulae on schedule or request
+
+on:
+  workflow_dispatch:
+    inputs:
+      formulae:
+        description: Custom list of formulae to livecheck and bump if outdated
+        required: false
+  schedule:
+    # Every 5 hours from 1 through 23 with an offset of 40 minutes on Wednesday to Friday
+    - cron: "40 1-23/5 * * 3-5"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:main
+    env:
+      GNUPGHOME: /tmp/gnupghome
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+        with:
+          core: true
+          cask: false
+
+      - name: Configure Git user
+        uses: Homebrew/actions/git-user-config@main
+        with:
+          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'BrewTestBot' }}
+
+      - name: Bump formulae
+        env:
+          HOMEBREW_TEST_BOT_AUTOBUMP: 1
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+          HOMEBREW_GIT_COMMITTER_NAME: BrewTestBot
+          HOMEBREW_GIT_COMMITTER_EMAIL: 1589480+BrewTestBot@users.noreply.github.com
+          FORMULAE: ${{ inputs.formulae }}
+        run: |
+          BREW_BUMP=(brew bump --no-fork --open-pr --formulae)
+          if [[ -n "${FORMULAE-}" ]]; then
+            xargs "${BREW_BUMP[@]}" <<<"${FORMULAE}"
+          else
+            "${BREW_BUMP[@]}" --auto --tap=${{ github.repository_owner }}/php
+          fi
