@@ -36,7 +36,6 @@ class PhpDebug < Formula
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
-  depends_on "aspell"
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
@@ -183,8 +182,8 @@ class PhpDebug < Formula
       --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pdo-sqlite
       --with-pgsql=#{Formula["libpq"].opt_prefix}
-      --with-snmp=#{Formula["net-snmp"].opt_prefix}
       --with-pic
+      --with-snmp=#{Formula["net-snmp"].opt_prefix}
       --with-sodium
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
