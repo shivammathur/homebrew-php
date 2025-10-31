@@ -1,9 +1,9 @@
 class PhpAT85DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/b35b5e0050d856f3c787e830904f7b5b54c2f8b4.tar.gz?commit=b35b5e0050d856f3c787e830904f7b5b54c2f8b4"
+  url "https://github.com/php/php-src/archive/2e0ab274ef4a1d2d55faaddddab2d15e5562fc43.tar.gz?commit=2e0ab274ef4a1d2d55faaddddab2d15e5562fc43"
   version "8.5.0"
-  sha256 "1461797a543ed6061b15702d2234915b7eb7e7389b07b2ca3a012ffcd17095d8"
+  sha256 "9337fa918ee0403aa49cd6b708b0608c3622da6f4606145411e12cade9e7c0bd"
   license "PHP-3.01"
   revision 5
 
