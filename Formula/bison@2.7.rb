@@ -9,12 +9,13 @@ class BisonAT27 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_sequoia: "5bc5e08daecaee2f6d0a094dd1812e44a61bd81d0ff6c920ce67a0ee9fba5420"
-    sha256 arm64_sonoma:  "7d078c31dd6daabae2ac36c3af29c7f5a1718c1f059d90e916ea2b38fda57817"
-    sha256 arm64_ventura: "057c698f13e4e26ff80796b0f296ef104c35f66cb40db22fad346efc96569286"
-    sha256 ventura:       "d5559bda41c602d9c6f6cec440f3077a5757930a1333124657b59f3853b369df"
-    sha256 arm64_linux:   "572e0bb32bfc41ecdaca14f26771ec51ba35debcf8c390da85f79634e3d1b453"
-    sha256 x86_64_linux:  "0ec010e69a853cec8145244ea97ed02ee26f3ea0ddd95bfd288737ce3fb99568"
+    rebuild 1
+    sha256 arm64_tahoe:   "600dba731d797c878249c7d5f1cf9c953f01bb3a60fc623f781a91345f87487c"
+    sha256 arm64_sequoia: "0196e4f5dafa98d2a1375f8bf33b4c7f60624590186ceaca965d6fbb45594f4e"
+    sha256 arm64_sonoma:  "2f1156966985c9dc1c641c781aab983949ecfc0e1dc5bb68efe26c4bb941e88b"
+    sha256 sonoma:        "e7b19f2de9cba260d5059d395373b7ba6c88ea7fe999b623797b6e619ed7d9f1"
+    sha256 arm64_linux:   "a8739940d5f98c22eee45316e4bd5c923ccf8280b3cece385aaf2f4379d6ba0d"
+    sha256 x86_64_linux:  "14e5e8be74f6becdf03d8c7114f36db6dcb2cb966af79ab3a62b8253fcc3952b"
   end
 
   keg_only :versioned_formula
