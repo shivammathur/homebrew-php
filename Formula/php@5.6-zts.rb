@@ -12,6 +12,7 @@ class PhpAT56Zts < Formula
     sha256 arm64_tahoe:   "48cc498bce500949dce4e8ee012650054f490f3e8fae4768cb8cb78796f37b46"
     sha256 arm64_sequoia: "a2e7c9d19e37b3f15aa14f70e2152b44176d07c2b0699b2f98b524639ff44dd2"
     sha256 arm64_sonoma:  "f7f58e5c3c71fc013ce1c2492ecccb19cd460692bbabcc6af25b5b3097ea34ac"
+    sha256 sonoma:        "52b103659255881a337ec0a6c6a8cb61677a49c9e43aadd7a55a4e930e719ce4"
     sha256 arm64_linux:   "ac0e72a92379145d60f464096a409aa905268e24a69337117f5558f64bc5a474"
     sha256 x86_64_linux:  "d61ba4b5af3dcc5fb4be9e08c7cf1673b3f7f19bfa95ded56a9d63fb3548de5e"
   end
