@@ -11,6 +11,7 @@ class AutoconfAT269 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "92118951b09600786d5557f153e6e37920758f9a61242059bc022056554d3354"
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "96301e5356fdc3b29a198b42020b3eba440e646ba621d7e067937465b5f2769e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "96301e5356fdc3b29a198b42020b3eba440e646ba621d7e067937465b5f2769e"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "96301e5356fdc3b29a198b42020b3eba440e646ba621d7e067937465b5f2769e"
