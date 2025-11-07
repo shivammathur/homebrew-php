@@ -5,7 +5,7 @@ class PhpAT80Zts < Formula
   version "8.0.30"
   sha256 "091e70a151ec18206aa15a69d774ea661b0d43d4ba3fbbb3f794a5e81773ffce"
   license "PHP-3.01"
-  revision 5
+  revision 6
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
