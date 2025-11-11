@@ -64,8 +64,15 @@ fetch() {
     if [ "$PHP_MM" = "$master_version" ]; then
       branch=master
     else
-      ref="$(git ls-remote --heads https://github.com/php/php-src "PHP-$PHP_MM")"
-      [[ -n "$ref" ]] && branch="PHP-$PHP_MM" || branch="PHP-$PHP_MM"
+      branch_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/"PHP-$PHP_MM"/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+\.[0-9][0-9a-zA-Z-]*')
+      [ "$branch_version" = "$PHP_MM.0-dev" ] && branch_name="PHP-$PHP_MM" || branch_name="PHP-$PHP_MM.0"
+      ref="$(git ls-remote --heads https://github.com/php/php-src "$branch_name")"
+      if [[ -n "$ref" ]]; then
+        branch=$branch_name
+      else
+        echo "Failed to find branch"
+        exit 1
+      fi
     fi  
     commit="$(curl -H "Authorization: Brearer $GITHUB_TOKEN" -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
