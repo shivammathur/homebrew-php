@@ -13,6 +13,12 @@ class PhpAT84DebugZts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_tahoe:   "8b8e5483b85007690a793f14a7c1c431e1684802dd20438480d395ab565ddc02"
+    sha256 arm64_sequoia: "6865a2c6ee0834d4cb3052435f35778d6c9409cf663df00267dcf1a994b9a89f"
+    sha256 arm64_sonoma:  "f06cd13731211971e0799f1e3b9f4cbefc992d39a48bb51ce087e6bbced2c6f9"
+    sha256 sonoma:        "8d49e3dec40a2a550b05cd5844df6fa408e0c6c27ea62e36a9e036f221bfa79b"
+    sha256 arm64_linux:   "e130dd284adf2cdde2466818bb02f490c66bb1ea49372f8e9e7b6e51d35a138b"
+    sha256 x86_64_linux:  "50b70b37bab38ba761c106275974a5841d1ca6fb269cc2f4469549e305cb59d2"
   end
 
   keg_only :versioned_formula
