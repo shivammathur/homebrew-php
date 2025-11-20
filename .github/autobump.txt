@@ -2,6 +2,9 @@ php
 php-debug-zts
 php-zts
 php-debug
+php@8.4
+php@8.4-debug-zts
+php@8.4-zts
 php@8.4-debug
 php@8.3
 php@8.3-debug-zts
