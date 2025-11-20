@@ -7,6 +7,11 @@ class PhpAT81Zts < Formula
   license "PHP-3.01"
   revision 2
 
+  livecheck do
+    url "https://www.php.net/downloads?source=Y"
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
+  end
+
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_tahoe:   "361a6a56532038c7d8632f813e6a122fe87a06a452dedf2c2bf56d95b050bffb"
