@@ -1,11 +1,10 @@
 class PhpAT83 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.3.27.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.27.tar.xz"
-  sha256 "c15a09a9d199437144ecfef7d712ec4ca5c6820cf34acc24cc8489dd0cee41ba"
+  url "https://www.php.net/distributions/php-8.3.28.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.28.tar.xz"
+  sha256 "25e3860f30198a386242891c0bf9e2955931f7b666b96c3e3103d36a2a322326"
   license "PHP-3.01"
-  revision 2
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
