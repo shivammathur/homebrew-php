@@ -2,11 +2,10 @@ class PhpDebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.4.14.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.14.tar.xz"
-  sha256 "bac90ee7cf738e814c89b6b27d4d2c4b70e50942a420837e1a22f5fd5f9867a3"
+  url "https://www.php.net/distributions/php-8.5.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.0.tar.xz"
+  sha256 "39cb6e4acd679b574d3d3276f148213e935fc25f90403eb84fb1b836a806ef1e"
   license "PHP-3.01"
-  revision 2
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -15,29 +14,25 @@ class PhpDebugZts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_tahoe:   "8bd7f2e14d233f1ec603cf7e6ce87f9a9b0d74a7a10dd95eff28d96f822bd94d"
-    sha256 arm64_sequoia: "c5b786eb32f2a6b79d71b85aa1ddb9c80e28af5a5881354a44c66402218556f6"
-    sha256 arm64_sonoma:  "b659d23126148e349da99b101a786cd0ed10d93578ff65c5f5dc6d83760dac80"
-    sha256 sonoma:        "8618b9d66e68de70744dc0f8c99466b9b149a9dbb2feeecd743ce0185776bf30"
-    sha256 arm64_linux:   "3ec9d36bd7dde4d419ecd72ed33e0ca26bf7767b6b5cc4b3f9cc05cbbd816093"
-    sha256 x86_64_linux:  "6c8c6004023f3926e213714db404a5068edee9e6827cdac2480b06d73aef53cd"
+    sha256 arm64_tahoe:   "058b63db11f1ab911fdbb4846d0f40b0a274c567e0988e679a4f0a6fb9c99d01"
+    sha256 arm64_sequoia: "3a2cac8bf1b6c1d66585af8d0747f9409375d69539136182a8d988cbdd9a76b8"
+    sha256 arm64_sonoma:  "79201b7059a4a1325bd037bab830f369963a3db7dae4edd3d4d2d037aae516e5"
+    sha256 sonoma:        "1d088cf19da08977483a2bfd044d2ed05bff7a19f992c5ef807566f77ae76a41"
+    sha256 arm64_linux:   "84b2bdb09baabd5c1c600cc991550229c15725fbcfcd6dcad2df1d257938cb9e"
+    sha256 x86_64_linux:  "54c0fd7aedd1beb83e425c6aec9fa39f2e532ae9066367b383caa4103d59f96c"
   end
 
-  head do
-    url "https://github.com/php/php-src.git", branch: "master"
-
-    depends_on "bison" => :build # bison >= 3.0.0 required to generate parsers
-    depends_on "re2c" => :build # required to generate PHP lexers
-  end
-
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkgconf" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
+  depends_on "cyrus-sasl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
@@ -94,7 +89,7 @@ class PhpDebugZts < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{version.major_minor}-debug-zts"
+    config_path = etc/"php/#{php_version}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -132,8 +127,8 @@ class PhpDebugZts < Formula
       --disable-zend-signals
       --enable-bcmath
       --enable-calendar
-      --enable-debug
       --enable-dba
+      --enable-debug
       --enable-exif
       --enable-ftp
       --enable-gd
@@ -169,7 +164,7 @@ class PhpDebugZts < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2
+      --with-password-argon2=#{Formula["argon2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
@@ -280,14 +275,13 @@ class PhpDebugZts < Formula
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
     extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
     (pecl_path/php_basename).mkpath
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear-debug-zts"
+    pear_path = HOMEBREW_PREFIX/"share/pear"
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{version.major_minor}-debug-zts/php.ini",
+      "php_ini"  => etc/"php/#{php_version}/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -304,22 +298,6 @@ class PhpDebugZts < Formula
     end
 
     system bin/"pear", "update-channels"
-
-    %w[
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}-debug-zts/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~INI
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        INI
-      end
-    end
   end
 
   def caveats
@@ -335,8 +313,12 @@ class PhpDebugZts < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{version.major_minor}-debug-zts/
+          #{etc}/php/#{php_version}/
     EOS
+  end
+
+  def php_version
+    version.to_s.split(".")[0..1].join(".") + "-debug-zts"
   end
 
   service do
@@ -348,8 +330,6 @@ class PhpDebugZts < Formula
   end
 
   test do
-    assert_match(/^Zend OPcache$/, shell_output("#{bin}/php -i"),
-      "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes (bin/"php").dynamically_linked_libraries,
@@ -358,7 +338,6 @@ class PhpDebugZts < Formula
     system "#{sbin}/php-fpm", "-t"
     system bin/"phpdbg", "-V"
     system bin/"php-cgi", "-m"
-
     begin
       port = free_port
       port_fpm = free_port
@@ -440,6 +419,19 @@ class PhpDebugZts < Formula
 end
 
 __END__
+diff --git a/scripts/php-config.in b/scripts/php-config.in
+index 87c20089bb..879299f9cf 100644
+--- a/scripts/php-config.in
++++ b/scripts/php-config.in
+@@ -11,7 +11,7 @@ lib_dir="@orig_libdir@"
+ includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
+ ldflags="@PHP_LDFLAGS@"
+ libs="@EXTRA_LIBS@"
+-extension_dir="@EXTENSION_DIR@"
++extension_dir='@EXTENSION_DIR@'
+ man_dir=`eval echo @mandir@`
+ program_prefix="@program_prefix@"
+ program_suffix="@program_suffix@"
 diff --git a/build/php.m4 b/build/php.m4
 index 176d4d4144..f71d642bb4 100644
 --- a/build/php.m4
@@ -481,3 +473,54 @@ index 36c6e5e3e2..71b1a16607 100644
  PHP_ARG_ENABLE([rpath],
    [whether to enable runpaths],
    [AS_HELP_STRING([--disable-rpath],
+diff --git a/ext/mysqlnd/mysqlnd_connection.c b/ext/mysqlnd/mysqlnd_connection.c
+index d8e7304e9665f..140e15589682f 100644
+--- a/ext/mysqlnd/mysqlnd_connection.c
++++ b/ext/mysqlnd/mysqlnd_connection.c
+@@ -557,10 +557,11 @@ MYSQLND_METHOD(mysqlnd_conn_data, get_scheme)(MYSQLND_CONN_DATA * conn, MYSQLND_
+ 		if (hostname.s[0] != '[' && mysqlnd_fast_is_ipv6_address(hostname.s)) {
+ 			transport.l = mnd_sprintf(&transport.s, 0, "tcp://[%s]:%u", hostname.s, port);
+ 		} else {
+-			/* Not ipv6, but could already contain a port number, in which case we should not add an extra port.
++			/* Could already contain a port number, in which case we should not add an extra port.
+ 			 * See GH-8978. In a port doubling scenario, the first port would be used so we do the same to keep BC. */
+-			if (strchr(hostname.s, ':')) {
++			if (strchr(hostname.s, ':') && !mysqlnd_fast_is_ipv6_address(hostname.s)) {
+ 				/* TODO: Ideally we should be able to get rid of this workaround in the future. */
++				/* TODO: IPv6 address enclosed in square brackets is not handled, ex [::1]:3306 */
+ 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s", hostname.s);
+ 			} else {
+ 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s:%u", hostname.s, port);
+diff --git a/ext/mysqlnd/mysqlnd_connection.c b/ext/mysqlnd/mysqlnd_connection.c
+index 140e15589682f..8268034e8b798 100644
+--- a/ext/mysqlnd/mysqlnd_connection.c
++++ b/ext/mysqlnd/mysqlnd_connection.c
+@@ -553,15 +553,25 @@ MYSQLND_METHOD(mysqlnd_conn_data, get_scheme)(MYSQLND_CONN_DATA * conn, MYSQLND_
+ 			port = 3306;
+ 		}
+ 
+-		/* ipv6 addresses are in the format [address]:port */
+ 		if (hostname.s[0] != '[' && mysqlnd_fast_is_ipv6_address(hostname.s)) {
++			/* IPv6 without square brackets so without port */
+ 			transport.l = mnd_sprintf(&transport.s, 0, "tcp://[%s]:%u", hostname.s, port);
+ 		} else {
++			char *p;
++
++			/* IPv6 addresses are in the format [address]:port */
++			if (hostname.s[0] == '[') { /* IPv6 */
++				p = strchr(hostname.s, ']');
++				if (p && p[1] != ':') {
++					p = NULL;
++				}
++			} else { /* IPv4 or name */
++				p = strchr(hostname.s, ':');
++			}
+ 			/* Could already contain a port number, in which case we should not add an extra port.
+ 			 * See GH-8978. In a port doubling scenario, the first port would be used so we do the same to keep BC. */
+-			if (strchr(hostname.s, ':') && !mysqlnd_fast_is_ipv6_address(hostname.s)) {
++			if (p) {
+ 				/* TODO: Ideally we should be able to get rid of this workaround in the future. */
+-				/* TODO: IPv6 address enclosed in square brackets is not handled, ex [::1]:3306 */
+ 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s", hostname.s);
+ 			} else {
+ 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s:%u", hostname.s, port);

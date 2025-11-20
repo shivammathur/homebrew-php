@@ -1,21 +1,18 @@
-class PhpAT85DebugZts < Formula
+class PhpAT84DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/cc1e300d4dbaaf8c6823af24aab5d1ce36468548.tar.gz?commit=cc1e300d4dbaaf8c6823af24aab5d1ce36468548"
-  version "8.5.0"
-  sha256 "7b76469fd6b2b77310320e17990ac9b10e874912041a1ddff97419b68c763a48"
+  url "https://www.php.net/distributions/php-8.4.15.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.15.tar.xz"
+  sha256 "a060684f614b8344f9b34c334b6ba8db1177555997edb5b1aceab0a4b807da7e"
   license "PHP-3.01"
-  revision 5
+
+  livecheck do
+    url "https://www.php.net/downloads?source=Y"
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
+  end
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 30
-    sha256 arm64_tahoe:   "0076bb332c2dde13cb70fbcbedda3774eb71815b946225ea40504cd1c854b155"
-    sha256 arm64_sequoia: "a0355200e7be32ad60a6af343416efb3dd1e515c248f70cd6743af39047703c2"
-    sha256 arm64_sonoma:  "a4d7ada7ce04f555d3b161e06cc25c8da803c4fbd856bbfc8c15643bfceadfbf"
-    sha256 sonoma:        "57410fd4c07db7d464d90324b819328f8df0f95bb2ad18684d3c4694e438a6a7"
-    sha256 arm64_linux:   "3aa0229309d3ff8a29689806ee04d8f5e8fa8b3ef0743028d28500942b9a112e"
-    sha256 x86_64_linux:  "8ef7aae77d9b8001d587300440ca667b59e7df2e6ea3e55ef292f4b181448d6d"
   end
 
   keg_only :versioned_formula
@@ -30,7 +27,6 @@ class PhpAT85DebugZts < Formula
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
-  depends_on "cyrus-sasl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
@@ -48,6 +44,7 @@ class PhpAT85DebugZts < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
+  uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
   uses_from_macos "libffi"
@@ -61,7 +58,6 @@ class PhpAT85DebugZts < Formula
   end
 
   def install
-    # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
     inreplace "configure" do |s|
@@ -100,7 +96,6 @@ class PhpAT85DebugZts < Formula
     # Identify build provider in php -v output and phpinfo()
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
 
-    # system pkg-config missing
     if OS.mac?
       ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
       ENV["SASL_LIBS"] = "-lsasl2"
@@ -128,8 +123,8 @@ class PhpAT85DebugZts < Formula
       --disable-zend-signals
       --enable-bcmath
       --enable-calendar
-      --enable-debug
       --enable-dba
+      --enable-debug
       --enable-exif
       --enable-ftp
       --enable-gd
@@ -165,7 +160,7 @@ class PhpAT85DebugZts < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2
+      --with-password-argon2=#{Formula["argon2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
@@ -276,6 +271,8 @@ class PhpAT85DebugZts < Formula
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
     extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
+    php_ext_dir = opt_prefix/"lib/php"/php_basename
+    (pecl_path/php_basename).mkpath
 
     # fix pear config to install outside cellar
     pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
@@ -298,6 +295,22 @@ class PhpAT85DebugZts < Formula
     end
 
     system bin/"pear", "update-channels"
+
+    %w[
+      opcache
+    ].each do |e|
+      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
+      extension_type = (e == "opcache") ? "zend_extension" : "extension"
+      if ext_config_path.exist?
+        inreplace ext_config_path,
+          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
+      else
+        ext_config_path.write <<~INI
+          [#{e}]
+          #{extension_type}="#{php_ext_dir}/#{e}.so"
+        INI
+      end
+    end
   end
 
   def caveats
@@ -330,6 +343,8 @@ class PhpAT85DebugZts < Formula
   end
 
   test do
+    assert_match(/^Zend OPcache$/, shell_output("#{bin}/php -i"),
+      "Zend OPCache extension not loaded")
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes (bin/"php").dynamically_linked_libraries,
@@ -338,6 +353,7 @@ class PhpAT85DebugZts < Formula
     system "#{sbin}/php-fpm", "-t"
     system bin/"phpdbg", "-V"
     system bin/"php-cgi", "-m"
+
     begin
       port = free_port
       port_fpm = free_port
@@ -419,19 +435,6 @@ class PhpAT85DebugZts < Formula
 end
 
 __END__
-diff --git a/scripts/php-config.in b/scripts/php-config.in
-index 87c20089bb..879299f9cf 100644
---- a/scripts/php-config.in
-+++ b/scripts/php-config.in
-@@ -11,7 +11,7 @@ lib_dir="@orig_libdir@"
- includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
- ldflags="@PHP_LDFLAGS@"
- libs="@EXTRA_LIBS@"
--extension_dir="@EXTENSION_DIR@"
-+extension_dir='@EXTENSION_DIR@'
- man_dir=`eval echo @mandir@`
- program_prefix="@program_prefix@"
- program_suffix="@program_suffix@"
 diff --git a/build/php.m4 b/build/php.m4
 index 176d4d4144..f71d642bb4 100644
 --- a/build/php.m4
