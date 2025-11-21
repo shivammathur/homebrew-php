@@ -33,7 +33,7 @@ jobs:
       matrix:
         include:
           - runner: macos-26
-          - runner: macos-15
+          - runner: macos-15-arm64
           - runner: macos-14
           - runner: macos-14-x86_64
           - runner: ubuntu-latest
