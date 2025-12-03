@@ -20,6 +20,7 @@ jobs:
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
     - name: Setup PHP
+      timeout-minutes: 20
       env:
         update: true
         debug: ${{ matrix.debug }}
