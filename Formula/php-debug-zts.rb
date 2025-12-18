@@ -2,9 +2,9 @@ class PhpDebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.0.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.0.tar.xz"
-  sha256 "39cb6e4acd679b574d3d3276f148213e935fc25f90403eb84fb1b836a806ef1e"
+  url "https://www.php.net/distributions/php-8.5.1.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.1.tar.xz"
+  sha256 "3f5bf99ce81201f526d25e288eddb2cfa111d068950d1e9a869530054ff98815"
   license "PHP-3.01"
 
   livecheck do
@@ -473,54 +473,3 @@ index 36c6e5e3e2..71b1a16607 100644
  PHP_ARG_ENABLE([rpath],
    [whether to enable runpaths],
    [AS_HELP_STRING([--disable-rpath],
-diff --git a/ext/mysqlnd/mysqlnd_connection.c b/ext/mysqlnd/mysqlnd_connection.c
-index d8e7304e9665f..140e15589682f 100644
---- a/ext/mysqlnd/mysqlnd_connection.c
-+++ b/ext/mysqlnd/mysqlnd_connection.c
-@@ -557,10 +557,11 @@ MYSQLND_METHOD(mysqlnd_conn_data, get_scheme)(MYSQLND_CONN_DATA * conn, MYSQLND_
- 		if (hostname.s[0] != '[' && mysqlnd_fast_is_ipv6_address(hostname.s)) {
- 			transport.l = mnd_sprintf(&transport.s, 0, "tcp://[%s]:%u", hostname.s, port);
- 		} else {
--			/* Not ipv6, but could already contain a port number, in which case we should not add an extra port.
-+			/* Could already contain a port number, in which case we should not add an extra port.
- 			 * See GH-8978. In a port doubling scenario, the first port would be used so we do the same to keep BC. */
--			if (strchr(hostname.s, ':')) {
-+			if (strchr(hostname.s, ':') && !mysqlnd_fast_is_ipv6_address(hostname.s)) {
- 				/* TODO: Ideally we should be able to get rid of this workaround in the future. */
-+				/* TODO: IPv6 address enclosed in square brackets is not handled, ex [::1]:3306 */
- 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s", hostname.s);
- 			} else {
- 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s:%u", hostname.s, port);
-diff --git a/ext/mysqlnd/mysqlnd_connection.c b/ext/mysqlnd/mysqlnd_connection.c
-index 140e15589682f..8268034e8b798 100644
---- a/ext/mysqlnd/mysqlnd_connection.c
-+++ b/ext/mysqlnd/mysqlnd_connection.c
-@@ -553,15 +553,25 @@ MYSQLND_METHOD(mysqlnd_conn_data, get_scheme)(MYSQLND_CONN_DATA * conn, MYSQLND_
- 			port = 3306;
- 		}
- 
--		/* ipv6 addresses are in the format [address]:port */
- 		if (hostname.s[0] != '[' && mysqlnd_fast_is_ipv6_address(hostname.s)) {
-+			/* IPv6 without square brackets so without port */
- 			transport.l = mnd_sprintf(&transport.s, 0, "tcp://[%s]:%u", hostname.s, port);
- 		} else {
-+			char *p;
-+
-+			/* IPv6 addresses are in the format [address]:port */
-+			if (hostname.s[0] == '[') { /* IPv6 */
-+				p = strchr(hostname.s, ']');
-+				if (p && p[1] != ':') {
-+					p = NULL;
-+				}
-+			} else { /* IPv4 or name */
-+				p = strchr(hostname.s, ':');
-+			}
- 			/* Could already contain a port number, in which case we should not add an extra port.
- 			 * See GH-8978. In a port doubling scenario, the first port would be used so we do the same to keep BC. */
--			if (strchr(hostname.s, ':') && !mysqlnd_fast_is_ipv6_address(hostname.s)) {
-+			if (p) {
- 				/* TODO: Ideally we should be able to get rid of this workaround in the future. */
--				/* TODO: IPv6 address enclosed in square brackets is not handled, ex [::1]:3306 */
- 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s", hostname.s);
- 			} else {
- 				transport.l = mnd_sprintf(&transport.s, 0, "tcp://%s:%u", hostname.s, port);
