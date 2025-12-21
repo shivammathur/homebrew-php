@@ -1,9 +1,9 @@
 class PhpAT86Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/b6f786a7ca3132171da2225d1b19d14d2fa50019.tar.gz?commit=b6f786a7ca3132171da2225d1b19d14d2fa50019"
+  url "https://github.com/php/php-src/archive/5dd5a4267f84971025bf8b316fd11910b4a1e03e.tar.gz?commit=5dd5a4267f84971025bf8b316fd11910b4a1e03e"
   version "8.6.0"
-  sha256 "1b31a064208704c048b9fa4acf90d4b79b6f9d273a81ee8b278015f5fe0afa27"
+  sha256 "e0be9ff33bde8e9abff11e99cb34c0b04bade5473a5521aa2b6368c36908873e"
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
