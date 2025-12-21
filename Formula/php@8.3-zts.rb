@@ -127,17 +127,17 @@ class PhpAT83Zts < Formula
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "
     if OS.mac?
-      ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
+      sdk_path = MacOS.sdk_for_formula(self).path
+      ENV["SASL_CFLAGS"] = "-I#{sdk_path}/usr/include/sasl"
       ENV["SASL_LIBS"] = "-lsasl2"
+
+      # Each extension needs a direct reference to the sdk path or it won't find the headers
+      headers_path = "=#{sdk_path}/usr"
     else
       ENV["SQLITE_CFLAGS"] = "-I#{Formula["sqlite"].opt_include}"
       ENV["SQLITE_LIBS"] = "-lsqlite3"
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
     end
-
-    # Each extension that is built on Mojave needs a direct reference to the
-    # sdk path or it won't find the headers
-    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     # `_www` only exists on macOS.
     fpm_user = OS.mac? ? "_www" : "www-data"
