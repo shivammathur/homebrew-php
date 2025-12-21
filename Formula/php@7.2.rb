@@ -123,9 +123,9 @@ class PhpAT72 < Formula
     # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
-    # Each extension needs a direct reference to the sdk path or it won't find the headers
     if OS.mac?
-      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+      # Each extension needs a direct reference to the sdk path or it won't find the headers
+      headers_path = "=#{MacOS.sdk_for_formula(self).path}/usr"
       gettext_path = "=#{Formula["gettext"].opt_prefix}"
     end
 
