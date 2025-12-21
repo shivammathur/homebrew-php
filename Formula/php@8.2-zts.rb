@@ -61,7 +61,6 @@ class PhpAT82Zts < Formula
   depends_on "curl"
   depends_on "freetds"
   depends_on "gd"
-  depends_on "gettext"
   depends_on "gmp"
   depends_on "icu4c@78"
   depends_on "krb5"
@@ -85,6 +84,7 @@ class PhpAT82Zts < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
     # PHP build system incorrectly links system libraries
     patch :DATA
   end
@@ -138,6 +138,7 @@ class PhpAT82Zts < Formula
 
       # Each extension needs a direct reference to the sdk path or it won't find the headers
       headers_path = "=#{sdk_path}/usr"
+      gettext_path = "=#{Formula["gettext"].opt_prefix}"
     else
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
     end
@@ -180,7 +181,7 @@ class PhpAT82Zts < Formula
       --with-external-gd
       --with-external-pcre
       --with-ffi
-      --with-gettext=#{Formula["gettext"].opt_prefix}
+      --with-gettext#{gettext_path}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-kerberos

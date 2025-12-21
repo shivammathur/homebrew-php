@@ -135,6 +135,7 @@ class PhpAT84 < Formula
 
       # Each extension needs a direct reference to the sdk path or it won't find the headers
       headers_path = "=#{sdk_path}/usr"
+      gettext_path = "=#{Formula["gettext"].opt_prefix}"
     else
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
     end
@@ -179,7 +180,7 @@ class PhpAT84 < Formula
       --with-ffi
       --with-fpm-user=#{fpm_user}
       --with-fpm-group=#{fpm_group}
-      --with-gettext=#{Formula["gettext"].opt_prefix}
+      --with-gettext#{gettext_path}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-layout=GNU
