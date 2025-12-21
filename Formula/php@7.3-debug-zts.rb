@@ -125,8 +125,7 @@ class PhpAT73DebugZts < Formula
     # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
-    # Each extension that is built on Mojave needs a direct reference to the
-    # sdk path or it won't find the headers
+    # Each extension needs a direct reference to the sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     # `_www` only exists on macOS.
