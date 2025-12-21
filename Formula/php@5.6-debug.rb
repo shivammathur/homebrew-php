@@ -37,7 +37,6 @@ class PhpAT56Debug < Formula
   depends_on "freetds"
   depends_on "freetype"
   depends_on "gd"
-  depends_on "gettext"
   depends_on "gmp"
   depends_on "icu4c@78"
   depends_on "jpeg"
@@ -62,6 +61,7 @@ class PhpAT56Debug < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
     # PHP build system incorrectly links system libraries
     patch :DATA
   end
@@ -127,7 +127,10 @@ class PhpAT56Debug < Formula
     ENV["lt_cv_path_SED"] = "sed"
 
     # Each extension needs a direct reference to the sdk path or it won't find the headers
-    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
+    if OS.mac?
+      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
+      gettext_path = "=#{Formula["gettext"].opt_prefix}"
+    end
 
     # `_www` only exists on macOS.
     fpm_user = OS.mac? ? "_www" : "www-data"
@@ -168,7 +171,7 @@ class PhpAT56Debug < Formula
       --with-fpm-group=#{fpm_group}
       --with-freetype-dir=#{Formula["freetype"].opt_prefix}
       --with-gd=#{Formula["gd"].opt_prefix}
-      --with-gettext=#{Formula["gettext"].opt_prefix}
+      --with-gettext#{gettext_path}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-icu-dir=#{Formula["icu4c@78"].opt_prefix}

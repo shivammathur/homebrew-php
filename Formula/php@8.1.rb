@@ -59,7 +59,6 @@ class PhpAT81 < Formula
   depends_on "curl"
   depends_on "freetds"
   depends_on "gd"
-  depends_on "gettext"
   depends_on "gmp"
   depends_on "icu4c@78"
   depends_on "krb5"
@@ -83,7 +82,8 @@ class PhpAT81 < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "gcc" => :build # must never be a runtime dependency
+    depends_on "gcc" => :build
+    depends_on "gettext" # must never be a runtime dependency
   end
 
   # https://github.com/Homebrew/homebrew-core/issues/235820
@@ -155,6 +155,7 @@ class PhpAT81 < Formula
 
       # Each extension needs a direct reference to the sdk path or it won't find the headers
       headers_path = "=#{sdk_path}/usr"
+      gettext_path = "=#{Formula["gettext"].opt_prefix}"
     else
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
     end
@@ -199,7 +200,7 @@ class PhpAT81 < Formula
       --with-ffi
       --with-fpm-user=#{fpm_user}
       --with-fpm-group=#{fpm_group}
-      --with-gettext=#{Formula["gettext"].opt_prefix}
+      --with-gettext#{gettext_path}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-kerberos
