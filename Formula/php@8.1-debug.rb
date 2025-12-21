@@ -4,7 +4,29 @@ class PhpAT81Debug < Formula
   url "https://www.php.net/distributions/php-8.1.34.tar.xz"
   mirror "https://fossies.org/linux/www/php-8.1.34.tar.xz"
   sha256 "ffa9e0982e82eeaea848f57687b425ed173aa278fe563001310ae2638db5c251"
-  license "PHP-3.01"
+  license all_of: [
+    "PHP-3.01",
+
+    # Extra licenses not documented in README.REDIST.BINS
+    "Zend-2.0", # Zend/LICENSE
+    "BSL-1.0",  # Zend/asm/LICENSE
+    "MIT",      # ext/date/lib/LICENSE.rst
+
+    # Extra licenses documented in README.REDIST.BINS ignoring unbundled pcre2lib (3) and gd (13)
+    # ref: https://github.com/php/php-src/blob/PHP-8.1/README.REDIST.BINS
+    "Apache-1.0",            # 10
+    "bcrypt-Solar-Designer", # 5
+    "BSD-2-Clause-Darwin",   # 1
+    "BSD-2-Clause",          # 14, 18; also TSRM/LICENSE
+    "BSD-3-Clause",          # 4, 6, 11, 12, 15
+    "BSD-4-Clause-UC",       # 9
+    "ISC",                   # 10
+    "LGPL-2.1-only",         # 2
+    "LGPL-2.1-or-later",     # 16
+    "OLDAP-2.8",             # 17
+    "TCL",                   # 7
+    "Zlib",                  # 8
+  ]
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
