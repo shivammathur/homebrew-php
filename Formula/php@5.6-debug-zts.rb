@@ -99,6 +99,7 @@ class PhpAT56DebugZts < Formula
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
       s.gsub! "-z `$APXS -q SYSCONFDIR`",
               "-z ''"
+
       # apxs will interpolate the @ in the versioned prefix: https://bz.apache.org/bugzilla/show_bug.cgi?id=61944
       s.gsub! "LIBEXECDIR='$APXS_LIBEXECDIR'",
               "LIBEXECDIR='" + "#{lib}/httpd/modules".gsub("\\", "\\\\").gsub("@", "\\@") + "'"
@@ -292,7 +293,8 @@ class PhpAT56DebugZts < Formula
     (pecl_path/php_basename).mkpath
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
+    pear_dir = versioned_formula? ? "pear@#{php_version}" : "pear"
+    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
     cp_r pkgshare/"pear/.", pear_path
     {
       "php_ini"  => etc/"php/#{php_version}/php.ini",
