@@ -79,8 +79,6 @@ class PhpAT86 < Formula
 
   on_macos do
     depends_on "gettext"
-    # PHP build system incorrectly links system libraries
-    patch :DATA
   end
 
   def install
@@ -209,7 +207,6 @@ class PhpAT86 < Formula
     if OS.mac?
       args << "--enable-dtrace"
       args << "--with-ldap-sasl"
-      args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
     else
       args << "--disable-dtrace"
       args << "--without-ldap-sasl"
@@ -422,59 +419,3 @@ class PhpAT86 < Formula
     end
   end
 end
-
-__END__
-diff --git a/scripts/php-config.in b/scripts/php-config.in
-index 87c20089bb..879299f9cf 100644
---- a/scripts/php-config.in
-+++ b/scripts/php-config.in
-@@ -11,7 +11,7 @@ lib_dir="@orig_libdir@"
- includes="-I$include_dir -I$include_dir/main -I$include_dir/TSRM -I$include_dir/Zend -I$include_dir/ext -I$include_dir/ext/date/lib"
- ldflags="@PHP_LDFLAGS@"
- libs="@EXTRA_LIBS@"
--extension_dir="@EXTENSION_DIR@"
-+extension_dir='@EXTENSION_DIR@'
- man_dir=`eval echo @mandir@`
- program_prefix="@program_prefix@"
- program_suffix="@program_suffix@"
-diff --git a/build/php.m4 b/build/php.m4
-index 176d4d4144..f71d642bb4 100644
---- a/build/php.m4
-+++ b/build/php.m4
-@@ -429,7 +429,7 @@ dnl
- dnl Adds a path to linkpath/runpath (LDFLAGS).
- dnl
- AC_DEFUN([PHP_ADD_LIBPATH],[
--  if test "$1" != "/usr/$PHP_LIBDIR" && test "$1" != "/usr/lib"; then
-+  if test "$1" != "$PHP_OS_SDKPATH/usr/$PHP_LIBDIR" && test "$1" != "/usr/lib"; then
-     PHP_EXPAND_PATH($1, ai_p)
-     ifelse([$2],,[
-       _PHP_ADD_LIBPATH_GLOBAL([$ai_p])
-@@ -476,7 +476,7 @@ dnl paths are prepended to the beginning of INCLUDES.
- dnl
- AC_DEFUN([PHP_ADD_INCLUDE], [
- for include_path in m4_normalize(m4_expand([$1])); do
--  AS_IF([test "$include_path" != "/usr/include"], [
-+  AS_IF([test "$include_path" != "$PHP_OS_SDKPATH/usr/include"], [
-     PHP_EXPAND_PATH([$include_path], [ai_p])
-     PHP_RUN_ONCE([INCLUDEPATH], [$ai_p], [m4_ifnblank([$2],
-       [INCLUDES="-I$ai_p $INCLUDES"],
-diff --git a/configure.ac b/configure.ac
-index 36c6e5e3e2..71b1a16607 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -190,6 +190,14 @@ PHP_ARG_WITH([libdir],
-   [lib],
-   [no])
-
-+dnl Support systems with system libraries/includes in e.g. /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk.
-+PHP_ARG_WITH([os-sdkpath],
-+  [for system SDK directory],
-+  [AS_HELP_STRING([--with-os-sdkpath=NAME],
-+    [Ignore system libraries and includes in NAME rather than /])],
-+  [],
-+  [no])
-+
- PHP_ARG_ENABLE([rpath],
-   [whether to enable runpaths],
-   [AS_HELP_STRING([--disable-rpath],
