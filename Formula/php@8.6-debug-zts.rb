@@ -52,7 +52,6 @@ class PhpAT86DebugZts < Formula
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
-  depends_on "cyrus-sasl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
@@ -69,6 +68,7 @@ class PhpAT86DebugZts < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
+  uses_from_macos "cyrus-sasl" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
   uses_from_macos "libffi"
@@ -176,6 +176,7 @@ class PhpAT86DebugZts < Formula
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-layout=GNU
+      --with-ldap-sasl
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-libxml
       --with-libedit
@@ -204,10 +205,8 @@ class PhpAT86DebugZts < Formula
 
     if OS.mac?
       shared_args << "--enable-dtrace"
-      shared_args << "--with-ldap-sasl"
     else
       shared_args << "--disable-dtrace"
-      shared_args << "--without-ldap-sasl"
       shared_args << "--without-ndbm"
       shared_args << "--without-gdbm"
     end

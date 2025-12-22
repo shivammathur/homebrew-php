@@ -55,7 +55,6 @@ class Php < Formula
   depends_on "autoconf"
   depends_on "capstone"
   depends_on "curl"
-  depends_on "cyrus-sasl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
@@ -72,7 +71,7 @@ class Php < Formula
   depends_on "tidy-html5"
   depends_on "unixodbc"
 
-  uses_from_macos "xz" => :build
+  uses_from_macos "cyrus-sasl" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
   uses_from_macos "libffi"
@@ -177,6 +176,7 @@ class Php < Formula
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-layout=GNU
+      --with-ldap-sasl
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-libxml
       --with-libedit
@@ -205,10 +205,8 @@ class Php < Formula
 
     if OS.mac?
       args << "--enable-dtrace"
-      args << "--with-ldap-sasl"
     else
       args << "--disable-dtrace"
-      args << "--without-ldap-sasl"
       args << "--without-ndbm"
       args << "--without-gdbm"
     end
