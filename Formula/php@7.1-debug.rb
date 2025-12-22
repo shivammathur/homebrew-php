@@ -220,7 +220,7 @@ class PhpAT71Debug < Formula
     end
 
     system "./configure", *args
-    system "make"
+    system "make", "-j#{ENV.make_jobs}"
     system "make", "install"
 
     # Allow pecl to install outside of Cellar

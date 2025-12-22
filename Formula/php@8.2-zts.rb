@@ -230,7 +230,7 @@ class PhpAT82Zts < Formula
     args << "--with-fpm-group=#{fpm_group}"
 
     system "./configure", *args
-    system "make"
+    system "make", "-j#{ENV.make_jobs}"
     system "make", "install"
 
     # Build libphp in another pass,
@@ -250,7 +250,7 @@ class PhpAT82Zts < Formula
     end
 
     system "./configure", *args
-    system "make"
+    system "make", "-j#{ENV.make_jobs}"
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
