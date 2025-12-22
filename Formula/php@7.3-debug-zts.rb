@@ -118,7 +118,7 @@ class PhpAT73DebugZts < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{version.major_minor}-debug-zts"
+    config_path = etc/"php/#{php_version}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -297,10 +297,11 @@ class PhpAT73DebugZts < Formula
     (pecl_path/php_basename).mkpath
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear@#{version.major_minor}-debug-zts"
+    pear_dir = versioned_formula? ? "pear@#{php_version}" : "pear"
+    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{version.major_minor}-debug-zts/php.ini",
+      "php_ini"  => etc/"php/#{php_version}/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -321,7 +322,7 @@ class PhpAT73DebugZts < Formula
     %w[
       opcache
     ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}-debug-zts/conf.d/ext-#{e}.ini"
+      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
       extension_type = (e == "opcache") ? "zend_extension" : "extension"
       if ext_config_path.exist?
         inreplace ext_config_path,
@@ -348,8 +349,12 @@ class PhpAT73DebugZts < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{version.major_minor}-debug-zts/
+          #{etc}/php/#{php_version}/
     EOS
+  end
+
+  def php_version
+    version.to_s.split(".")[0..1].join(".") + "-debug-zts"
   end
 
   service do

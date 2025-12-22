@@ -111,7 +111,7 @@ class PhpAT86 < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{php_version}"
+    config_path = etc/"php/#{version.major_minor}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -275,10 +275,11 @@ class PhpAT86 < Formula
     php_basename = File.basename(extension_dir)
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear@#{php_version}"
+    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
+    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
     cp_r pkgshare/"pear/.", pear_path
     {
-      "php_ini"  => etc/"php/#{php_version}/php.ini",
+      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
       "php_dir"  => pear_path,
       "doc_dir"  => pear_path/"doc",
       "ext_dir"  => pecl_path/php_basename,
@@ -310,12 +311,8 @@ class PhpAT86 < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{php_version}/
+          #{etc}/php/#{version.major_minor}/
     EOS
-  end
-
-  def php_version
-    version.to_s.split(".")[0..1].join(".")
   end
 
   service do
@@ -327,70 +324,74 @@ class PhpAT86 < Formula
   end
 
   test do
-    # Test related to libxml2 and
-    # https://github.com/Homebrew/homebrew-core/issues/28398
-    assert_includes (bin/"php").dynamically_linked_libraries,
-                    (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
+    assert_match(/^Zend OPcache$/, shell_output("#{bin}/php -i"), "Zend OPCache extension not loaded")
 
-    system "#{sbin}/php-fpm", "-t"
+    # Test related to libxml2 and https://github.com/Homebrew/homebrew-core/issues/28398
+    require "utils/linkage"
+    libpq = Formula["libpq"].opt_lib/shared_library("libpq")
+    assert Utils.binary_linked_to_library?(bin/"php", libpq), "No linkage with Homebrew #{libpq.basename}!"
+
+    system sbin/"php-fpm", "-t"
     system bin/"phpdbg", "-V"
     system bin/"php-cgi", "-m"
+
+    port = free_port
+    port_fpm = free_port
+    expected_output = /^Hello world!$/
+
+    (testpath/"index.php").write <<~PHP
+      <?php
+      echo 'Hello world!' . PHP_EOL;
+      var_dump(ldap_connect());
+      $session = new SNMP(SNMP::VERSION_1, '127.0.0.1', 'public');
+      var_dump(@$session->get('sysDescr.0'));
+    PHP
+
+    main_config = <<~EOS
+      Listen #{port}
+      ServerName localhost:#{port}
+      DocumentRoot "#{testpath}"
+      ErrorLog "#{testpath}/httpd-error.log"
+      ServerRoot "#{Formula["httpd"].opt_prefix}"
+      PidFile "#{testpath}/httpd.pid"
+      LoadModule authz_core_module lib/httpd/modules/mod_authz_core.so
+      LoadModule unixd_module lib/httpd/modules/mod_unixd.so
+      LoadModule dir_module lib/httpd/modules/mod_dir.so
+      DirectoryIndex index.php
+    EOS
+
+    (testpath/"httpd.conf").write <<~EOS
+      #{main_config}
+      LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
+      LoadModule php_module #{lib}/httpd/modules/libphp.so
+      <FilesMatch \\.(php|phar)$>
+        SetHandler application/x-httpd-php
+      </FilesMatch>
+    EOS
+
+    (testpath/"fpm.conf").write <<~INI
+      [global]
+      daemonize=no
+      [www]
+      listen = 127.0.0.1:#{port_fpm}
+      pm = dynamic
+      pm.max_children = 5
+      pm.start_servers = 2
+      pm.min_spare_servers = 1
+      pm.max_spare_servers = 3
+    INI
+
+    (testpath/"httpd-fpm.conf").write <<~EOS
+      #{main_config}
+      LoadModule mpm_event_module lib/httpd/modules/mod_mpm_event.so
+      LoadModule proxy_module lib/httpd/modules/mod_proxy.so
+      LoadModule proxy_fcgi_module lib/httpd/modules/mod_proxy_fcgi.so
+      <FilesMatch \\.(php|phar)$>
+        SetHandler "proxy:fcgi://127.0.0.1:#{port_fpm}"
+      </FilesMatch>
+    EOS
+
     begin
-      port = free_port
-      port_fpm = free_port
-
-      expected_output = /^Hello world!$/
-      (testpath/"index.php").write <<~PHP
-        <?php
-        echo 'Hello world!' . PHP_EOL;
-        var_dump(ldap_connect());
-        $session = new SNMP(SNMP::VERSION_1, '127.0.0.1', 'public');
-        var_dump(@$session->get('sysDescr.0'));
-      PHP
-      main_config = <<~EOS
-        Listen #{port}
-        ServerName localhost:#{port}
-        DocumentRoot "#{testpath}"
-        ErrorLog "#{testpath}/httpd-error.log"
-        ServerRoot "#{Formula["httpd"].opt_prefix}"
-        PidFile "#{testpath}/httpd.pid"
-        LoadModule authz_core_module lib/httpd/modules/mod_authz_core.so
-        LoadModule unixd_module lib/httpd/modules/mod_unixd.so
-        LoadModule dir_module lib/httpd/modules/mod_dir.so
-        DirectoryIndex index.php
-      EOS
-
-      (testpath/"httpd.conf").write <<~EOS
-        #{main_config}
-        LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
-        LoadModule php_module #{lib}/httpd/modules/libphp.so
-        <FilesMatch \\.(php|phar)$>
-          SetHandler application/x-httpd-php
-        </FilesMatch>
-      EOS
-
-      (testpath/"fpm.conf").write <<~INI
-        [global]
-        daemonize=no
-        [www]
-        listen = 127.0.0.1:#{port_fpm}
-        pm = dynamic
-        pm.max_children = 5
-        pm.start_servers = 2
-        pm.min_spare_servers = 1
-        pm.max_spare_servers = 3
-      INI
-
-      (testpath/"httpd-fpm.conf").write <<~EOS
-        #{main_config}
-        LoadModule mpm_event_module lib/httpd/modules/mod_mpm_event.so
-        LoadModule proxy_module lib/httpd/modules/mod_proxy.so
-        LoadModule proxy_fcgi_module lib/httpd/modules/mod_proxy_fcgi.so
-        <FilesMatch \\.(php|phar)$>
-          SetHandler "proxy:fcgi://127.0.0.1:#{port_fpm}"
-        </FilesMatch>
-      EOS
-
       pid = spawn Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")

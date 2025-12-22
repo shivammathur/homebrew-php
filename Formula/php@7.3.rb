@@ -289,7 +289,8 @@ class PhpAT73 < Formula
     (pecl_path/php_basename).mkpath
 
     # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear@#{version.major_minor}"
+    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
+    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
     cp_r pkgshare/"pear/.", pear_path
     {
       "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
