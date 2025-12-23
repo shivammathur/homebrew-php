@@ -31,13 +31,13 @@ class PhpAT86Debug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 47
-    sha256 arm64_tahoe:   "bfeddd4a1dcd8101e422911872c4516f8874308b8354241b192a711060d43cb8"
-    sha256 arm64_sequoia: "a37d3a7ca20d6e36256d2074481f784f971077396d8be502a5ce1e86ca84ac7b"
-    sha256 arm64_sonoma:  "566f83b0b6ad3ccaafc9bb03f0491fa7a3aae041b8c189c5a638f8311171014e"
-    sha256 sonoma:        "9b6fc6380b1bce73db844e3be5a819013ca5352a062769b896c6ddc34700cb8d"
-    sha256 arm64_linux:   "2fa075d41f305331ad11a419de88027b1b7306565c1d942805c152560adf21f9"
-    sha256 x86_64_linux:  "f170a758cee6f64a5900fa2bc7837a8e2d2e75f2f04b088a4128841ab629b97b"
+    rebuild 48
+    sha256 arm64_tahoe:   "578cf31794f7adadfeb3610231f66375480e123efa04136444e1339efebc8bde"
+    sha256 arm64_sequoia: "51efd39e11d84e2ff113483af85e51ccc60259f48fcb170005f9d9fd248027a8"
+    sha256 arm64_sonoma:  "2f49fa8d9b5262682944eb1e6815d4092f0b186391ea9187e29b3a74c6b9ac07"
+    sha256 sonoma:        "712d9b9a53060e7890389305917f3fe6aca3fd2865eab436e219e89edd20009e"
+    sha256 arm64_linux:   "84b6a986149bc0d34a268a4c024398aa040b0ddd0d5de582d1728f96943ce0c9"
+    sha256 x86_64_linux:  "53825645dbc3bff055c0bb6f3f2830e5c7aff97a4212ddfc8d57a7fc32af39f7"
   end
 
   keg_only :versioned_formula
