@@ -29,6 +29,7 @@ class PhpAT86 < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
