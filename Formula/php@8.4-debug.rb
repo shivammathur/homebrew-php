@@ -1,9 +1,9 @@
 class PhpAT84Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.4.16.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.16.tar.xz"
-  sha256 "f66f8f48db34e9e29f7bfd6901178e9cf4a1b163e6e497716dfcb8f88bcfae30"
+  url "https://www.php.net/distributions/php-8.4.17.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.17.tar.xz"
+  sha256 "28b234e347286158cae921d61283eb1169d89bc9d2e5f5976567260ff38b0bfa"
   license all_of: [
     "PHP-3.01",
 
@@ -28,7 +28,6 @@ class PhpAT84Debug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
