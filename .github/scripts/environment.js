@@ -23,6 +23,11 @@ module.exports = async ({github, context, core}, formula_detect) => {
         console.log('No CI-no-fail-fast label found. Stopping tests on first failing matrix build.')
         core.setOutput('fail-fast', 'true')
     }
+
+    // Downloading pear phar is flaky, causing unrelated failures.
+    // Remove this once this if fixed
+    core.setOutput('fail-fast', 'false')
+
     if (label_names.includes('CI-skip-dependents')) {
         console.log('CI-skip-dependents label found. Skipping brew test-bot --only-formulae-dependents.')
         core.setOutput('test-dependents', 'false')
