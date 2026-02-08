@@ -1,9 +1,9 @@
 class PhpAT86Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/06dac62747f0819ebc110fd6ab4a90a0229bd2b6.tar.gz?commit=06dac62747f0819ebc110fd6ab4a90a0229bd2b6"
+  url "https://github.com/php/php-src/archive/52e9436629061a7a5280011abbb104f4be9a7e2b.tar.gz?commit=52e9436629061a7a5280011abbb104f4be9a7e2b"
   version "8.6.0"
-  sha256 "8801480c3fc7241f6952dfb5d01c2bc61d2e4a32ca31bb6d539e7b3945459a35"
+  sha256 "ad3c0d3a5a20fc8629d3cb9464472b31619246191e1de38ffd97e4517d0a2fc9"
   license all_of: [
     "PHP-3.01",
 
@@ -75,10 +75,13 @@ class PhpAT86Zts < Formula
   uses_from_macos "libffi"
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
-  uses_from_macos "zlib"
 
   on_macos do
     depends_on "gettext"
+  end
+
+  on_linux do
+    depends_on "zlib-ng-compat"
   end
 
   def install
