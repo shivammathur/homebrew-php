@@ -79,11 +79,13 @@ class PhpAT82 < Formula
   uses_from_macos "libffi"
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
-  uses_from_macos "zlib"
-
   on_macos do
     depends_on "gcc" => :build
     depends_on "gettext" # must never be a runtime dependency
+  end
+
+  on_linux do
+    depends_on "zlib-ng-compat"
   end
 
   # https://github.com/Homebrew/homebrew-core/issues/235820
