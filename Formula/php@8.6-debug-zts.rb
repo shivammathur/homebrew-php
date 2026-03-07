@@ -36,7 +36,6 @@ class PhpAT86DebugZts < Formula
     sha256 arm64_tahoe:   "5654da23ff8a9fef393f8648bd245827f92c5a065b7f6ec33e0f2caa82425395"
     sha256 arm64_sequoia: "54bbfc60d50486d6ff5f2d132f7113ee74dcbcca88fddb9df8260dfd3f9bd5f0"
     sha256 arm64_sonoma:  "d6d4ef31d401b8b60dac7232cbb98a959ff24acd6398549df2e67213028d1395"
-    sha256 arm64_linux:   "4c6797fa564becc527906df708ca5f6ca2ff09b6e7f45879ec1287d5b4f87ec6"
   end
 
   keg_only :versioned_formula
