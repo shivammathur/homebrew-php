@@ -2,9 +2,9 @@ class PhpZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.3.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.3.tar.xz"
-  sha256 "ce65725b8af07356b69a6046d21487040b11f2acfde786de38b2bfb712c36eb9"
+  url "https://www.php.net/distributions/php-8.5.4.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.4.tar.xz"
+  sha256 "c1569f1f543f6b025c583cdc0e730e5c5833c603618613f1aa8e75d1524b8c91"
   license all_of: [
     "PHP-3.01",
 
