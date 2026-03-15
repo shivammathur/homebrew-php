@@ -1,9 +1,9 @@
 class PhpAT86Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/ed887241be87c976a44c8727e3a08bdb8f252ae3.tar.gz?commit=ed887241be87c976a44c8727e3a08bdb8f252ae3"
+  url "https://github.com/php/php-src/archive/4561e92fa1e7b5515aad9d2f127e52d56e159928.tar.gz?commit=4561e92fa1e7b5515aad9d2f127e52d56e159928"
   version "8.6.0"
-  sha256 "a9c879ddf7d9c6783ac3fceeb4459a72da7743109b6bf9599cdda332abd9f967"
+  sha256 "0ce23e2a977c93268d978d94ff35c34bce433db3d38043c9297c4dc0701ef900"
   license all_of: [
     "PHP-3.01",
 
@@ -195,7 +195,7 @@ class PhpAT86Zts < Formula
       --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pdo-sqlite
       --with-pgsql=#{Formula["libpq"].opt_prefix}
-      --with-pic
+      --enable-pic
       --with-snmp=#{Formula["net-snmp"].opt_prefix}
       --with-sodium
       --with-sqlite3
