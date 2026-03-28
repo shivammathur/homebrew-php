@@ -37,12 +37,13 @@ class PhpAT85Experimental < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_tahoe:   "6d3449c0e7d6f5023870dfa284ca18c25a64047099012522281659774dcf5b1d"
-    sha256 arm64_sequoia: "61d22d4ccb1a0b5db34b1bd9883dca8bfa0c99eac69f448139e06a7696a5678e"
-    sha256 arm64_sonoma:  "037e4c234148a4e3b706a3009fd35c9d2e609a8cbcb487bac272cabf5c70832b"
-    sha256 sonoma:        "9859484756e16ead031e8ca5b6205de377294bbdcb2eb2a1d401e142d78a0921"
-    sha256 arm64_linux:   "b217926f5cf26fa969ca8aabffc6b1473b8fa09ff1d892c85afcc289a146776e"
-    sha256 x86_64_linux:  "49f831cfec364eea139b0c72826d6b33adfdabed3013a57ccada433619921558"
+    rebuild 1
+    sha256 arm64_tahoe:   "da5796def3b34c7fd1f3ed4d125467cb870aa02cd8343fc7e6ed4d95dabf3d4f"
+    sha256 arm64_sequoia: "f692f13210b97d3393d8cea902a184a712a179cf03f8467d639816cb03fab134"
+    sha256 arm64_sonoma:  "fe8f6c8a576a4f650706b711c1545fe3bed0b168bc888077e4cecfa7cc6bb03d"
+    sha256 sonoma:        "de23b031958d062573dbab14e0a74b1cad8224976a03dc436f5d3834683126ca"
+    sha256 arm64_linux:   "0769cbb56bd6000150ae36811fe9b03ab803e77265ebee92aa3c834feeecab6e"
+    sha256 x86_64_linux:  "26eaab05ba5421471ed14118098cd212c8605b175274503900b8d854d7428866"
   end
 
   keg_only "experimental Clang PGO + ThinLTO + O3 build of PHP 8.5"
