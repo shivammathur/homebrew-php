@@ -139,6 +139,7 @@ class PhpAT85Experimental < Formula
     # Identify build provider in php -v output and phpinfo()
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
     ENV.O3
+    use_pgo = !OS.mac? || Hardware::CPU.arm?
     use_lto = OS.mac? && Hardware::CPU.arm?
 
     # system pkg-config missing
@@ -233,124 +234,83 @@ class PhpAT85Experimental < Formula
       args << "--without-gdbm"
     end
 
-    pgo_script = buildpath/"pgo-train.php"
-    pgo_script.write <<~PHP
-      <?php
-      $records = [];
-      for ($i = 0; $i < 6000; $i++) {
-          $records[] = [
-              'id' => $i,
-              'slug' => sprintf('record-%04d', $i),
-              'name' => str_repeat(chr(65 + ($i % 26)), 8),
-              'meta' => ['left' => $i % 97, 'right' => ($i * 7) % 101],
-          ];
-      }
+    if use_pgo
+      pgo_script = buildpath/"pgo_script.php"
+      pgo_script.write (Pathname(__dir__).parent/"Scripts/pgo_script.php").read
 
-      for ($round = 0; $round < 12; $round++) {
-          $json = json_encode($records, JSON_THROW_ON_ERROR);
-          $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-          usort($decoded, static fn(array $a, array $b): int => $a['meta']['right'] <=> $b['meta']['right']);
-
-          $bucket = [];
-          foreach ($decoded as $row) {
-              $key = preg_replace('/[^a-z0-9]+/i', '-', strtolower($row['slug']));
-              $bucket[$key] = hash('sha256', serialize($row), false);
-          }
-
-          arsort($bucket);
-          $records = [];
-          $slice = array_slice($bucket, 0, 1200, true);
-          foreach ($slice as $key => $digest) {
-              $records[] = [
-                  'slug' => $key,
-                  'digest' => $digest,
-                  'parts' => array_reverse(explode('-', $key)),
-              ];
-          }
-      }
-
-      echo count($records), PHP_EOL;
-    PHP
-
-    # Build an instrumented binary, collect profile data, and then rebuild
-    # with the generated profile.
-    # Keep Linux on GCC-based PGO without LTO, as GCC LTO trips over PHP's
-    # global register variables in opcache/JIT helper code.
-    # Apply ThinLTO only on Apple Silicon and only for the final profiled
-    # build, since Intel macOS runners can crash during the instrumented link.
-    base_flags = %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS].to_h { |key| [key, ENV[key]] }
-    profile_dir = buildpath/"pgo-data"
-    pgo_generate_flag = if OS.mac?
-      "-fprofile-instr-generate"
-    else
-      profile_dir.mkpath
-      "-fprofile-generate=#{profile_dir}"
-    end
-    %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
-      ENV.append key, pgo_generate_flag
-    end
-    ENV.append "LDFLAGS", pgo_generate_flag
-
-    system "./configure", *args
-    system "make"
-
-    php = buildpath/"sapi/cli/php"
-    if OS.mac?
-      profile_pattern = buildpath/"php-experimental-%p-%m.profraw"
-      ENV["LLVM_PROFILE_FILE"] = profile_pattern.to_s
-    end
-    begin
-      system php, "-n", "-d", "opcache.enable_cli=1", "Zend/bench.php", "--repeat", "3"
-      system php, "-n", "Zend/bench.php", "--repeat", "3"
-      3.times do
-        system php, "-n", "-d", "opcache.enable_cli=1", pgo_script
-        system php, "-n", pgo_script
-      end
-    ensure
-      ENV.delete("LLVM_PROFILE_FILE")
-    end
-
-    if OS.mac?
-      profiles = Dir[buildpath/"php-experimental-*.profraw"]
-      odie "PGO training did not generate any profile data" if profiles.empty?
-
-      profdata_tool = Utils.safe_popen_read("/usr/bin/xcrun", "--find", "llvm-profdata").chomp
-      profdata = buildpath/"php-experimental.profdata"
-      system profdata_tool, "merge", "-o", profdata, *profiles
-      pgo_use_flag = "-fprofile-instr-use=#{profdata}"
-    else
-      profiles = Dir[profile_dir/"**/*.gcda"]
-      odie "PGO training did not generate any profile data" if profiles.empty?
-
-      pgo_use_flag = "-fprofile-use=#{profile_dir}"
-    end
-
-    system "make", "distclean"
-    base_flags.each do |key, value|
-      if value.nil?
-        ENV.delete(key)
+      base_flags = %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS].to_h { |key| [key, ENV[key]] }
+      profile_dir = buildpath/"pgo-data"
+      pgo_generate_flag = if OS.mac?
+        "-fprofile-instr-generate"
       else
-        ENV[key] = value
+        profile_dir.mkpath
+        "-fprofile-generate=#{profile_dir}"
       end
-    end
-
-    %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
-      ENV.append key, pgo_use_flag
-      if OS.mac?
-        ENV.append key, "-Wno-profile-instr-out-of-date"
-        ENV.append key, "-Wno-profile-instr-unprofiled"
-      else
-        ENV.append key, "-fprofile-correction"
-      end
-    end
-    ENV.append "LDFLAGS", pgo_use_flag
-    if use_lto
       %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
-        ENV.append key, "-flto=thin"
+        ENV.append key, pgo_generate_flag
       end
-      ENV.append "LDFLAGS", "-flto=thin"
-    end
+      ENV.append "LDFLAGS", pgo_generate_flag
 
+      system "./configure", *args
+      system "make"
+
+      php = buildpath/"sapi/cli/php"
+      if OS.mac?
+        profile_pattern = buildpath/"php-experimental-%p-%m.profraw"
+        ENV["LLVM_PROFILE_FILE"] = profile_pattern.to_s
+      end
+      begin
+        system php, "-n", "-d", "opcache.enable_cli=1", "Zend/bench.php", "--repeat", "3"
+        system php, "-n", "Zend/bench.php", "--repeat", "3"
+        3.times do
+          system php, "-n", "-d", "opcache.enable_cli=1", pgo_script
+          system php, "-n", pgo_script
+        end
+      ensure
+        ENV.delete("LLVM_PROFILE_FILE")
+      end
+
+      if OS.mac?
+        profiles = Dir[buildpath/"php-experimental-*.profraw"]
+        odie "PGO training did not generate any profile data" if profiles.empty?
+
+        profdata_tool = Utils.safe_popen_read("/usr/bin/xcrun", "--find", "llvm-profdata").chomp
+        profdata = buildpath/"php-experimental.profdata"
+        system profdata_tool, "merge", "-o", profdata, *profiles
+        pgo_use_flag = "-fprofile-instr-use=#{profdata}"
+      else
+        profiles = Dir[profile_dir/"**/*.gcda"]
+        odie "PGO training did not generate any profile data" if profiles.empty?
+
+        pgo_use_flag = "-fprofile-use=#{profile_dir}"
+      end
+
+      system "make", "distclean"
+      base_flags.each do |key, value|
+        if value.nil?
+          ENV.delete(key)
+        else
+          ENV[key] = value
+        end
+      end
+
+      %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+        ENV.append key, pgo_use_flag
+        if OS.mac?
+          ENV.append key, "-Wno-profile-instr-out-of-date"
+          ENV.append key, "-Wno-profile-instr-unprofiled"
+        else
+          ENV.append key, "-fprofile-correction"
+        end
+      end
+      ENV.append "LDFLAGS", pgo_use_flag
+      if use_lto
+        %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+          ENV.append key, "-flto=thin"
+        end
+        ENV.append "LDFLAGS", "-flto=thin"
+      end
+    end
     system "./configure", *args
     system "make"
     system "make", "install"
