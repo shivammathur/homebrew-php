@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 7 * * *'
+permissions:
+  contents: read
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
