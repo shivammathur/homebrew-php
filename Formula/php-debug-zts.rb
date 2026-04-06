@@ -132,7 +132,6 @@ class PhpDebugZts < Formula
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
     ENV.O3
     use_pgo = !OS.mac? || Hardware::CPU.arm?
-    use_lto = OS.mac? && Hardware::CPU.arm?
 
     # system pkg-config missing
     if OS.mac?
@@ -301,12 +300,6 @@ class PhpDebugZts < Formula
         end
       end
       ENV.append "LDFLAGS", pgo_use_flag
-      if use_lto
-        %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
-          ENV.append key, "-flto=thin"
-        end
-        ENV.append "LDFLAGS", "-flto=thin"
-      end
     end
 
     system "./configure", *args
