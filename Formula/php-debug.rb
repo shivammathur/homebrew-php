@@ -30,6 +30,8 @@ class PhpDebug < Formula
     "Zlib",                  # 8
   ]
 
+  revision 1
+
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
@@ -37,7 +39,6 @@ class PhpDebug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
     sha256 arm64_tahoe:   "8f9db13254ca7dab736a685e4f7ad8aeaf2ec3839cf5feacf99ef5b12e2aa1a2"
     sha256 arm64_sequoia: "555daf498cfff29b5c9564c3ae8d401640460bc89d332aa6158a12df0710f217"
     sha256 arm64_sonoma:  "b1f10d30a47a36b2a335dd78a4cfbf18c7502abd1756e0a2f44f131256661dd4"
@@ -132,6 +133,7 @@ class PhpDebug < Formula
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
     ENV.O3
     use_pgo = !OS.mac? || Hardware::CPU.arm?
+    use_lto = OS.mac? && Hardware::CPU.arm?
 
     # system pkg-config missing
     if OS.mac?
@@ -296,6 +298,13 @@ class PhpDebug < Formula
         end
       end
       ENV.append "LDFLAGS", pgo_use_flag
+      if use_lto
+        %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+          ENV.append key, "-flto=thin"
+        end
+        ENV.append "LDFLAGS", "-flto=thin"
+        ENV.append "LDFLAGS", "-Wl,-export_dynamic"
+      end
     end
 
     system "./configure", *args
