@@ -30,6 +30,8 @@ class Php < Formula
     "Zlib",                  # 8
   ]
 
+  revision 1
+
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
@@ -37,7 +39,6 @@ class Php < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
     sha256 arm64_tahoe:   "73efb0d0b6fdec6c05786c4128ca29d85828a60b0435e651ea77fe6cfcbeb954"
     sha256 arm64_sequoia: "42a97670e282c0b480b1149f534bbbe5eb2588302535be8a70ecc04c757a1aeb"
     sha256 arm64_sonoma:  "67b939bc11d573a0bf6e537074b7b007fa139c26fa704a08fdfb72c5ed3711b1"
@@ -132,6 +133,7 @@ class Php < Formula
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
     ENV.O3
     use_pgo = !OS.mac? || Hardware::CPU.arm?
+    use_lto = OS.mac? && Hardware::CPU.arm?
 
     # system pkg-config missing
     if OS.mac?
@@ -295,6 +297,13 @@ class Php < Formula
         end
       end
       ENV.append "LDFLAGS", pgo_use_flag
+      if use_lto
+        %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+          ENV.append key, "-flto=thin"
+        end
+        ENV.append "LDFLAGS", "-flto=thin"
+        ENV.append "LDFLAGS", "-Wl,-export_dynamic"
+      end
     end
 
     system "./configure", *args
