@@ -1,9 +1,9 @@
 class PhpAT84Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.4.19.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.19.tar.xz"
-  sha256 "11f7164ab26d356c31f94d3d69cc0e0707d5d2d6494a221aaeae307c08eaaa1c"
+  url "https://www.php.net/distributions/php-8.4.20.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.20.tar.xz"
+  sha256 "e454c6f7c89a42f41ebb06dc5c3578e8c8b5f1a3f0da6675665affab04e221f7"
   license all_of: [
     "PHP-3.01",
 
