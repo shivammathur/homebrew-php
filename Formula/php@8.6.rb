@@ -245,6 +245,7 @@ class PhpAT86 < Formula
       rm dst_default if dst_default.exist?
     end
     config_path.install config_files
+    (config_path/"conf.d").mkpath
 
     unless (var/"log/php-fpm.log").exist?
       (var/"log").mkpath
