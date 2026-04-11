@@ -29,6 +29,7 @@ class Php < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -129,9 +130,12 @@ class Php < Formula
 
     # Identify build provider in php -v output and phpinfo()
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
+
+    # Runtime optimizations
     ENV.O3
     use_pgo = !OS.mac? || Hardware::CPU.arm?
     use_lto = OS.mac? && Hardware::CPU.arm?
+    pgo_prefix = "pgo"
 
     # system pkg-config missing
     if OS.mac?
@@ -247,7 +251,7 @@ class Php < Formula
 
       php = buildpath/"sapi/cli/php"
       if OS.mac?
-        profile_pattern = buildpath/"php-experimental-%p-%m.profraw"
+        profile_pattern = buildpath/"#{pgo_prefix}-%p-%m.profraw"
         ENV["LLVM_PROFILE_FILE"] = profile_pattern.to_s
       end
       begin
@@ -262,11 +266,11 @@ class Php < Formula
       end
 
       if OS.mac?
-        profiles = Dir[buildpath/"php-experimental-*.profraw"]
+        profiles = Dir[buildpath/"#{pgo_prefix}-*.profraw"]
         odie "PGO training did not generate any profile data" if profiles.empty?
 
         profdata_tool = Utils.safe_popen_read("/usr/bin/xcrun", "--find", "llvm-profdata").chomp
-        profdata = buildpath/"php-experimental.profdata"
+        profdata = buildpath/"#{pgo_prefix}.profdata"
         system profdata_tool, "merge", "-o", profdata, *profiles
         pgo_use_flag = "-fprofile-instr-use=#{profdata}"
       else
@@ -332,6 +336,7 @@ class Php < Formula
       rm dst_default if dst_default.exist?
     end
     config_path.install config_files
+    (config_path/"conf.d").mkpath
 
     unless (var/"log/php-fpm.log").exist?
       (var/"log").mkpath
