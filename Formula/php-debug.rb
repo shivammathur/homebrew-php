@@ -2,9 +2,9 @@ class PhpDebug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.5.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.5.tar.xz"
-  sha256 "95bec382f4bd00570a8ef52a58ec04d8d9b9a90494781f1c106d1b274a3902f2"
+  url "https://www.php.net/distributions/php-8.5.6.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.6.tar.xz"
+  sha256 "826c600b7c6f956bd335558ca3bdbcab23b22126c1cc8d9348be2280a2204bb7"
   license all_of: [
     "PHP-3.01",
 
@@ -29,7 +29,6 @@ class PhpDebug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
