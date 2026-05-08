@@ -1,9 +1,9 @@
 class PhpAT81Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.1.34.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.34.tar.xz"
-  sha256 "ffa9e0982e82eeaea848f57687b425ed173aa278fe563001310ae2638db5c251"
+  url "https://github.com/shivammathur/php-src-backports/archive/371109cc3633b43f01baeaaa2243bdcdf9b58da0.tar.gz"
+  version "8.1.34"
+  sha256 "ae686b086c69317398a9b3c1a8ad51f71bd38a18afea62a430203b8ac468fc8e"
   license all_of: [
     "PHP-3.01",
 
@@ -27,6 +27,7 @@ class PhpAT81Debug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -49,8 +50,10 @@ class PhpAT81Debug < Formula
   # https://www.php.net/supported-versions.php
   deprecate! date: "2025-12-31", because: :unsupported
 
+  depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkgconf" => :build
+  depends_on "re2c" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
@@ -93,27 +96,18 @@ class PhpAT81Debug < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
-  patch :DATA
-
   def install
     # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
     # We lack a DSL to enable -O2 so just use -O3 which is similar.
     ENV.O3 if OS.mac?
 
-    # Backport fix for libxml2 >= 2.13
-    # Ref: https://github.com/php/php-src/commit/67259e451d5d58b4842776c5696a66d74e157609
-    inreplace "ext/xml/compat.c",
-              "!= XML_PARSER_ENTITY_VALUE && parser->parser->instate != XML_PARSER_ATTRIBUTE_VALUE)",
-              "== XML_PARSER_CONTENT)"
-
     # Work around to support `icu4c` 75, which needs C++17.
     ENV["ICU_CXXFLAGS"] = "-std=c++17"
+    # Ensure there is enough Mach-O header space for Homebrew rpath rewrites.
+    ENV.append "LDFLAGS", "-Wl,-headerpad_max_install_names" if OS.mac?
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
-
-    # cURL needs the value to be long,
-    inreplace "ext/curl/interface.c", /CURLOPT_VERBOSE,\s+0/, "CURLOPT_VERBOSE, 0L"
 
     inreplace "configure" do |s|
       s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes'`",
@@ -497,27 +491,3 @@ class PhpAT81Debug < Formula
     end
   end
 end
-
-__END__
-diff --git a/Zend/zend_execute_API.c b/Zend/zend_execute_API.c
-index 1e31934f..49d430c4 100644
---- a/Zend/zend_execute_API.c
-+++ b/Zend/zend_execute_API.c
-@@ -1477,7 +1477,7 @@ static void zend_set_timeout_ex(zend_long seconds, bool reset_signals) /* {{{ */
- 			t_r.it_value.tv_sec = seconds;
- 			t_r.it_value.tv_usec = t_r.it_interval.tv_sec = t_r.it_interval.tv_usec = 0;
- 
--# if defined(__CYGWIN__) || defined(__PASE__)
-+# if defined(__CYGWIN__) || defined(__PASE__) || (defined(__aarch64__) && defined(__APPLE__))
- 			setitimer(ITIMER_REAL, &t_r, NULL);
- 		}
- 		signo = SIGALRM;
-@@ -1541,7 +1541,7 @@ void zend_unset_timeout(void) /* {{{ */
- 
- 		no_timeout.it_value.tv_sec = no_timeout.it_value.tv_usec = no_timeout.it_interval.tv_sec = no_timeout.it_interval.tv_usec = 0;
- 
--# if defined(__CYGWIN__) || defined(__PASE__)
-+# if defined(__CYGWIN__) || defined(__PASE__) || (defined(__aarch64__) && defined(__APPLE__))
- 		setitimer(ITIMER_REAL, &no_timeout, NULL);
- # else
- 		setitimer(ITIMER_PROF, &no_timeout, NULL);
