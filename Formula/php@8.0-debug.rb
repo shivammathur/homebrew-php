@@ -1,9 +1,9 @@
 class PhpAT80Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/31b3988504b443365bfa4881257782b00919a751.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/88664f288c699b0d63f324ef96340af335d23672.tar.gz"
   version "8.0.30"
-  sha256 "6f0f2a0dbb37e904859d7cc9ac12425434333a5c4b811b674621525430bd5472"
+  sha256 "790dd5d5a0d72a312239d77f04c42c7cb6b425aa22086fbc17879edab9ba9475"
   license "PHP-3.01"
   revision 10
 
@@ -78,6 +78,9 @@ class PhpAT80Debug < Formula
   patch :DATA
 
   def install
+    # PHP 8.0 still has K&R-style bcmath/intl sources that fail under C23.
+    ENV.append "CFLAGS", "-std=gnu17"
+
     # Work around for building with Xcode 15.3
     if DevelopmentTools.clang_build_version >= 1500
       ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
@@ -88,6 +91,8 @@ class PhpAT80Debug < Formula
 
     # Work around to support `icu4c` 75, which needs C++17.
     ENV["ICU_CXXFLAGS"] = "-std=c++17"
+    # Ensure there is enough Mach-O header space for Homebrew rpath rewrites.
+    ENV.append "LDFLAGS", "-Wl,-headerpad_max_install_names" if OS.mac?
 
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
