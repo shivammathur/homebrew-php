@@ -1,9 +1,9 @@
 class PhpAT71Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/45db7daedb330abded7576b9c4dadf5ed13e2f0b.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/4cd450adf633ff3b756586f5ce8fb31a7c7f8359.tar.gz"
   version "7.1.33"
-  sha256 "c83694b44f2c2fedad3617f86d384d05e04c605fa61a005f5d51dfffaba39772"
+  sha256 "632a98f29d7e023b0dc4d3ae9680877f8f7aafed162345ca3318f5e9d1f87db7"
   license "PHP-3.01"
   revision 6
 
@@ -73,6 +73,9 @@ class PhpAT71Zts < Formula
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+
+    # PHP 7.x still has old C sources that fail under C23.
+    ENV.append "CFLAGS", "-std=gnu17"
 
     # Work around for building with Xcode 15.3
     if DevelopmentTools.clang_build_version >= 1500
@@ -213,7 +216,7 @@ class PhpAT71Zts < Formula
       args << "--with-zlib#{headers_path}"
     else
       args << "--disable-dtrace"
-      args << "--with-zlib=#{Formula["zlib"].opt_prefix}"
+      args << "--with-zlib=#{Formula["zlib-ng-compat"].opt_prefix}"
       args << "--with-bzip2=#{Formula["bzip2"].opt_prefix}"
       args << "--with-libedit=#{Formula["libedit"].opt_prefix}"
       args << "--with-libxml-dir=#{Formula["libxml2"].opt_prefix}"
