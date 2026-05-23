@@ -43,7 +43,7 @@ module.exports = async ({github, context, core}, formula_detect) => {
         core.setOutput('timeout-minutes', '180')
     }
     const container = {}
-    container.image = 'homebrew/ubuntu22.04:latest'
+    container.image = 'ghcr.io/homebrew/brew:main'
     container.options = '--user=linuxbrew'
     core.setOutput('container', JSON.stringify(container))
 

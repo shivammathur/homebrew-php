@@ -53,7 +53,7 @@ jobs:
                 return {
                   runner:    s,
                   container: {
-                    image:   "ghcr.io/homebrew/ubuntu22.04:main",
+                    image:   "ghcr.io/homebrew/brew:main",
                     options: "--user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED"
                   },
                   workdir:   "/github/home",
@@ -124,7 +124,7 @@ jobs:
       actions: write
       contents: write
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:main
+      image: ghcr.io/homebrew/brew:main
     defaults:
       run:
         shell: bash

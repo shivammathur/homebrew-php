@@ -37,7 +37,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip-build')"
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:main
+      image: ghcr.io/homebrew/brew:main
     env:
       HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
     outputs:

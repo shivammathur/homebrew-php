@@ -98,7 +98,7 @@ jobs:
     needs: bottle
     if: inputs.upload
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:main
+      image: ghcr.io/homebrew/brew:main
     defaults:
       run:
         shell: bash

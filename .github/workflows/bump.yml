@@ -21,7 +21,7 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:main
+      image: ghcr.io/homebrew/brew:main
     env:
       GNUPGHOME: /tmp/gnupghome
     steps:
