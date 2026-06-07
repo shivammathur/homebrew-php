@@ -30,6 +30,11 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_INSTALL_FROM_API: 1
   HOMEBREW_ARM64_TESTING: 1
+  DISPATCH_REBOTTLE_SENDER: ${{ github.event.sender.login }}
+  DISPATCH_REBOTTLE_FORMULA: ${{ inputs.formula }}
+  DISPATCH_REBOTTLE_TIMEOUT: ${{ inputs.timeout }}
+  DISPATCH_REBOTTLE_ISSUE: ${{ inputs.issue }}
+  DISPATCH_REBOTTLE_UPLOAD: ${{ inputs.upload }}
 jobs:
   bottle:
     strategy:
@@ -65,11 +70,11 @@ jobs:
       - name: ${{github.event.inputs.formula}}
         id: print_details
         run: |
-          echo sender=${{github.event.sender.login}}
-          echo formula=${{github.event.inputs.formula}}
-          echo timeout=${{github.event.inputs.timeout}}
-          echo issue=${{github.event.inputs.issue}}
-          echo upload=${{github.event.inputs.upload}}
+          echo "sender=${DISPATCH_REBOTTLE_SENDER}"
+          echo "formula=${DISPATCH_REBOTTLE_FORMULA}"
+          echo "timeout=${DISPATCH_REBOTTLE_TIMEOUT}"
+          echo "issue=${DISPATCH_REBOTTLE_ISSUE}"
+          echo "upload=${DISPATCH_REBOTTLE_UPLOAD}"
 
       - name: Pre-test steps
         uses: Homebrew/actions/pre-build@main
@@ -81,7 +86,7 @@ jobs:
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          brew test-bot --only-json-tab --only-formulae --skip-dependents --skip-online-checks --root-url="https://ghcr.io/v2/${{ github.repository_owner }}/php" ${{ github.repository_owner }}/php/${{github.event.inputs.formula}}
+          brew test-bot --only-json-tab --only-formulae --skip-dependents --skip-online-checks --root-url="https://ghcr.io/v2/${GITHUB_REPOSITORY_OWNER}/php" "${GITHUB_REPOSITORY_OWNER}/php/${DISPATCH_REBOTTLE_FORMULA}"
 
       - name: Post-build steps
         if: always()
@@ -109,10 +114,10 @@ jobs:
       - name: ${{github.event.inputs.formula}}
         id: print_details
         run: |
-          echo sender=${{github.event.sender.login}}
-          echo formula=${{github.event.inputs.formula}}
-          echo issue=${{github.event.inputs.issue}}
-          echo upload=${{github.event.inputs.upload}}
+          echo "sender=${DISPATCH_REBOTTLE_SENDER}"
+          echo "formula=${DISPATCH_REBOTTLE_FORMULA}"
+          echo "issue=${DISPATCH_REBOTTLE_ISSUE}"
+          echo "upload=${DISPATCH_REBOTTLE_UPLOAD}"
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -122,7 +127,7 @@ jobs:
           cask: false
 
       - name: Download bottles from GitHub Actions
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: bottles_*
           path: ${{ env.BOTTLES_DIR }}

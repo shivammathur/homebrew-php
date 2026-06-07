@@ -1,0 +1,18 @@
+version: 2
+updates:
+- package-ecosystem: github-actions
+  directories:
+  - "/"
+  schedule:
+    interval: weekly
+    day: thursday
+    time: '08:00'
+    timezone: Asia/Kolkata
+  groups:
+    github-actions:
+      patterns:
+      - "*"
+  allow:
+  - dependency-type: all
+  cooldown:
+    default-days: 7

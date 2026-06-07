@@ -101,9 +101,13 @@ jobs:
     steps:
       - name: Print details
         if: github.event_name == 'workflow_dispatch'
-        run: echo php_source=${{github.event.inputs.php_source}}
+        run: echo "php_source=${PHP_SOURCE}"
+        env:
+          PHP_SOURCE: ${{github.event.inputs.php_source}}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -122,7 +126,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
           commit-message: Update ${{ matrix.php }}
@@ -142,8 +146,11 @@ jobs:
 
       - name: Check outputs
         run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+          echo "Pull Request Number - ${PULL_REQUEST_NUMBER}"
+          echo "Pull Request URL - ${PULL_REQUEST_URL}"
+        env:
+          PULL_REQUEST_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PULL_REQUEST_URL: ${{ steps.cpr.outputs.pull-request-url }}
 
   set-environment:
     if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
@@ -160,21 +167,26 @@ jobs:
       test-bot-formulae-args: ${{ steps.check-labels.outputs.test-bot-formulae-args }}
       test-bot-dependents-args: ${{ steps.check-labels.outputs.test-bot-dependents-args }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
       - name: Check for CI labels
         id: check-labels
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           SCRIPTS_PATH: .github/scripts
+          TESTING_FORMULAE: ${{ needs.tap-syntax.outputs.testing_formulae }}
+          ADDED_FORMULAE: ${{ needs.tap-syntax.outputs.added_formulae }}
+          DELETED_FORMULAE: ${{ needs.tap-syntax.outputs.deleted_formulae }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const path = require('path')
             const script = require(path.resolve(`${process.env.SCRIPTS_PATH}/environment.js`))
             const formula_detect = {
-              testing_formulae: '${{needs.tap-syntax.outputs.testing_formulae}}',
-              added_formulae: '${{needs.tap-syntax.outputs.added_formulae}}',
-              deleted_formulae: '${{needs.tap-syntax.outputs.deleted_formulae}}'
+              testing_formulae: process.env.TESTING_FORMULAE || '',
+              added_formulae: process.env.ADDED_FORMULAE || '',
+              deleted_formulae: process.env.DELETED_FORMULAE || ''
             }
             try {
               await script({github, context, core}, formula_detect)
@@ -196,18 +208,18 @@ jobs:
           - runner: 'macos-14-x86_64'
             cleanup: true
           - runner: ${{needs.set-environment.outputs.linux-runner}}
-            container: ${{fromJson(needs.set-environment.outputs.container)}}
+            container: ${{fromJson(needs.set-environment.outputs.container)}} # zizmor: ignore[unpinned-images]
             workdir: /github/home
             cleanup: false
             timeout: 4320
           - runner: ${{needs.set-environment.outputs.linux-arm64-runner}}
-            container: ${{fromJson(needs.set-environment.outputs.container)}}
+            container: ${{fromJson(needs.set-environment.outputs.container)}} # zizmor: ignore[unpinned-images]
             workdir: /github/home
             cleanup: false
             timeout: 4320
       fail-fast: ${{fromJson(needs.set-environment.outputs.fail-fast)}}
     runs-on: ${{matrix.runner}}
-    container: ${{matrix.container}}
+    container: ${{matrix.container}} # zizmor: ignore[unpinned-images]
     timeout-minutes: ${{ matrix.timeout || fromJson(needs.set-environment.outputs.timeout-minutes) }}
     defaults:
       run:
@@ -228,7 +240,9 @@ jobs:
         id: brew-test-bot-formulae
         working-directory: ${{ env.BOTTLES_DIR }}
         run: |
-          brew test-bot ${{ needs.set-environment.outputs.test-bot-formulae-args }}
+          brew test-bot ${TEST_BOT_FORMULAE_ARGS}
+        env:
+          TEST_BOT_FORMULAE_ARGS: ${{ needs.set-environment.outputs.test-bot-formulae-args }}
 
       - name: Post-build steps
         if: always()
@@ -248,7 +262,9 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
       - name: "Add Label"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

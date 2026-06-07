@@ -1,0 +1,6 @@
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        Homebrew/actions/*: ref-pin
+        shivammathur/setup-php: ref-pin
