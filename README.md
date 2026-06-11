@@ -99,10 +99,11 @@ brew update
 
 ### Add this tap
 
-Fetch the formulae in this tap:
+Fetch the formulae in this tap and mark the tap trusted:
 
 ```zsh
 brew tap shivammathur/php
+brew trust shivammathur/php
 ```
 
 ### Install PHP
