@@ -76,7 +76,7 @@ class PhpAT72Zts < Formula
     sha256 "938f26a35673938935d1145191ded7006077e75aaf0de0122fefd630eecb63ae"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # Work around configure issues with Xcode 12

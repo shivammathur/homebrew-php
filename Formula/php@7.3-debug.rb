@@ -73,7 +73,7 @@ class PhpAT73Debug < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # Work around configure issues with Xcode 15

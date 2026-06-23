@@ -90,7 +90,7 @@ class PhpAT81DebugZts < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # PHP 8.1 still has K&R-style bcmath sources that fail under C23.

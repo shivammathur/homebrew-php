@@ -86,7 +86,7 @@ class PhpAT86 < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # buildconf required due to system library linking bug patch

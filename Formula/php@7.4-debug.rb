@@ -78,7 +78,7 @@ class PhpAT74Debug < Formula
   # see https://github.com/php/php-src/issues/10680
   patch :DATA
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # PHP 7.4 still has K&R-style bcmath/intl sources that fail under C23.

@@ -96,7 +96,7 @@ class PhpAT81Debug < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:postinstall]
 
   def install
     # GCC -Os performs worse than -O1 and significantly worse than -O2/-O3.
