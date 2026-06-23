@@ -78,6 +78,8 @@ class PhpAT73Zts < Formula
     sha256 "938f26a35673938935d1145191ded7006077e75aaf0de0122fefd630eecb63ae"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # Work around configure issues with Xcode 15
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"

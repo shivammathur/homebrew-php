@@ -71,6 +71,8 @@ class PhpAT70Debug < Formula
     depends_on "zlib-ng-compat"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171

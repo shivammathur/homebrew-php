@@ -91,6 +91,8 @@ class PhpAT84Debug < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     system "./buildconf", "--force" if build.head?
 

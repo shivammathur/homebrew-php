@@ -77,6 +77,8 @@ class PhpAT80 < Formula
   # Remove after the next patch release.
   patch :DATA
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # PHP 8.0 still has K&R-style bcmath/intl sources that fail under C23.
     ENV.append "CFLAGS", "-std=gnu17"

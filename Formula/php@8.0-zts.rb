@@ -69,6 +69,8 @@ class PhpAT80Zts < Formula
     depends_on "zlib-ng-compat"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # PHP 8.0 still has K&R-style bcmath/intl sources that fail under C23.
     ENV.append "CFLAGS", "-std=gnu17"

@@ -97,6 +97,8 @@ class PhpAT81 < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # Work around to support `icu4c` 75, which needs C++17.
     ENV["ICU_CXXFLAGS"] = "-std=c++17"

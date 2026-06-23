@@ -87,6 +87,8 @@ class PhpAT83DebugZts < Formula
     depends_on "zlib-ng-compat"
   end
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"

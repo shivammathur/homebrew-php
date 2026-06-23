@@ -78,6 +78,8 @@ class PhpAT74 < Formula
   # see https://github.com/php/php-src/issues/10680
   patch :DATA
 
+  deny_network_access! [:build, :postinstall]
+
   def install
     # PHP 7.4 still has K&R-style bcmath/intl sources that fail under C23.
     ENV.append "CFLAGS", "-std=gnu17"
