@@ -128,9 +128,9 @@ class PhpAT74Zts < Formula
 
       # Each extension needs a direct reference to the sdk path or it won't find the headers
       headers_path = "=#{sdk_path}/usr"
-      gettext_path = "=#{Formula["gettext"].opt_prefix}"
+      gettext_path = "=#{formula_opt_prefix("gettext")}"
     else
-      ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
+      ENV["BZIP_DIR"] = formula_opt_prefix("bzip2")
     end
 
     # `_www` only exists on macOS.
@@ -167,7 +167,7 @@ class PhpAT74Zts < Formula
       --enable-sysvmsg
       --enable-sysvsem
       --enable-sysvshm
-      --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
+      --with-apxs2=#{formula_opt_bin("httpd")}/apxs
       --with-bz2#{headers_path}
       --with-curl
       --with-external-gd
@@ -176,11 +176,11 @@ class PhpAT74Zts < Formula
       --with-fpm-user=#{fpm_user}
       --with-fpm-group=#{fpm_group}
       --with-gettext#{gettext_path}
-      --with-gmp=#{Formula["gmp"].opt_prefix}
+      --with-gmp=#{formula_opt_prefix("gmp")}
       --with-iconv#{headers_path}
       --with-kerberos
       --with-layout=GNU
-      --with-ldap=#{Formula["openldap"].opt_prefix}
+      --with-ldap=#{formula_opt_prefix("openldap")}
       --with-libxml
       --with-libedit
       --with-mhash#{headers_path}
@@ -188,18 +188,18 @@ class PhpAT74Zts < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2=#{Formula["argon2"].opt_prefix}
-      --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
+      --with-password-argon2=#{formula_opt_prefix("argon2")}
+      --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
-      --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
-      --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
+      --with-pdo-odbc=unixODBC,#{formula_opt_prefix("unixodbc")}
+      --with-pdo-pgsql=#{formula_opt_prefix("libpq")}
       --with-pdo-sqlite
-      --with-pgsql=#{Formula["libpq"].opt_prefix}
+      --with-pgsql=#{formula_opt_prefix("libpq")}
       --with-pic
-      --with-pspell=#{Formula["aspell"].opt_prefix}
+      --with-pspell=#{formula_opt_prefix("aspell")}
       --with-sodium
       --with-sqlite3
-      --with-tidy=#{Formula["tidy-html5"].opt_prefix}
+      --with-tidy=#{formula_opt_prefix("tidy-html5")}
       --with-unixODBC
       --with-xmlrpc
       --with-xsl
@@ -356,7 +356,7 @@ class PhpAT74Zts < Formula
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes (bin/"php").dynamically_linked_libraries,
-                    (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
+                    (formula_opt_lib("libpq")/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
     system bin/"phpdbg", "-V"
@@ -379,7 +379,7 @@ class PhpAT74Zts < Formula
         ServerName localhost:#{port}
         DocumentRoot "#{testpath}"
         ErrorLog "#{testpath}/httpd-error.log"
-        ServerRoot "#{Formula["httpd"].opt_prefix}"
+        ServerRoot "#{formula_opt_prefix("httpd")}"
         PidFile "#{testpath}/httpd.pid"
         LoadModule authz_core_module lib/httpd/modules/mod_authz_core.so
         LoadModule unixd_module lib/httpd/modules/mod_unixd.so
@@ -424,7 +424,7 @@ class PhpAT74Zts < Formula
         </FilesMatch>
       EOS
 
-      pid = spawn Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
+      pid = spawn formula_opt_bin("httpd")/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -432,7 +432,7 @@ class PhpAT74Zts < Formula
       Process.wait(pid)
 
       fpm_pid = spawn sbin/"php-fpm", "-y", "fpm.conf"
-      pid = spawn Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
+      pid = spawn formula_opt_bin("httpd")/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure

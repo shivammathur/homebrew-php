@@ -132,7 +132,7 @@ class PhpAT71DebugZts < Formula
     if OS.mac?
       # Each extension needs a direct reference to the sdk path or it won't find the headers
       headers_path = "=#{MacOS.sdk_for_formula(self).path}/usr"
-      gettext_path = "=#{Formula["gettext"].opt_prefix}"
+      gettext_path = "=#{formula_opt_prefix("gettext")}"
     end
 
     # `_www` only exists on macOS.
@@ -171,41 +171,41 @@ class PhpAT71DebugZts < Formula
       --enable-sysvshm
       --enable-wddx
       --enable-zip
-      --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
-      --with-curl=#{Formula["curl"].opt_prefix}
+      --with-apxs2=#{formula_opt_bin("httpd")}/apxs
+      --with-curl=#{formula_opt_prefix("curl")}
       --with-fpm-user=#{fpm_user}
       --with-fpm-group=#{fpm_group}
-      --with-freetype-dir=#{Formula["freetype"].opt_prefix}
-      --with-gd=#{Formula["gd"].opt_prefix}
+      --with-freetype-dir=#{formula_opt_prefix("freetype")}
+      --with-gd=#{formula_opt_prefix("gd")}
       --with-gettext#{gettext_path}
-      --with-gmp=#{Formula["gmp"].opt_prefix}
+      --with-gmp=#{formula_opt_prefix("gmp")}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{Formula["icu4c@78"].opt_prefix}
-      --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
+      --with-icu-dir=#{formula_opt_prefix("icu4c@78")}
+      --with-jpeg-dir=#{formula_opt_prefix("jpeg")}
       --with-kerberos#{headers_path}
       --with-layout=GNU
-      --with-ldap=#{Formula["openldap"].opt_prefix}
+      --with-ldap=#{formula_opt_prefix("openldap")}
       --with-ldap-sasl#{headers_path}
       --with-libzip
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
-      --with-openssl=#{Formula["openssl@3"].opt_prefix}
-      --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
+      --with-openssl=#{formula_opt_prefix("openssl@3")}
+      --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
-      --with-pdo-odbc=unixODBC,#{Formula["unixodbc"].opt_prefix}
-      --with-pdo-pgsql=#{Formula["libpq"].opt_prefix}
-      --with-pdo-sqlite=#{Formula["sqlite"].opt_prefix}
-      --with-pgsql=#{Formula["libpq"].opt_prefix}
+      --with-pdo-odbc=unixODBC,#{formula_opt_prefix("unixodbc")}
+      --with-pdo-pgsql=#{formula_opt_prefix("libpq")}
+      --with-pdo-sqlite=#{formula_opt_prefix("sqlite")}
+      --with-pgsql=#{formula_opt_prefix("libpq")}
       --with-pic
-      --with-png-dir=#{Formula["libpng"].opt_prefix}
-      --with-pspell=#{Formula["aspell"].opt_prefix}
-      --with-sqlite3=#{Formula["sqlite"].opt_prefix}
-      --with-tidy=#{Formula["tidy-html5"].opt_prefix}
-      --with-unixODBC=#{Formula["unixodbc"].opt_prefix}
-      --with-webp-dir=#{Formula["webp"].opt_prefix}
+      --with-png-dir=#{formula_opt_prefix("libpng")}
+      --with-pspell=#{formula_opt_prefix("aspell")}
+      --with-sqlite3=#{formula_opt_prefix("sqlite")}
+      --with-tidy=#{formula_opt_prefix("tidy-html5")}
+      --with-unixODBC=#{formula_opt_prefix("unixodbc")}
+      --with-webp-dir=#{formula_opt_prefix("webp")}
       --with-xmlrpc
-      --with-xpm-dir=#{Formula["libxpm"].opt_prefix}
+      --with-xpm-dir=#{formula_opt_prefix("libxpm")}
     ]
 
     if OS.mac?
@@ -218,11 +218,11 @@ class PhpAT71DebugZts < Formula
       args << "--with-zlib#{headers_path}"
     else
       args << "--disable-dtrace"
-      args << "--with-zlib=#{Formula["zlib-ng-compat"].opt_prefix}"
-      args << "--with-bzip2=#{Formula["bzip2"].opt_prefix}"
-      args << "--with-libedit=#{Formula["libedit"].opt_prefix}"
-      args << "--with-libxml-dir=#{Formula["libxml2"].opt_prefix}"
-      args << "--with-xsl=#{Formula["libxslt"].opt_prefix}"
+      args << "--with-zlib=#{formula_opt_prefix("zlib-ng-compat")}"
+      args << "--with-bzip2=#{formula_opt_prefix("bzip2")}"
+      args << "--with-libedit=#{formula_opt_prefix("libedit")}"
+      args << "--with-libxml-dir=#{formula_opt_prefix("libxml2")}"
+      args << "--with-xsl=#{formula_opt_prefix("libxslt")}"
       args << "--without-ldap-sasl"
       args << "--without-ndbm"
       args << "--without-gdbm"
@@ -366,7 +366,7 @@ class PhpAT71DebugZts < Formula
     # Test related to libxml2 and
     # https://github.com/Homebrew/homebrew-core/issues/28398
     assert_includes (bin/"php").dynamically_linked_libraries,
-                    (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
+                    (formula_opt_lib("libpq")/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
     system bin/"phpdbg", "-V"
@@ -389,7 +389,7 @@ class PhpAT71DebugZts < Formula
         ServerName localhost:#{port}
         DocumentRoot "#{testpath}"
         ErrorLog "#{testpath}/httpd-error.log"
-        ServerRoot "#{Formula["httpd"].opt_prefix}"
+        ServerRoot "#{formula_opt_prefix("httpd")}"
         PidFile "#{testpath}/httpd.pid"
         LoadModule authz_core_module lib/httpd/modules/mod_authz_core.so
         LoadModule unixd_module lib/httpd/modules/mod_unixd.so
@@ -428,7 +428,7 @@ class PhpAT71DebugZts < Formula
         </FilesMatch>
       EOS
 
-      pid = spawn Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
+      pid = spawn formula_opt_bin("httpd")/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -436,7 +436,7 @@ class PhpAT71DebugZts < Formula
       Process.wait(pid)
 
       fpm_pid = spawn sbin/"php-fpm", "-y", "fpm.conf"
-      pid = spawn Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
+      pid = spawn formula_opt_bin("httpd")/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure
