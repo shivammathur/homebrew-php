@@ -6,6 +6,7 @@ class PhpAT72 < Formula
   sha256 "cbf4d0b35b53b32b303b7e7ec171acc097094534b1e068b2c66abfce6008c4c0"
   license "PHP-3.01"
   revision 16
+  compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"

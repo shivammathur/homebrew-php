@@ -30,6 +30,7 @@ class PhpAT86 < Formula
     "Zlib",                  # 8
   ]
   revision 1
+  compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"

@@ -29,6 +29,7 @@ class Php < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  compatibility_version 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
