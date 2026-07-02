@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.7.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.7.tar.xz"
-  sha256 "01ba2ed1c2658dacf91bebc8be6a4885f69b811c7993831fc48e26107ab29985"
+  url "https://www.php.net/distributions/php-8.5.8.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.8.tar.xz"
+  sha256 "58910198d19e873048fe87cdfe16bc790025417ede3d1651bfa1c4b533d573f2"
   license all_of: [
     "PHP-3.01",
 
@@ -298,6 +298,8 @@ class Php < Formula
           ENV.append key, "-Wno-profile-instr-unprofiled"
         else
           ENV.append key, "-fprofile-correction"
+          # GCC 13's tracer pass crashes on session.c under -fprofile-use (https://github.com/php/php-src/issues/18807)
+          ENV.append key, "-fno-tracer"
         end
       end
       ENV.append "LDFLAGS", pgo_use_flag
