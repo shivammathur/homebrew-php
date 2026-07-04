@@ -1,9 +1,9 @@
 class PhpAT56Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/6cfe49e294414185452ec89bad39b1bd42cc72c9.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/241845d24ddbbccddc9be4006c103d9ddaf3b724.tar.gz"
   version "5.6.40"
-  sha256 "c7aea2d4742a6daadfa333dce1e6707bd648b2ed54e36238674db026e27d43cf"
+  sha256 "836bc6985113313d2a9cfc14864f9506b0c752c24cc9bf0a66454e890921b9d5"
   license "PHP-3.01"
   revision 7
 
@@ -81,6 +81,7 @@ class PhpAT56Zts < Formula
       ENV.append "CFLAGS", "-Wno-incompatible-function-pointer-types"
       ENV.append "CFLAGS", "-Wno-implicit-int"
       ENV.append "CFLAGS", "-Wno-int-conversion"
+      ENV.append "CFLAGS", "-std=gnu99"
     end
 
     # Workaround for https://bugs.php.net/80310
@@ -218,7 +219,7 @@ class PhpAT56Zts < Formula
       args << "--with-xsl#{headers_path}"
       args << "--with-zlib#{headers_path}"
     else
-      args << "--with-zlib=#{formula_opt_prefix("zlib")}"
+      args << "--with-zlib=#{formula_opt_prefix("zlib-ng-compat")}"
       args << "--with-bzip2=#{formula_opt_prefix("bzip2")}"
       args << "--with-libedit=#{formula_opt_prefix("libedit")}"
       args << "--with-libxml-dir=#{formula_opt_prefix("libxml2")}"
