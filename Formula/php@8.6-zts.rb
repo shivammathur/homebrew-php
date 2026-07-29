@@ -230,7 +230,7 @@ class PhpAT86Zts < Formula
     # because it's not possible to build Apache and embed at the same time
     args = shared_args.map(&:clone)
     args << "--disable-cgi"
-    args << "--disable-cli"
+    args << "--enable-cli"
     args << "--disable-phpdbg"
     args << "--enable-embed"
 
