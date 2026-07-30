@@ -29,11 +29,6 @@ class PhpAT81DebugZts < Formula
   ]
   revision 1
 
-  livecheck do
-    url "https://www.php.net/downloads?source=Y"
-    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_tahoe:   "cd7a1a090574af48969427374ea8a29a260809b53b9e7f97b3df2ef06e87ede6"

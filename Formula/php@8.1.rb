@@ -30,11 +30,6 @@ class PhpAT81 < Formula
   revision 1
   compatibility_version 1
 
-  livecheck do
-    url "https://www.php.net/downloads?source=Y"
-    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
     sha256 arm64_tahoe:   "c9ed26bd1e7ce806c7d38ea1f9abb4a163bac0e0b059a4cdbea6a2383aa68e42"
