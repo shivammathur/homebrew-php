@@ -471,6 +471,7 @@ class PhpZts < Formula
       ErrorLog "#{testpath}/httpd-error.log"
       ServerRoot "#{formula_opt_prefix("httpd")}"
       PidFile "#{testpath}/httpd.pid"
+      Mutex file:#{testpath} default
       LoadModule authz_core_module lib/httpd/modules/mod_authz_core.so
       LoadModule unixd_module lib/httpd/modules/mod_unixd.so
       LoadModule dir_module lib/httpd/modules/mod_dir.so
