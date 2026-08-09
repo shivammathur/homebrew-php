@@ -276,10 +276,7 @@ class PhpAT81Debug < Formula
     cd "ext/intl" do
       system bin/"phpize"
       if OS.mac?
-        # rubocop:disable all
-        ENV["CC"] = "/usr/bin/clang"
-        ENV["CXX"] = "/usr/bin/clang++"
-        # rubocop:enable all
+        ENV.clang
       end
       system "./configure", "--with-php-config=#{bin}/php-config"
       system "make"

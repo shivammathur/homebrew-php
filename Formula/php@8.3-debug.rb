@@ -266,12 +266,9 @@ class PhpAT83Debug < Formula
     cd "ext/intl" do
       system bin/"phpize"
       if OS.mac?
-        # rubocop:disable all
-        ENV["CC"] = "/usr/bin/clang"
-        ENV["CXX"] = "/usr/bin/clang++"
+        ENV.clang
         # Ensure there is enough Mach-O header space for Homebrew rpath rewrites.
         ENV.append "LDFLAGS", "-Wl,-headerpad_max_install_names"
-        # rubocop:enable all
       end
       system "./configure", "--with-php-config=#{bin}/php-config"
       system "make"
