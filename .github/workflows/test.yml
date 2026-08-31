@@ -21,12 +21,17 @@ jobs:
       uses: Homebrew/actions/setup-homebrew@main
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
+    - name: Install PHP 8.6 build dependency
+      if: matrix.php == '8.6'
+      run: brew install --build-from-source re2c
     - name: Setup PHP
       timeout-minutes: 20
       env:
         update: true
         debug: ${{ matrix.debug }}
         phpts: ${{ matrix.phpts }}
+        use_package_cache: false
+        SETUP_PHP_BREW_WATCHDOG: false
       uses: shivammathur/setup-php@verbose
       with:
         php-version: ${{ matrix.php }}
