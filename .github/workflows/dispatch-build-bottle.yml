@@ -49,14 +49,11 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            const intelMacOSRegex = /^(?:\d+(?:\.\d+)?|macos-.*(?:intel|x86_64))$/;
             const linuxRegex = /^(ubuntu-|linux-self-hosted-)/;
             return context.payload.inputs.runner.split(",")
                                                 .map(s => s.trim())
                                                 .filter(Boolean)
                                                 .map(s => {
-              if (intelMacOSRegex.test(s))
-                throw new Error(`macOS Intel runner ${s} is not supported`);
               if (linuxRegex.test(s))
                 return {
                   runner:    s,
