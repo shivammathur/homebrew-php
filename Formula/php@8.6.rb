@@ -1,8 +1,4 @@
-require File.expand_path("../lib/core_intel_dependencies", __dir__)
-
 class PhpAT86 < Formula
-  extend CoreIntelDependencies
-
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://github.com/php/php-src/archive/f142b815884597f398b8bb52d9558cc313397075.tar.gz?commit=f142b815884597f398b8bb52d9558cc313397075"
@@ -42,7 +38,6 @@ class PhpAT86 < Formula
     sha256 arm64_tahoe:   "445b9681034c1cc96915113943825a545e14ac4b2d37a122fdd0e563af34446a"
     sha256 arm64_sequoia: "83b0229611644507dc164c04dd2ed0ba317f1321742a1bfd990ae25fa813f6b7"
     sha256 arm64_sonoma:  "d490b06751aed2831a305f51ed83cb38cbd7306faae99a7aae6c4296c843cbff"
-    sha256 sonoma:        "c160b8d8453a40d7575662bf5bc727d24ee6f8781a3abd84d7a5ae960a2941c9"
     sha256 arm64_linux:   "11b02f48d9e4d8a19b593a6cbec873f24af48c75b3b942850904b41f83056e15"
     sha256 x86_64_linux:  "a64dab5f641dc21c0ac1eca53f572bf2aaf4ad1ed6059416295e8540d0373146"
   end
@@ -236,7 +231,7 @@ class PhpAT86 < Formula
       s.gsub! %r{; ?extension_dir = "\./"}, "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
       # Use OpenSSL cert bundle
-      openssl = core_formula("openssl@3")
+      openssl = Formula["openssl@3"]
       s.gsub!(/; ?openssl\.cafile=/, "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\"")
       s.gsub!(/; ?openssl\.capath=/, "openssl.capath = \"#{openssl.pkgetc}/certs\"")
     end
@@ -258,8 +253,6 @@ class PhpAT86 < Formula
       (var/"log").mkpath
       touch var/"log/php-fpm.log"
     end
-
-    install_core_intel_dependencies
   end
 
   def post_install

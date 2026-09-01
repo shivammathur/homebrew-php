@@ -81,10 +81,6 @@ jobs:
         with:
           bottles-directory: ${{ env.BOTTLES_DIR }}
 
-      - name: Tap Intel dependencies
-        if: runner.os == 'macOS' && runner.arch == 'X64'
-        run: brew tap shivammathur/core-intel
-
       - name: Run brew test-bot --only-formulae --only-json-tab --skip-online-checks --skip-dependents
         working-directory: ${{ env.BOTTLES_DIR }}
         env:
