@@ -19,6 +19,8 @@ jobs:
     steps:
     - name: Set up Homebrew
       uses: Homebrew/actions/setup-homebrew@main
+    - name: Tap Intel dependencies
+      run: brew tap shivammathur/core-intel
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
     - name: Install PHP 8.6 build dependency

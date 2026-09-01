@@ -1,4 +1,8 @@
+require File.expand_path("../lib/core_intel_dependencies", __dir__)
+
 class PhpAT86 < Formula
+  extend CoreIntelDependencies
+
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   url "https://github.com/php/php-src/archive/f142b815884597f398b8bb52d9558cc313397075.tar.gz?commit=f142b815884597f398b8bb52d9558cc313397075"
@@ -231,7 +235,7 @@ class PhpAT86 < Formula
       s.gsub! %r{; ?extension_dir = "\./"}, "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
       # Use OpenSSL cert bundle
-      openssl = Formula["openssl@3"]
+      openssl = core_formula("openssl@3")
       s.gsub!(/; ?openssl\.cafile=/, "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\"")
       s.gsub!(/; ?openssl\.capath=/, "openssl.capath = \"#{openssl.pkgetc}/certs\"")
     end
@@ -253,6 +257,8 @@ class PhpAT86 < Formula
       (var/"log").mkpath
       touch var/"log/php-fpm.log"
     end
+
+    install_core_intel_dependencies
   end
 
   def post_install
