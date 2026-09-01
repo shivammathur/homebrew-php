@@ -24,9 +24,6 @@
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Linux x86_64 supported">
     <img alt="Linux architectures supported" src="https://img.shields.io/badge/Linux-x86__64%20-f6ab01?logo=linux&logoColor=555555&labelColor=ffffff">
   </a>
-  <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple Intel x86_64 supported">
-    <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Intel%20x86__64%20-007DC3?logo=apple&logoColor=555555&labelColor=ffffff">
-  </a>
   <a href="https://github.com/shivammathur/homebrew-php#os-support" title="Apple M1 arm64 supported">
     <img alt="macOS architectures supported" src="https://img.shields.io/badge/macOS-Apple%20arm64%20-c0476d?logo=apple&logoColor=555555&labelColor=ffffff">
   </a>
@@ -59,9 +56,11 @@ The formulae with thread-safety support can be used with applications that requi
 | Operating System | Architecture      |
 |------------------|-------------------|
 | Linux            | `x86_64`, `arm64` |
-| macOS Sonoma     | `x86_64`, `arm64` |
-| macOS Sequoia    | `x86_64`, `arm64` |
-| macOS Tahoe      | `x86_64`, `arm64` |
+| macOS Sonoma     | `arm64`           |
+| macOS Sequoia    | `arm64`           |
+| macOS Tahoe      | `arm64`           |
+
+macOS Intel is not supported.
 
 ## Usage
 
