@@ -51,4 +51,4 @@ jobs:
         brew services list
 
         [ "$formula" = "php@8.5$debug$phpts" ] && formula="php$debug$phpts"
-        cat ~/Library/LaunchAgents/homebrew.mxcl."$formula".plist
+        cat ~/Library/LaunchAgents/sh.brew."$formula".plist
