@@ -27,7 +27,7 @@ class PhpAT81 < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
+  revision 2
   compatibility_version 1
 
   bottle do
@@ -93,8 +93,6 @@ class PhpAT81 < Formula
   fails_with :clang do
     cause "Performs worse due to lack of general global register variables"
   end
-
-  deny_network_access! [:postinstall]
 
   def install
     # Work around to support `icu4c` 75, which needs C++17.
@@ -328,7 +326,9 @@ class PhpAT81 < Formula
                 args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
