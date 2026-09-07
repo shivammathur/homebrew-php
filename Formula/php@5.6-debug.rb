@@ -5,7 +5,7 @@ class PhpAT56Debug < Formula
   version "5.6.40"
   sha256 "836bc6985113313d2a9cfc14864f9506b0c752c24cc9bf0a66454e890921b9d5"
   license "PHP-3.01"
-  revision 15
+  revision 16
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -70,9 +70,10 @@ class PhpAT56Debug < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
@@ -314,6 +315,7 @@ class PhpAT56Debug < Formula
 
     run "pear", base: :bin, args: ["update-channels"]
 
+    mkdir_p "php/{{version.major_minor}}-debug/conf.d", base: :etc
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
         list(, $php_config, $opt_prefix, $config_path) = $argv;
