@@ -29,6 +29,7 @@ class PhpDebug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -37,12 +38,11 @@ class PhpDebug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_tahoe:   "9a3ff02f125cc9996847f20d8a98ef1e49fdaa8cb364bf6c940f6228953cb1d1"
-    sha256 arm64_sequoia: "58516433d36b7197d01b1e22bca1ea85ebb77934b956c63def8f641eb9810c39"
-    sha256 arm64_sonoma:  "87bba8833f84dd057a06e48e30b402b6a1a34081a04c004bd440a77e4b781e5d"
-    sha256 sonoma:        "a80898fab697c85e788877aa0e4ed1bc22ed3794ca968766052ffd801c1535a1"
-    sha256 arm64_linux:   "10303d0b9037e3ec8240a5e207eee304215153173e43f811be90602aa762096f"
-    sha256 x86_64_linux:  "70518c5ce37851e1d83f63fd8d375ffaa303bb5dc2047211c87e694b7de2076f"
+    sha256 arm64_tahoe:   "d9bf6f2cd264995668591675335053b4c250a84a72cd7302f052599554b1e23d"
+    sha256 arm64_sequoia: "27917a67592b9144ef9e46c603fe79d819cfdcea0e7288886cd0713548f83da0"
+    sha256 arm64_sonoma:  "dda10f8a2ec99a1f5356a94024a1a8620aa69c7eb469e34900d049f6085d92f0"
+    sha256 arm64_linux:   "89699e704e8f41c222fe104a1aac4172865a62e893e14e5f5bf792afe725fde5"
+    sha256 x86_64_linux:  "1eda10dc7a32b25623ac53c821c70685083ca65a60d28a97f8177d6287aef6fc"
   end
 
   depends_on "bison" => :build
@@ -86,7 +86,7 @@ class PhpDebug < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     # buildconf required due to system library linking bug patch
@@ -348,54 +348,49 @@ class PhpDebug < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
+  post_install_steps do
+    set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
+    set_permissions [
+      "pear/.depdblock",
+      "pear/.filemap",
+      "pear/.depdb",
+      "pear/.lock",
+      "pear/.channels/*",
+      "pear/.channels/.alias/*",
+    ], "0644", base: :pkgshare, recursive: false
 
     # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    (pecl_path/php_basename).mkpath
-
-    # fix pear config to install outside cellar
-    pear_path = HOMEBREW_PREFIX/"share/pear"
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{php_version}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
+    mkdir_p "lib/php/pecl", base: :homebrew_prefix
+    unless_path_exists "pecl", base: :prefix do
+      symlink "lib/php/pecl", "pecl", source_base: :homebrew_prefix, target_base: :prefix
     end
 
-    system bin/"pear", "update-channels"
+    # fix pear config to install outside cellar
+    run "/bin/cp", args: %w[-R {{pkgshare}}/pear/. {{HOMEBREW_PREFIX}}/share/pear]
+    run "pear", base: :bin, args: %w[config-set php_ini {{etc}}/php/{{version.major_minor}}-debug/php.ini system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear"
+    run "pear", base: :bin, args: %w[config-set php_dir {{HOMEBREW_PREFIX}}/share/pear system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear/doc"
+    run "pear", base: :bin, args: %w[config-set doc_dir {{HOMEBREW_PREFIX}}/share/pear/doc system]
+    run "/bin/sh", args: ["-ec", <<~SH, "--", "{{bin}}", "{{HOMEBREW_PREFIX}}/lib/php/pecl"]
+      extension_dir="$("$1/php-config" --extension-dir)"
+      ext_dir="$2/${extension_dir##*/}"
+      mkdir -p "$ext_dir"
+      exec "$1/pear" config-set ext_dir "$ext_dir" system
+    SH
+    run "pear", base: :bin, args: %w[config-set bin_dir {{opt_prefix}}/bin system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear/data"
+    run "pear", base: :bin, args: %w[config-set data_dir {{HOMEBREW_PREFIX}}/share/pear/data system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear/cfg"
+    run "pear", base: :bin, args: %w[config-set cfg_dir {{HOMEBREW_PREFIX}}/share/pear/cfg system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear/htdocs"
+    run "pear", base: :bin, args: %w[config-set www_dir {{HOMEBREW_PREFIX}}/share/pear/htdocs system]
+    run "pear", base: :bin, args: %w[config-set man_dir {{HOMEBREW_PREFIX}}/share/man system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear/test"
+    run "pear", base: :bin, args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear/test system]
+    run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
+
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
   end
 
   def caveats

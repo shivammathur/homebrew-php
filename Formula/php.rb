@@ -29,6 +29,7 @@ class Php < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
   compatibility_version 1
 
   livecheck do
@@ -38,12 +39,11 @@ class Php < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_tahoe:   "d2a63ffe0bf9261573c0a7a72089d9a17ab72521f6b7e1cc0c4960ee9c64aa54"
-    sha256 arm64_sequoia: "65a2cfa3e4d947e820d76cb1077bcf3c4da8f317e4a34a0678676efa52a3743d"
-    sha256 arm64_sonoma:  "793ee17b05194ca2f43ee370f00b657e16442d957588e63ebc10414c66918db4"
-    sha256 sonoma:        "7fb5292f4cb172fce7c2d272e81afeb3cacc8f8443f651112b9be6943dcbf8e8"
-    sha256 arm64_linux:   "5160db95157667aba66bcd185dce8bde74ad33f655f7116aba2ee63a5d510dc8"
-    sha256 x86_64_linux:  "fd3df34513a1da52da547d64c4b38a7f6d0a7f25f221835ff81f6ce5ae5e6f26"
+    sha256 arm64_tahoe:   "90ca098d636366e871110f9c0382f7a255273cca271ddfe1cbdfa4c311b2aeb0"
+    sha256 arm64_sequoia: "0c94401fdd604c3b56e6e0903aa9796726502f77517cbf98a1699c850658da14"
+    sha256 arm64_sonoma:  "9291e78a9e0d7866b47596d2f518fedabcd1174706ce5e909aca1f8bd6c23c54"
+    sha256 arm64_linux:   "424b4edfceb3422adca4842b42de0078cf68278329be75e9b40290084e7a7684"
+    sha256 x86_64_linux:  "f37f09890c560ca8770e29abdb059bdb279140daaa8274339e3b11933555976c"
   end
 
   depends_on "bison" => :build
@@ -87,7 +87,7 @@ class Php < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     # buildconf required due to system library linking bug patch
@@ -348,55 +348,8 @@ class Php < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    (pecl_path/php_basename).mkpath
-
-    # fix pear config to install outside cellar
-    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
-    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
-    end
-
-    system bin/"pear", "update-channels"
+  post_install_steps do
+    configure_php
   end
 
   def caveats

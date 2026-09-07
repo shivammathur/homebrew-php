@@ -5,18 +5,16 @@ class PhpAT72 < Formula
   version "7.2.34"
   sha256 "8b8104c40d0e453088f8fe703a0ead74ffdb5a4d0deb9b102864aa206bef5d2b"
   license "PHP-3.01"
-  revision 16
+  revision 17
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 3
-    sha256 arm64_tahoe:   "a6237f51e68123c8b2ae116e4ee0286ec45e9517126faf02eeb9040dd1be09d6"
-    sha256 arm64_sequoia: "24d301af2061624378f771cb430a910d8b3116d59e1bcb0ce7f0835832d1e8dd"
-    sha256 arm64_sonoma:  "8c40de61df1a9dc00608ba16163452f89f29d276d8970451520274a675c32e11"
-    sha256 sonoma:        "3cf374e6a2eed35e35f1249c31fa9eb38fdbb08362d3b76588fae55191ca4a89"
-    sha256 arm64_linux:   "f8cbe13cec456533615d76aaf3510dd6678bd2d3537343461fdc525820024c09"
-    sha256 x86_64_linux:  "da7f3c40fa0941cdc368ddbaa62df0004d4c6a81e7ea45f9612ad053ca1d2a10"
+    sha256 arm64_tahoe:   "44c091e259b1912d7ff634350e83dbc0441a12e82589f115471417ed1bfbae48"
+    sha256 arm64_sequoia: "a1d8853a65af33b193bc1660630952a1668a1e4589c9830242f0ef00e2cc0067"
+    sha256 arm64_sonoma:  "a50a7955e5eb6573796a81fcacb52614a64bad15338bc9ac8a9c9c11adc3273a"
+    sha256 arm64_linux:   "087a25d0dddffc71fa9f7596583763552ae6815b3bbdef0c29f943064acff150"
+    sha256 x86_64_linux:  "0f556f95dbbf894deb462d970a5e3f0b9496d943ee4119edee1a382dab592bfc"
   end
 
   keg_only :versioned_formula
@@ -72,9 +70,10 @@ class PhpAT72 < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
@@ -267,72 +266,8 @@ class PhpAT72 < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
-    (pecl_path/php_basename).mkpath
-
-    # fix pear config to install outside cellar
-    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
-    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
-    end
-
-    system bin/"pear", "update-channels"
-
-    %w[
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~INI
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        INI
-      end
-    end
+  post_install_steps do
+    configure_php
   end
 
   def caveats

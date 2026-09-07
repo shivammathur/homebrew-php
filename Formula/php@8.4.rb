@@ -28,6 +28,7 @@ class PhpAT84 < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
   compatibility_version 1
 
   livecheck do
@@ -37,12 +38,11 @@ class PhpAT84 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_tahoe:   "d1343bbeabe1b103762f11beb3e42798361aaaefc19db276d909f74624d50eb2"
-    sha256 arm64_sequoia: "e63b49e7a322a971df93e9745fe616bf06645d65f66d9b642e33179c00e1e35e"
-    sha256 arm64_sonoma:  "7b3d5499481b36d555bfafa241f77752d73dc25c07efb90a0c51f795855baeff"
-    sha256 sonoma:        "e5ca1ec23369203579914d4371a6d558934367589efd071bbd0aad021084025f"
-    sha256 arm64_linux:   "2c3334f14f5e8e30d0701ad9a8936d287358de24c35cbb92d2c5a8cd5dc9dd06"
-    sha256 x86_64_linux:  "11817f0be0a6537bffdfaf7d32dd7319ca248958c3e24f0adce49a40326023f8"
+    sha256 arm64_tahoe:   "38fdc2d9caaf9065ef2916c2448e9830096c4a388378411b36109eb263c264e6"
+    sha256 arm64_sequoia: "2c10c7ea24b941a336e9364db4298595be36da75fa01496470e9ba2ded3542c4"
+    sha256 arm64_sonoma:  "49ca529edfe94dadf903f9d76cc0c183f9b64f1e6cd1402cf38671e94cd3ee09"
+    sha256 arm64_linux:   "ed3a6a9a63e6fe86b25d18bb4790b0b28ea027bd5386b842d350b2ea1936b94e"
+    sha256 x86_64_linux:  "8bdf7ffa87ec7104b73abb544d4ffc570c966ae6de1fa063aa32b59cdc2fbc86"
   end
 
   keg_only :versioned_formula
@@ -92,7 +92,7 @@ class PhpAT84 < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     system "./buildconf", "--force" if build.head?
@@ -272,73 +272,96 @@ class PhpAT84 < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
+  post_install_steps do
+    set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
+    set_permissions [
+      "pear/.depdblock",
+      "pear/.filemap",
+      "pear/.depdb",
+      "pear/.lock",
+      "pear/.channels/*",
+      "pear/.channels/.alias/*",
+    ], "0644", base: :pkgshare, recursive: false
 
     # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
-    (pecl_path/php_basename).mkpath
+    mkdir_p "lib/php/pecl", base: :homebrew_prefix
+    unless_path_exists "pecl", base: :prefix do
+      symlink "lib/php/pecl", "pecl", source_base: :homebrew_prefix, target_base: :prefix
+    end
 
     # fix pear config to install outside cellar
-    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
-    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
-    end
+    run "/bin/cp", args: %w[-R {{pkgshare}}/pear/. {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}]
+    run "pear", base: :bin, args: %w[config-set php_ini {{etc}}/php/{{version.major_minor}}/php.ini system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}"
+    run "pear", base: :bin, args: %w[config-set php_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}} system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/doc"
+    run "pear", base: :bin,
+                args: %w[config-set doc_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/doc system]
+    run "/bin/sh", args: ["-ec", <<~SH, "--", "{{bin}}", "{{HOMEBREW_PREFIX}}/lib/php/pecl"]
+      extension_dir="$("$1/php-config" --extension-dir)"
+      ext_dir="$2/${extension_dir##*/}"
+      mkdir -p "$ext_dir"
+      exec "$1/pear" config-set ext_dir "$ext_dir" system
+    SH
+    run "pear", base: :bin, args: %w[config-set bin_dir {{opt_prefix}}/bin system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/data"
+    run "pear", base: :bin,
+                args: %w[config-set data_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/data system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/cfg"
+    run "pear", base: :bin,
+                args: %w[config-set cfg_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/cfg system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/htdocs"
+    run "pear", base: :bin,
+                args: %w[config-set www_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/htdocs system]
+    run "pear", base: :bin, args: %w[config-set man_dir {{HOMEBREW_PREFIX}}/share/man system]
+    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/test"
+    run "pear", base: :bin,
+                args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}/test system]
+    run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    system bin/"pear", "update-channels"
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
 
-    %w[
-      intl
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~INI
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        INI
-      end
-    end
+    mkdir_p "php/{{version.major_minor}}/conf.d", base: :etc
+
+    run "php", base: :bin, args: [
+      "-n", "-r", <<~'PHP',
+        list(, $php_config, $opt_prefix, $config_path) = $argv;
+        exec(escapeshellarg($php_config) . ' --extension-dir', $output, $status);
+        if ($status !== 0) {
+            exit($status);
+        }
+        $php_ext_dir = $opt_prefix . '/lib/php/' . basename(implode("\n", $output));
+        foreach (array_slice($argv, 4) as $extension) {
+            $path = $config_path . '/conf.d/ext-' . $extension . '.ini';
+            $type = $extension === 'opcache' ? 'zend_extension' : 'extension';
+            $library = $php_ext_dir . '/' . $extension . '.so';
+            if (file_exists($path)) {
+                $content = file_get_contents($path);
+                if ($content === false) {
+                    exit(1);
+                }
+                $content = preg_replace_callback('/' . $type . '=.*$/m', function () use ($type, $library) {
+                    return $type . '=' . $library;
+                }, $content, -1, $count);
+                if ($count === 0) {
+                    fwrite(STDERR, 'Cannot update ' . $type . ' in ' . $path . "\n");
+                    exit(1);
+                }
+            } else {
+                $content = '[' . $extension . "]\n" . $type . '="' . $library . "\"\n";
+            }
+            if (file_put_contents($path, $content) === false) {
+                exit(1);
+            }
+        }
+      PHP
+      "--",
+      "{{bin}}/php-config",
+      "{{opt_prefix}}",
+      "{{etc}}/php/{{version.major_minor}}",
+      "intl",
+      "opcache"
+    ]
   end
 
   def caveats

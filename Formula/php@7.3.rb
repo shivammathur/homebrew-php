@@ -5,18 +5,16 @@ class PhpAT73 < Formula
   version "7.3.33"
   sha256 "ffe700b4ddaf86b580bd5176bdbd2bfae785b9eb6786dde06afe6ce77e665ca7"
   license "PHP-3.01"
-  revision 14
+  revision 15
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_tahoe:   "c005cccb38a9c5ca515202c61d7d0a5d41236524e1a92a21b921209ccb30f902"
-    sha256 arm64_sequoia: "4ba75dd8e51d7e86e5a55654d427d5c15ac8d0332d5e4c6217099911797cf0e3"
-    sha256 arm64_sonoma:  "8a65bb39d55099fc0d3fb27aa86df62cb9ddead8f7bec0854578a59a6424b698"
-    sha256 sonoma:        "17e5d694e18365b545d4fcc631c859d969ef3645343c6979914781d81fe3d478"
-    sha256 arm64_linux:   "7a2eef1b9c0ee81d65cd1bf2f5ab3a0e125b1875b414599717b230f2e8985776"
-    sha256 x86_64_linux:  "7c89973d30151cd6a166c83590802efa3cd754f8822dfc214ff61de6f31ea2f7"
+    sha256 arm64_tahoe:   "1cc35d8f48d1b5a583be2ecbe0bf9e1a10d41fccb79778abe9fd61d7da3d7108"
+    sha256 arm64_sequoia: "13f387fa4cfbbbca441364985511b211385552d82664e300d907e18689f02ceb"
+    sha256 arm64_sonoma:  "a6b0bffa53fa837c1ed4a20c926de822b4fa147a2ff6ee09510d67b335163bcb"
+    sha256 arm64_linux:   "cbc1000ea1d47ed6d687dfaabb2f69a1719ab7db4d9efea12eeb6c97cd4b602b"
+    sha256 x86_64_linux:  "339fd154dbe265559d28afe28a4fa00b3090ca51749a992d582484b6b09a386b"
   end
 
   keg_only :versioned_formula
@@ -74,9 +72,10 @@ class PhpAT73 < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 15
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
@@ -270,72 +269,8 @@ class PhpAT73 < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
-    (pecl_path/php_basename).mkpath
-
-    # fix pear config to install outside cellar
-    pear_dir = versioned_formula? ? "pear@#{version.major_minor}" : "pear"
-    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{version.major_minor}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
-    end
-
-    system bin/"pear", "update-channels"
-
-    %w[
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{version.major_minor}/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~INI
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        INI
-      end
-    end
+  post_install_steps do
+    configure_php
   end
 
   def caveats

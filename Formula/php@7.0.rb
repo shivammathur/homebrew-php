@@ -5,18 +5,16 @@ class PhpAT70 < Formula
   version "7.0.33"
   sha256 "c412fdeac66cb816f3f3fa5a7a6755daf3f37521d997fca771ecd40f61b22cc3"
   license "PHP-3.01"
-  revision 17
+  revision 18
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_tahoe:   "36a0bf7a766f5cddc92c45a46393465338b9e6599019c670f3c128968141df15"
-    sha256 arm64_sequoia: "e91f99566d28128d5e661c43d6c38c211b93e097fa33c6dd29053901b93f0ef7"
-    sha256 arm64_sonoma:  "14c2dedf9b17e647d52c80cd9277aa9624e164e9e024e3d99719a402ff8f345e"
-    sha256 sonoma:        "24b5f7127b5ef11e5637c79a310f133cdcf336e8deb9f0cdc614d87fbb8cea1a"
-    sha256 arm64_linux:   "9caab7b8ec0dc164984601b1fa6f9f1a38510b2d0a1450d251f36917a71fccb5"
-    sha256 x86_64_linux:  "ce6b97a718327a67c500dafcf6a91aa1998c3b4fb9b464fbeb79b79807d5eb5c"
+    sha256 arm64_tahoe:   "56da8b0c786306e411ccd788b8fe0c11c23fd92e9c91b9d31582db94f6a5db47"
+    sha256 arm64_sequoia: "81b32df055ad936703f24e267d86a946321591e9c01566379d834740b9603dae"
+    sha256 arm64_sonoma:  "e16f3f922deb296ea7da7a9ae0c20f8c0f0178069e7f13b60dd84857a706ab0d"
+    sha256 arm64_linux:   "3c469796c97493713af298d4be0b6e02581fe0f95256cff4a2cfe2d5f799a247"
+    sha256 x86_64_linux:  "2b35bea3c0a1c9db88c703fdddccd9c28dd5f12695aec9bb734ad8c78660b1a1"
   end
 
   keg_only :versioned_formula
@@ -72,9 +70,10 @@ class PhpAT70 < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
@@ -270,72 +269,8 @@ class PhpAT70 < Formula
     end
   end
 
-  def post_install
-    pear_prefix = pkgshare/"pear"
-    pear_files = %W[
-      #{pear_prefix}/.depdblock
-      #{pear_prefix}/.filemap
-      #{pear_prefix}/.depdb
-      #{pear_prefix}/.lock
-    ]
-
-    %W[
-      #{pear_prefix}/.channels
-      #{pear_prefix}/.channels/.alias
-    ].each do |f|
-      chmod 0755, f
-      pear_files.concat(Dir["#{f}/*"])
-    end
-
-    chmod 0644, pear_files
-
-    # Custom location for extensions installed via pecl
-    pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
-    pecl_path.mkpath
-    ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
-    php_basename = File.basename(extension_dir)
-    php_ext_dir = opt_prefix/"lib/php"/php_basename
-    (pecl_path/php_basename).mkpath
-
-    # fix pear config to install outside cellar
-    pear_dir = versioned_formula? ? "pear@#{php_version}" : "pear"
-    pear_path = HOMEBREW_PREFIX/"share"/pear_dir
-    cp_r pkgshare/"pear/.", pear_path
-    {
-      "php_ini"  => etc/"php/#{php_version}/php.ini",
-      "php_dir"  => pear_path,
-      "doc_dir"  => pear_path/"doc",
-      "ext_dir"  => pecl_path/php_basename,
-      "bin_dir"  => opt_bin,
-      "data_dir" => pear_path/"data",
-      "cfg_dir"  => pear_path/"cfg",
-      "www_dir"  => pear_path/"htdocs",
-      "man_dir"  => HOMEBREW_PREFIX/"share/man",
-      "test_dir" => pear_path/"test",
-      "php_bin"  => opt_bin/"php",
-    }.each do |key, value|
-      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
-      system bin/"pear", "config-set", key, value, "system"
-    end
-
-    system bin/"pear", "update-channels"
-
-    %w[
-      opcache
-    ].each do |e|
-      ext_config_path = etc/"php/#{php_version}/conf.d/ext-#{e}.ini"
-      extension_type = (e == "opcache") ? "zend_extension" : "extension"
-      if ext_config_path.exist?
-        inreplace ext_config_path,
-          /#{extension_type}=.*$/, "#{extension_type}=#{php_ext_dir}/#{e}.so"
-      else
-        ext_config_path.write <<~INI
-          [#{e}]
-          #{extension_type}="#{php_ext_dir}/#{e}.so"
-        INI
-      end
-    end
+  post_install_steps do
+    configure_php
   end
 
   def caveats
