@@ -5,7 +5,7 @@ class PhpAT80DebugZts < Formula
   version "8.0.30"
   sha256 "1969f16cab5dbf112b0f1115279d061f29f63d8910cc56c497cff59c853f9f6c"
   license "PHP-3.01"
-  revision 7
+  revision 8
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -68,8 +68,6 @@ class PhpAT80DebugZts < Formula
   on_linux do
     depends_on "zlib-ng-compat"
   end
-
-  deny_network_access! [:postinstall]
 
   def install
     # PHP 8.0 still has K&R-style bcmath/intl sources that fail under C23.
@@ -214,7 +212,7 @@ class PhpAT80DebugZts < Formula
     if OS.mac?
       args << "--enable-dtrace"
       args << "--with-ldap-sasl"
-      args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
+      args << "--with-os-sdkpath=#{sdk_path}"
     else
       args << "--disable-dtrace"
       args << "--without-ldap-sasl"
@@ -310,7 +308,9 @@ class PhpAT80DebugZts < Formula
                          {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug-zts/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
