@@ -5,7 +5,7 @@ class PhpAT74Debug < Formula
   version "7.4.33"
   sha256 "d82887f2166e8526ea9b1cfd8c5ecf5649718f0b6e341380d333eba8066429a4"
   license "PHP-3.01"
-  revision 14
+  revision 15
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -77,8 +77,6 @@ class PhpAT74Debug < Formula
   # PHP build system incorrectly links system libraries
   # see https://github.com/php/php-src/issues/10680
   patch :DATA
-
-  deny_network_access! [:postinstall]
 
   def install
     # PHP 7.4 still has K&R-style bcmath/intl sources that fail under C23.
@@ -324,7 +322,9 @@ class PhpAT74Debug < Formula
                 args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
