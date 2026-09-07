@@ -27,6 +27,7 @@ class PhpAT83DebugZts < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -87,7 +88,7 @@ class PhpAT83DebugZts < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     # buildconf required due to system library linking bug patch
@@ -217,7 +218,7 @@ class PhpAT83DebugZts < Formula
     if OS.mac?
       shared_args << "--enable-dtrace"
       shared_args << "--with-ldap-sasl"
-      shared_args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
+      shared_args << "--with-os-sdkpath=#{sdk_path}"
     else
       shared_args << "--disable-dtrace"
       shared_args << "--without-ldap-sasl"
@@ -331,7 +332,9 @@ class PhpAT83DebugZts < Formula
                          {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug-zts/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
