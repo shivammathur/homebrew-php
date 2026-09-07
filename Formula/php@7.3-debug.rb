@@ -5,7 +5,7 @@ class PhpAT73Debug < Formula
   version "7.3.33"
   sha256 "ffe700b4ddaf86b580bd5176bdbd2bfae785b9eb6786dde06afe6ce77e665ca7"
   license "PHP-3.01"
-  revision 14
+  revision 15
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -73,9 +73,10 @@ class PhpAT73Debug < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 15
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
@@ -319,7 +320,9 @@ class PhpAT73Debug < Formula
                 args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
