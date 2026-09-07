@@ -5,7 +5,7 @@ class PhpAT72 < Formula
   version "7.2.34"
   sha256 "8b8104c40d0e453088f8fe703a0ead74ffdb5a4d0deb9b102864aa206bef5d2b"
   license "PHP-3.01"
-  revision 16
+  revision 17
   compatibility_version 1
 
   bottle do
@@ -72,9 +72,10 @@ class PhpAT72 < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
