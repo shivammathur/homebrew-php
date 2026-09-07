@@ -28,6 +28,7 @@ class PhpAT84Debug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -91,7 +92,7 @@ class PhpAT84Debug < Formula
     cause "Performs worse due to lack of general global register variables"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     system "./buildconf", "--force" if build.head?
@@ -321,7 +322,9 @@ class PhpAT84Debug < Formula
                 args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
