@@ -5,7 +5,7 @@ class PhpAT72DebugZts < Formula
   version "7.2.34"
   sha256 "8b8104c40d0e453088f8fe703a0ead74ffdb5a4d0deb9b102864aa206bef5d2b"
   license "PHP-3.01"
-  revision 6
+  revision 7
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -76,9 +76,10 @@ class PhpAT72DebugZts < Formula
     sha256 "938f26a35673938935d1145191ded7006077e75aaf0de0122fefd630eecb63ae"
   end
 
-  deny_network_access! [:postinstall]
-
   def install
+    # The runtime probe can misdetect glibc's POSIX readdir_r in build containers.
+    ENV["ac_cv_what_readdir_r"] = "POSIX" if OS.linux?
+
     # Work around configure issues with Xcode 12
     # See https://bugs.php.net/bug.php?id=80171
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
@@ -327,7 +328,9 @@ class PhpAT72DebugZts < Formula
                          {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug-zts/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
