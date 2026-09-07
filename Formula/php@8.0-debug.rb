@@ -5,7 +5,7 @@ class PhpAT80Debug < Formula
   version "8.0.30"
   sha256 "1969f16cab5dbf112b0f1115279d061f29f63d8910cc56c497cff59c853f9f6c"
   license "PHP-3.01"
-  revision 10
+  revision 11
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -76,8 +76,6 @@ class PhpAT80Debug < Formula
   # Backport fixes for curl on macOS.
   # Remove after the next patch release.
   patch :DATA
-
-  deny_network_access! [:postinstall]
 
   def install
     # PHP 8.0 still has K&R-style bcmath/intl sources that fail under C23.
@@ -325,7 +323,9 @@ class PhpAT80Debug < Formula
                 args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+
+    mkdir_p "php/{{version.major_minor}}-debug/conf.d", base: :etc
 
     run "php", base: :bin, args: [
       "-n", "-r", <<~'PHP',
