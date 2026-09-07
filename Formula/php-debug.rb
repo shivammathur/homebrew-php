@@ -29,6 +29,7 @@ class PhpDebug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
@@ -86,7 +87,7 @@ class PhpDebug < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:build, :postinstall]
+  deny_network_access! [:build]
 
   def install
     # buildconf required due to system library linking bug patch
@@ -390,7 +391,7 @@ class PhpDebug < Formula
     run "pear", base: :bin, args: %w[config-set test_dir {{HOMEBREW_PREFIX}}/share/pear/test system]
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
-    run "pear", base: :bin, args: ["update-channels"]
+    run "pear", base: :bin, args: ["update-channels"], print_stdout: true
   end
 
   def caveats
