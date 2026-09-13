@@ -40,9 +40,9 @@ jobs:
     strategy:
       matrix:
         include:
+          - runner: xcode-27
           - runner: macos-26
           - runner: macos-15-arm64
-          - runner: macos-14
           - runner: ubuntu-latest
             container:
               image: ghcr.io/homebrew/brew:main

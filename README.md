@@ -56,9 +56,9 @@ The formulae with thread-safety support can be used with applications that requi
 | Operating System | Architecture      |
 |------------------|-------------------|
 | Linux            | `x86_64`, `arm64` |
-| macOS Sonoma     | `arm64`           |
 | macOS Sequoia    | `arm64`           |
 | macOS Tahoe      | `arm64`           |
+| macOS 27         | `arm64`           |
 
 macOS Intel is not supported.
 
