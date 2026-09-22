@@ -59,24 +59,36 @@ fetch() {
       sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     fi
   elif [ "$support_state" = "nightly" ]; then
-    master_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+')
-    PHP_MM=$(echo "$PHP_VERSION" | grep -Eo "[0-9]+.[0-9]+")
+    master_header=$(curl -fsSL https://raw.githubusercontent.com/php/php-src/master/main/php_version.h) || return 1
+    master_version=$(printf '%s\n' "$master_header" | sed -nE 's/^#define PHP_VERSION "([0-9]+\.[0-9]+)\..*/\1/p')
+    if [ -z "$master_version" ]; then
+      echo "Failed to determine the PHP master version" >&2
+      return 1
+    fi
+    PHP_MM=$(echo "$PHP_VERSION" | grep -Eo '[0-9]+\.[0-9]+')
     if [ "$PHP_MM" = "$master_version" ]; then
       branch=master
     else
-      branch_version=$(curl -sL https://raw.githubusercontent.com/php/php-src/"PHP-$PHP_MM"/main/php_version.h | grep -Po 'PHP_VERSION "\K[0-9]+\.[0-9]+\.[0-9][0-9a-zA-Z-]*')
-      [ "$branch_version" = "$PHP_MM.0-dev" ] && branch_name="PHP-$PHP_MM" || branch_name="PHP-$PHP_MM.0"
-      ref="$(git ls-remote --heads https://github.com/php/php-src "$branch_name")"
-      if [[ -n "$ref" ]]; then
-        branch=$branch_name
-      else
-        echo "Failed to find branch"
-        exit 1
-      fi
-    fi  
-    commit="$(curl -H "Authorization: Brearer $GITHUB_TOKEN" -sL https://api.github.com/repos/php/php-src/commits/"$branch" | sed -n 's|^  "sha":.*"\([a-f0-9]*\)",|\1|p')"
+      branch_header=$(curl -fsSL "https://raw.githubusercontent.com/php/php-src/PHP-$PHP_MM/main/php_version.h") || return 1
+      branch_version=$(printf '%s\n' "$branch_header" | sed -nE 's/^#define PHP_VERSION "([0-9]+\.[0-9]+\.[0-9]+).*/\1/p')
+      case "$branch_version" in
+        "$PHP_MM.0") branch="PHP-$PHP_MM" ;;
+        # Stay on the initial release when the series branch advances to .1-dev.
+        "$PHP_MM."*) branch="PHP-$PHP_MM.0" ;;
+        *)
+          echo "Failed to determine the PHP-$PHP_MM version" >&2
+          return 1
+          ;;
+      esac
+    fi
+    ref=$(git ls-remote --exit-code --heads https://github.com/php/php-src "refs/heads/$branch") || return 1
+    commit=$(printf '%s\n' "$ref" | cut -f 1)
+    if [[ ! "$commit" =~ ^[a-f0-9]{40}$ ]]; then
+      echo "Failed to find a commit for $branch" >&2
+      return 1
+    fi
     url="https://github.com/php/php-src/archive/$commit.tar.gz?commit=$commit"
-    checksum=$(curl -sSL "$url" | shasum -a 256 | cut -d' ' -f 1)
+    checksum=$(set -o pipefail; curl -fsSL "$url" | shasum -a 256 | cut -d' ' -f 1) || return 1
     sed -i -e "s|^  sha256.*|  sha256 \"$checksum\"|g" ./Formula/"$PHP_VERSION".rb
     sed -i -e "s|^  url.*|  url \"$url\"|g" ./Formula/"$PHP_VERSION".rb
   fi
@@ -93,7 +105,7 @@ if [[ "$GITHUB_MESSAGE" = *--bump-revision* ]]; then
   exit 0;
 fi
 
-fetch
+fetch || exit 1
 if [[ "$GITHUB_MESSAGE" != *--build-"$PHP_VERSION" ]] &&
    [[ "$GITHUB_MESSAGE" != *--build-all* ]]; then
   check_changes
