@@ -1,11 +1,11 @@
 class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/64ca21fc4a956b8d2c151943dc22dbedb889f01d.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/580ee90c4416b2dabd488c58fc10f23c1559cd57.tar.gz"
   version "7.3.33"
-  sha256 "ffe700b4ddaf86b580bd5176bdbd2bfae785b9eb6786dde06afe6ce77e665ca7"
+  sha256 "1ec8487f024bb3bb9ab18a09c72b4e6cbe71bad362f4188b191f5bb6e59ad371"
   license "PHP-3.01"
-  revision 15
+  revision 16
   compatibility_version 1
 
   bottle do
@@ -50,7 +50,7 @@ class PhpAT73 < Formula
   depends_on "libxpm"
   depends_on "libzip"
   depends_on "openldap"
-  depends_on "openssl@3"
+  depends_on "openssl@4"
   depends_on "pcre2"
   depends_on "sqlite"
   depends_on "tidy-html5"
@@ -188,7 +188,7 @@ class PhpAT73 < Formula
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
-      --with-openssl=#{formula_opt_prefix("openssl@3")}
+      --with-openssl=#{formula_opt_prefix("openssl@4")}
       --with-password-argon2=#{formula_opt_prefix("argon2")}
       --with-pcre-regex=#{formula_opt_prefix("pcre2")}
       --with-pdo-dblib=#{formula_opt_prefix("freetds")}
@@ -242,7 +242,7 @@ class PhpAT73 < Formula
       s.gsub! %r{; ?extension_dir = "\./"}, "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
       # Use OpenSSL cert bundle
-      openssl = Formula["openssl@3"]
+      openssl = Formula["openssl@4"]
       s.gsub!(/; ?openssl\.cafile=/, "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\"")
       s.gsub!(/; ?openssl\.capath=/, "openssl.capath = \"#{openssl.pkgetc}/certs\"")
     end
