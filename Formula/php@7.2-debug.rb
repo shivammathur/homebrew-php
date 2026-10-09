@@ -1,11 +1,11 @@
 class PhpAT72Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/418ed8a42fc1ff3f1f434873c4d453713d4164ea.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/b39d5b8abd8dcd20feb0f734ef061a54f8bbd134.tar.gz"
   version "7.2.34"
-  sha256 "8b8104c40d0e453088f8fe703a0ead74ffdb5a4d0deb9b102864aa206bef5d2b"
+  sha256 "5f20df8c8514e84951eebad321abee448b00c5eaff6de7f304f3e760140bc578"
   license "PHP-3.01"
-  revision 17
+  revision 18
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
@@ -49,7 +49,7 @@ class PhpAT72Debug < Formula
   depends_on "libxpm"
   depends_on "libzip"
   depends_on "openldap"
-  depends_on "openssl@3"
+  depends_on "openssl@4"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -192,7 +192,7 @@ class PhpAT72Debug < Formula
       --with-mhash#{headers_path}
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
-      --with-openssl=#{formula_opt_prefix("openssl@3")}
+      --with-openssl=#{formula_opt_prefix("openssl@4")}
       --with-password-argon2=#{formula_opt_prefix("argon2")}
       --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
@@ -244,7 +244,7 @@ class PhpAT72Debug < Formula
       s.gsub! %r{; ?extension_dir = "\./"}, "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
 
       # Use OpenSSL cert bundle
-      openssl = Formula["openssl@3"]
+      openssl = Formula["openssl@4"]
       s.gsub!(/; ?openssl\.cafile=/, "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\"")
       s.gsub!(/; ?openssl\.capath=/, "openssl.capath = \"#{openssl.pkgetc}/certs\"")
     end
