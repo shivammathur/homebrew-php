@@ -1,0 +1,36 @@
+name: Security bottle promotion checks
+on:
+  push:
+    branches: [main, feature/security-bottle-promotion]
+    paths:
+      - .github/scripts/security_bottles.py
+      - .github/scripts/tests/test_security_bottles.py
+      - .github/workflows/*security*.yml
+      - security/**
+  pull_request:
+    paths:
+      - .github/scripts/security_bottles.py
+      - .github/scripts/tests/test_security_bottles.py
+      - .github/workflows/*security*.yml
+      - security/**
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Exercise promotion guards and archive preservation
+        run: python3 -m unittest discover -s .github/scripts/tests -v
+      - name: Verify access to the private security repository
+        if: github.repository == 'shivammathur/homebrew-php' && github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$GH_TOKEN"
+          test "$(gh api repos/shivammathur/homebrew-php-security --jq .private)" = true
+
