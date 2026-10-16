@@ -6,13 +6,11 @@ on:
       - .github/scripts/security_bottles.py
       - .github/scripts/tests/test_security_bottles.py
       - .github/workflows/*security*.yml
-      - security/**
   pull_request:
     paths:
       - .github/scripts/security_bottles.py
       - .github/scripts/tests/test_security_bottles.py
       - .github/workflows/*security*.yml
-      - security/**
   workflow_dispatch:
 permissions:
   contents: read

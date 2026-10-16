@@ -140,11 +140,11 @@ jobs:
           report = json.load(open('promotion.json'))
           for bottle in report['bottles']:
               bottle.pop('payload_sha256')
-          path = Path(os.environ['PUBLIC_TAP_PATH']) / 'security/promotions' / (os.environ['PRIVATE_RUN_ID'] + '.json')
+          path = Path(os.environ['PUBLIC_TAP_PATH']) / '.github/security-promotions' / (os.environ['PRIVATE_RUN_ID'] + '.json')
           path.parent.mkdir(parents=True, exist_ok=True)
           path.write_text(json.dumps(report, indent=2) + '\n')
           PY
-          git -C "$PUBLIC_TAP_PATH" add "security/promotions/$PRIVATE_RUN_ID.json"
+          git -C "$PUBLIC_TAP_PATH" add ".github/security-promotions/$PRIVATE_RUN_ID.json"
           git -C "$PUBLIC_TAP_PATH" commit -m "Publish prebuilt PHP security bottles [skip-build]"
 
       - name: Save promotion commits for recovery
