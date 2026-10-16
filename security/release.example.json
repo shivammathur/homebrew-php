@@ -15,8 +15,8 @@
     "php@8.4-debug-zts": "8.4.99"
   },
   "runners": [
-    {"runner": ["self-hosted", "macOS", "ARM64", "xcode-27"], "tag": "arm64_golden_gate"},
-    {"runner": ["self-hosted", "macOS", "ARM64", "macos-26"], "tag": "arm64_tahoe"},
+    {"runner": ["self-hosted", "macOS", "ARM64", "macos-27-arm64"], "tag": "arm64_golden_gate"},
+    {"runner": ["self-hosted", "macOS", "ARM64", "macos-26-arm64"], "tag": "arm64_tahoe"},
     {"runner": ["self-hosted", "macOS", "ARM64", "macos-15-arm64"], "tag": "arm64_sequoia"},
     {"runner": "ubuntu-24.04", "tag": "x86_64_linux"},
     {"runner": "ubuntu-24.04-arm", "tag": "arm64_linux"}
