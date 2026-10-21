@@ -1,9 +1,9 @@
 class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/a134319acf940a490db4634f266ca79e0c6ee69c.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/6fe2f0f6ccaeecd47dfc40513296097dee722d44.tar.gz"
   version "8.1.34"
-  sha256 "bb2f7bd74dae97c9d05db8e2f1018bdd2377aaa6de1aeebec641c58027657cae"
+  sha256 "558e79567d4c910b009f757984a3a07a440ad5aa56c0df0edd6c51484c5b5594"
   license all_of: [
     "PHP-3.01",
 
@@ -27,17 +27,8 @@ class PhpAT81 < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 3
+  revision 4
   compatibility_version 1
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "1d631b13032e0bf9d5059720974a4aa5498c3c54c06976ba80cf0653fb94f127"
-    sha256 arm64_tahoe:       "ae81b3f867499705e1ad4919f4dc2619a17b8cf0a18ec7fa0d1a0683eddfb20b"
-    sha256 arm64_sequoia:     "5763d1060b8416bfa481506e4addb14271c5b8efeb3bfb3a1f554691c072d59d"
-    sha256 arm64_linux:       "24725f84b18dcba4dde85fb8cb8d1442062c933987e2cb5d91266bb17210971b"
-    sha256 x86_64_linux:      "52aea0255edd6fea2446caeeebd3c78366460767123d7c14f17e21d517da3d5f"
-  end
 
   keg_only :versioned_formula
 
@@ -278,6 +269,8 @@ class PhpAT81 < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -367,6 +360,7 @@ class PhpAT81 < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
