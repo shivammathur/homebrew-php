@@ -116,8 +116,106 @@
     "assets": 12
   },
   "state": "published",
-  "verification": "pending",
+  "verification": "passed",
   "prepared_at": "2026-10-21T14:14:45.169135+00:00",
   "publication_workflow_run": "39614446696",
-  "package_uploaded_at": "2026-10-21T14:15:11.447367+00:00"
+  "package_uploaded_at": "2026-10-21T14:15:11.447367+00:00",
+  "last_pushed_commit": "1d7b882aa35add973076cd83394f811e02636b5c",
+  "formula_pushed_at": "2026-10-21T14:15:13.298846+00:00",
+  "verification_checks": {
+    "packages": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:15.132239+00:00",
+      "result": {
+        "image": "ghcr.io/shivammathur/php/php/5.6-debug:5.6.40_18-1",
+        "index_sha256": "ac329b3cead36608c4155242784adb184315498040f3eb6154db06fb84290bc4",
+        "bottles": [
+          {
+            "tag": "arm64_golden_gate",
+            "sha256": "ba229699059ccefa7bf0479b3a5a6ac0af194c47c8b3b942011b7f9a1eac2deb",
+            "size": 18503624
+          },
+          {
+            "tag": "arm64_linux",
+            "sha256": "d2af230e39ff59673bcb3148c22c431966f58ce7b8cc3bc68bb03589392b81ee",
+            "size": 23785654
+          },
+          {
+            "tag": "arm64_sequoia",
+            "sha256": "45d35df1f004a1715e5b43a78a26578658676e8a820fe513b81e871e0816b904",
+            "size": 18491171
+          },
+          {
+            "tag": "arm64_tahoe",
+            "sha256": "ef2f22b42b3d247f9e4e4168c3d95149d32acb1a366add088cf67171902e2a0c",
+            "size": 18456962
+          },
+          {
+            "tag": "x86_64_linux",
+            "sha256": "cfd441daa6ac232bb6a397d2ab2852a546d5f6caff9b38623bc181a48d8a4157",
+            "size": 24211055
+          }
+        ],
+        "download_verified": true
+      }
+    },
+    "source": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:15.393084+00:00",
+      "result": null
+    },
+    "dependencies": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:16.052373+00:00",
+      "result": null
+    },
+    "style": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:19.771661+00:00",
+      "result": null
+    },
+    "audit": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:21.063428+00:00",
+      "result": null
+    },
+    "sbom": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:15:21.814197+00:00",
+      "result": null
+    }
+  },
+  "verified_at": "2026-10-21T14:15:21.814896+00:00",
+  "published_package": {
+    "image": "ghcr.io/shivammathur/php/php/5.6-debug:5.6.40_18-1",
+    "index_sha256": "ac329b3cead36608c4155242784adb184315498040f3eb6154db06fb84290bc4",
+    "bottles": [
+      {
+        "tag": "arm64_golden_gate",
+        "sha256": "ba229699059ccefa7bf0479b3a5a6ac0af194c47c8b3b942011b7f9a1eac2deb",
+        "size": 18503624
+      },
+      {
+        "tag": "arm64_linux",
+        "sha256": "d2af230e39ff59673bcb3148c22c431966f58ce7b8cc3bc68bb03589392b81ee",
+        "size": 23785654
+      },
+      {
+        "tag": "arm64_sequoia",
+        "sha256": "45d35df1f004a1715e5b43a78a26578658676e8a820fe513b81e871e0816b904",
+        "size": 18491171
+      },
+      {
+        "tag": "arm64_tahoe",
+        "sha256": "ef2f22b42b3d247f9e4e4168c3d95149d32acb1a366add088cf67171902e2a0c",
+        "size": 18456962
+      },
+      {
+        "tag": "x86_64_linux",
+        "sha256": "cfd441daa6ac232bb6a397d2ab2852a546d5f6caff9b38623bc181a48d8a4157",
+        "size": 24211055
+      }
+    ],
+    "download_verified": true
+  }
 }
