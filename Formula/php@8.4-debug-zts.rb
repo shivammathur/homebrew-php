@@ -1,9 +1,9 @@
 class PhpAT84DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.4.26.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.26.tar.xz"
-  sha256 "32a2de53862ad44ed4a5005244ce4f1b50c271e74dced215449a4443b40569f1"
+  url "https://www.php.net/distributions/php-8.4.27.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.27.tar.xz"
+  sha256 "dcf93923b0e38e0d5252b25b796520b5a47761a08b3488b6d0b5d1115764d3f0"
   license all_of: [
     "PHP-3.01",
 
@@ -28,20 +28,10 @@ class PhpAT84DebugZts < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "21f4537482491c09c1f432b809bf49c9c07c2c141c9a4b7d4d3575a16aa9f483"
-    sha256 arm64_tahoe:       "0c54a42ee01c068b86196ff25b4d0a663d406e9f29da07fc38c6db16a6bda3d4"
-    sha256 arm64_sequoia:     "12a11fbadf8c39a8343733b7ca01effe607dc522e42eab6c3a845ea84cf7ee12"
-    sha256 arm64_linux:       "ac434e6796d39d5ecbfc138ef9259d6ec300094c1bd7860d9334ea54283f27d6"
-    sha256 x86_64_linux:      "062f3429af0718bcc188c8c206b65cb0904a76b991148824999bb7b9bbe8173e"
   end
 
   keg_only :versioned_formula
@@ -273,6 +263,8 @@ class PhpAT84DebugZts < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -367,6 +359,7 @@ class PhpAT84DebugZts < Formula
       "{{etc}}/php/{{version.major_minor}}-debug-zts",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
