@@ -1,19 +1,20 @@
 class PhpAT72Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/b39d5b8abd8dcd20feb0f734ef061a54f8bbd134.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/f4457d3e8b14e8fd31f70dde5b19e6799fe71538.tar.gz"
   version "7.2.34"
-  sha256 "5f20df8c8514e84951eebad321abee448b00c5eaff6de7f304f3e760140bc578"
+  sha256 "2beaaef99d934c31390a83e51dd61f981004fca474aa4655573292409ce83ca4"
   license "PHP-3.01"
-  revision 8
+  revision 9
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "1c9ce03dad5d2950bec3eba77d2988ab6ade33e64ee90c17d8ec85a994c9f1e9"
-    sha256 arm64_tahoe:       "4c7164814a4107883817153a4c2cc844bf6dbbca2e1d5e14098da5c7231d7bd0"
-    sha256 arm64_sequoia:     "0e7df2debe1408380bff53ff9b3cff66c3dbf4e0ed480edab4da9e28c5839eae"
-    sha256 arm64_linux:       "6a4095c34c3eb736bb552dd0f5c46170adff6efc469114e5ca2c2b07baf35456"
-    sha256 x86_64_linux:      "ad94474c40603ce2f409825e1950d0b1a195c8bb0895c9310f9235899c1837fe"
+    rebuild 1
+    sha256 arm64_golden_gate: "d4d98b30669df5b8617be3eae3f8f7d2dd6317f8d6f6e7db716f0337b7723711"
+    sha256 arm64_tahoe:       "2aa0e8f8f66786d8dd3d6e4710772babc81b8e5deb1b51fc9010679d91b8c82c"
+    sha256 arm64_sequoia:     "df1ae47cb17a0222f486f75321b4fc5002ee2f724d789ff8432dc5c6bb8f4267"
+    sha256 arm64_linux:       "0bb046fe19f29c323ac77d5638fde5c56b2caf89164a3ee4ac177e5e2acb0935"
+    sha256 x86_64_linux:      "dc2078f6a03ac86c7ad3b63c367f3a8ffda83e47d216ac8a1931d6e910fd7a2b"
   end
 
   keg_only :versioned_formula
@@ -273,6 +274,8 @@ class PhpAT72Zts < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -362,6 +365,7 @@ class PhpAT72Zts < Formula
       "{{etc}}/php/{{version.major_minor}}-zts",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
