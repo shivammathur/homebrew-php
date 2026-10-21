@@ -1,9 +1,9 @@
 class PhpAT83Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.3.35.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.35.tar.xz"
-  sha256 "ff4630fbbbd94359134b7d3c223db59329905bdc4f5a9ef93d257b48e358619a"
+  url "https://www.php.net/distributions/php-8.3.36.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.36.tar.xz"
+  sha256 "dd54693aa334c5c4d72e9aee96b082c2473750a18a6c1d105789c93a3b1692fd"
   license all_of: [
     "PHP-3.01",
 
@@ -27,20 +27,10 @@ class PhpAT83Debug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "0d5bfe3b199ff2e9eba2106a7a769e941a1c74d5ee863da0318492c107fbb44c"
-    sha256 arm64_tahoe:       "ecc2a2b15dd4ec40ec1074b2e584c823504dc3b00d45ca388b472a21ba6799c0"
-    sha256 arm64_sequoia:     "2f5baffa89ec4d09cebb1d7acd278d5165c05b0c6b1ba91b7db72ecbeeafb625"
-    sha256 arm64_linux:       "6185d7ee9cc29a865cbaab272bc2c9e51e1dda81f299828872b72fc9af0aa1c0"
-    sha256 x86_64_linux:      "fcca2f8ab1f3970e3bbc1ed63348f9a1797a0fe64ec62f929f5986ac1131997f"
   end
 
   keg_only :versioned_formula
@@ -277,6 +267,8 @@ class PhpAT83Debug < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -368,6 +360,7 @@ class PhpAT83Debug < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
