@@ -1,9 +1,9 @@
 class PhpAT81Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/a134319acf940a490db4634f266ca79e0c6ee69c.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/6fe2f0f6ccaeecd47dfc40513296097dee722d44.tar.gz"
   version "8.1.34"
-  sha256 "bb2f7bd74dae97c9d05db8e2f1018bdd2377aaa6de1aeebec641c58027657cae"
+  sha256 "558e79567d4c910b009f757984a3a07a440ad5aa56c0df0edd6c51484c5b5594"
   license all_of: [
     "PHP-3.01",
 
@@ -27,15 +27,16 @@ class PhpAT81Debug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 3
+  revision 4
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "f55ca4b65f8d832bcae5c229670d8ed0de7932cfa8b6f6b2da64931d1cfff9da"
-    sha256 arm64_tahoe:       "b5b42e93ed13e04f2e94cf9b90885d850df5f6a89519c0e145908a5885d08791"
-    sha256 arm64_sequoia:     "6cdd5f93aa9af03fdb9a88c4515b800471fa5468a0145936ceac0838315d8c9f"
-    sha256 arm64_linux:       "655f99424f41cd2a760b51bad57b85ffeda4d22a130c33aa8e87d301cda6adc6"
-    sha256 x86_64_linux:      "980d1772b36e2cf96537673e2067d8b52301ea76065aaa769bba776464dc0419"
+    rebuild 1
+    sha256 arm64_golden_gate: "8f65c39ab04b4bd3caf6218d262a45edeb3fdff60f3720386a2ec0e2d03f9236"
+    sha256 arm64_tahoe:       "4abba7989816b1e6af84bdee89c0a92ba9501f7524c203ac07dbe87c97ce2f46"
+    sha256 arm64_sequoia:     "fd4e6ee08654a4842b54484aae3692e8b836ea02d62b10d6d286a95ece98c0ea"
+    sha256 arm64_linux:       "157165e7edd6f14bdaff9cffd2ec78aa72e53df26158c8dea664309f4f6f7896"
+    sha256 x86_64_linux:      "b6153ff85fc25e25d93203deb0cfb2855a6f6fb1caff9b033bf5d72090012131"
   end
 
   keg_only :versioned_formula
@@ -281,6 +282,8 @@ class PhpAT81Debug < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -372,6 +375,7 @@ class PhpAT81Debug < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
