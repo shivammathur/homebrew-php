@@ -1,9 +1,9 @@
 class PhpAT84 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.4.26.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.26.tar.xz"
-  sha256 "32a2de53862ad44ed4a5005244ce4f1b50c271e74dced215449a4443b40569f1"
+  url "https://www.php.net/distributions/php-8.4.27.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.27.tar.xz"
+  sha256 "dcf93923b0e38e0d5252b25b796520b5a47761a08b3488b6d0b5d1115764d3f0"
   license all_of: [
     "PHP-3.01",
 
@@ -28,21 +28,11 @@ class PhpAT84 < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
   compatibility_version 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "a4884716913cfb73ac7f3ba86b89b1cf3ed5b9ed1f31681258d49ce2207822f6"
-    sha256 arm64_tahoe:       "e59540abc39eb69904a5bf03e73b8af1c7c9c6d46c927ef80e48e9065eb33a26"
-    sha256 arm64_sequoia:     "d7656f0bb3aaeec0486ab514060c5f28156e4502f1a739802116223cd6f9fb70"
-    sha256 arm64_linux:       "8ba620b3370cdc98155321db174c5594daf48b3d7f7bbe9b2b6b25e3e06595d4"
-    sha256 x86_64_linux:      "aa348f7bcae570916bd1dd4c42788b6f6ac4029744271cb4468fcfea97cf3584"
   end
 
   keg_only :versioned_formula
@@ -273,6 +263,8 @@ class PhpAT84 < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -362,6 +354,7 @@ class PhpAT84 < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
