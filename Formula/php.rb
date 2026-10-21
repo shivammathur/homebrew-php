@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.11.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.11.tar.xz"
-  sha256 "d9be75c08e8c316f4c8f4194d8fbe1750a15f6a6d9d4e3fe72082abeeb800360"
+  url "https://www.php.net/distributions/php-8.5.12.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.12.tar.xz"
+  sha256 "08bc2eba2a588654ade1357174aa646b761556c862dda0678345ee29ed481209"
   license all_of: [
     "PHP-3.01",
 
@@ -29,21 +29,11 @@ class Php < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
   compatibility_version 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "4eede28163897e4a0351b2d6b49adcc54fbb12fb151050515391584e3b42be34"
-    sha256 arm64_tahoe:       "a4229fc0dffd9a54851658e22e5aa97dc2ca256ddb69de5e0fa9192f169baf8f"
-    sha256 arm64_sequoia:     "32b1b2f016993f092fe6284d8b30b32c201e950ff699070dfe21b2295c5a5857"
-    sha256 arm64_linux:       "dc5046c5b097526952440a1ac86fad58cc2bbe09f03b5c143f0b41208ca48a64"
-    sha256 x86_64_linux:      "5c6e43073b3fec658a66a2faa85d22133a3bdcc3b14d4407158a4571bdc46cc6"
   end
 
   depends_on "bison" => :build
@@ -349,7 +339,10 @@ class Php < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     configure_php
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
