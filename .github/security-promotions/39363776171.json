@@ -1,0 +1,123 @@
+{
+  "private_run_id": "39363776171",
+  "private_commit": "34f0bba8f4b8e19b93b1d3ee9a6439649d0fa3a3",
+  "release_checks_deferred": true,
+  "public_recipe_commit": "246dfd850c82ef3e3861b62fc4f5e5ec4623d5f2",
+  "formulae": {
+    "php@5.6-zts": "5.6.40"
+  },
+  "revisions": {
+    "php@5.6-zts": 10
+  },
+  "sources": {
+    "5.6.40": {
+      "url": "https://github.com/shivammathur/php-src-backports/archive/2e922830b542a067a306870dffd20040f34fb05c.tar.gz",
+      "sha256": "04c58a4a21c99f3a8df74c37141231691497ebf50a5dce3479f168de7b6f3a5e"
+    }
+  },
+  "source_archive_equivalence": {
+    "5.6.40": {
+      "schema": 1,
+      "version": "5.6.40",
+      "tag_sha": "2e922830b542a067a306870dffd20040f34fb05c",
+      "commit": "989262e3e9dcca7642b644a75d209c5b7740e294",
+      "public_url": "https://github.com/shivammathur/php-src-backports/archive/2e922830b542a067a306870dffd20040f34fb05c.tar.gz",
+      "private_archive_sha256": "749249099f6d0ce12aa8ac2378a29a80e3112bc5259711f5b916557d717023eb",
+      "public_archive_sha256": "04c58a4a21c99f3a8df74c37141231691497ebf50a5dce3479f168de7b6f3a5e",
+      "private_root": "shivammathur-php-src-backports-security-2e922830b542a067a306870dffd20040f34fb05c",
+      "public_root": "php-src-backports-2e922830b542a067a306870dffd20040f34fb05c",
+      "private_inventory_sha256": "a3967bbcbef815bf83252919a9d669f37e5aec240977d110154b1ee66a212391",
+      "public_inventory_sha256": "a3967bbcbef815bf83252919a9d669f37e5aec240977d110154b1ee66a212391",
+      "entries": 18331,
+      "php_version": "5.6.40",
+      "source_contents_identical": true,
+      "archive_bytes_identical": false,
+      "observed_at": "2026-10-21T14:06:00.585052+00:00"
+    }
+  },
+  "bottles": [
+    {
+      "unchanged_payload_entries": 587,
+      "changed_metadata_files": [
+        "php@5.6-zts/5.6.40_10/.brew/php@5.6-zts.rb",
+        "php@5.6-zts/5.6.40_10/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-zts",
+      "tag": "arm64_golden_gate",
+      "original_sha256": "1365b815739c84f2f1754691ff47a5331b7b3b16970a5b184b40da1a2fc1c684",
+      "published_sha256": "15b53e6679b00a974abef3d6349f3cfdcaa0cdc0522e6cf9ede8edaaa974cb65",
+      "payload_inventory_sha256": "1bf4267ea21b46b9ff7af0382c9ba8c5626233e3142389ef6c4ab7cf34f02550"
+    },
+    {
+      "unchanged_payload_entries": 589,
+      "changed_metadata_files": [
+        "php@5.6-zts/5.6.40_10/.brew/php@5.6-zts.rb",
+        "php@5.6-zts/5.6.40_10/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-zts",
+      "tag": "arm64_linux",
+      "original_sha256": "91d38c0619483b4511bfd3baa9474409fa21a6927e4b994164841588c7052254",
+      "published_sha256": "4e1131c627477db9d5d0dfd71ce965e2d65936b72585fb85de167b42670d3441",
+      "payload_inventory_sha256": "c8389545fca3ae7eef3e0e049c09ef94059d96abc97103d5bf88982ebe8c8f14"
+    },
+    {
+      "unchanged_payload_entries": 590,
+      "changed_metadata_files": [
+        "php@5.6-zts/5.6.40_10/.brew/php@5.6-zts.rb",
+        "php@5.6-zts/5.6.40_10/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-zts",
+      "tag": "arm64_sequoia",
+      "original_sha256": "fec3a045c3086a03e63c138521e3a7eeac6b8ad280139f5c7ae53312462ec811",
+      "published_sha256": "a235e99a4414c4aa5d61ed9316c861211f52029ff09a709346515e9096b3b83c",
+      "payload_inventory_sha256": "a8e2f9029387ae63a085b1709e22f3217c897d461074c8ba8a12584d765a5620"
+    },
+    {
+      "unchanged_payload_entries": 590,
+      "changed_metadata_files": [
+        "php@5.6-zts/5.6.40_10/.brew/php@5.6-zts.rb",
+        "php@5.6-zts/5.6.40_10/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-zts",
+      "tag": "arm64_tahoe",
+      "original_sha256": "5f294286bab7bbc4e202d1c66a73e4bb16b62bc5dcc144d6c4a64130109956e5",
+      "published_sha256": "24b20a3869b5ad585580254d238eea91ced01aa5ec96f12e1117c3eba7d7fcc1",
+      "payload_inventory_sha256": "76f1c5f3d321320e0bb4b5fd85c9a7cea12519db3b1e4e291c0a0998dba6d91c"
+    },
+    {
+      "unchanged_payload_entries": 589,
+      "changed_metadata_files": [
+        "php@5.6-zts/5.6.40_10/.brew/php@5.6-zts.rb",
+        "php@5.6-zts/5.6.40_10/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-zts",
+      "tag": "x86_64_linux",
+      "original_sha256": "80fd4d9c98685a3a3b58c86a16c8a76342590c00c71a2f339f3d7826338acc4f",
+      "published_sha256": "b4b9c44056734d75da8588511c0b4a9e5f515fd26b964a3c50fdbda85189cc5e",
+      "payload_inventory_sha256": "ea4d693e257098d5ca5c77d0b9681acc21b5ce678dc91efec19750e5049bad42"
+    }
+  ],
+  "formula": "php@5.6-zts",
+  "version": "5.6.40",
+  "revision": 10,
+  "destination": "shivammathur/homebrew-php",
+  "mode": "public",
+  "catalog_sha256": "e1b1ab7d81e6807a6869f78454ccb6e57e55f23c8001c032f24d141820d521b0",
+  "runtime_tests": {
+    "arm64_golden_gate": "passed",
+    "arm64_linux": "passed",
+    "arm64_sequoia": "passed",
+    "arm64_tahoe": "passed",
+    "x86_64_linux": "passed"
+  },
+  "live_release": {
+    "observed_at": "2026-10-21T14:13:17.420125+00:00",
+    "actions_conclusion": "success",
+    "assets": 12
+  },
+  "state": "published",
+  "verification": "pending",
+  "prepared_at": "2026-10-21T14:13:39.735512+00:00",
+  "publication_workflow_run": "39614446696",
+  "package_uploaded_at": "2026-10-21T14:14:08.082386+00:00"
+}
