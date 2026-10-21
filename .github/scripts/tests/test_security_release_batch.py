@@ -105,12 +105,14 @@ class PackagePublicationGuards(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'rebuild mismatch'):
             platform_tag('7.3.33_17.arm64_linux.2', '7.3.33_17', 1)
 
-    def test_production_template_only_changes_repository_guard(self):
-        root = batch.HERE
-        active = (root / 'workflows/publish-security-release-batch.yml').read_text()
-        template = (root / 'workflow-templates/publish-security-release-batch.yml').read_text()
-        self.assertEqual(template, active.replace("github.repository == 'shivammathur/homebrew-php-security-test'",
-                                                "github.repository == 'shivammathur/homebrew-php'"))
+    def test_production_publisher_is_guarded_and_publishes_before_verifying(self):
+        active = (batch.HERE / 'workflows/publish-commit-bottles.yml').read_text()
+        self.assertIn("if: github.repository == 'shivammathur/homebrew-php'", active)
+        self.assertNotIn("github.repository == 'shivammathur/homebrew-php-security-test'", active)
+        self.assertIn('image: ghcr.io/homebrew/brew:main', active)
+        self.assertIn('fail-fast: false', active)
+        self.assertLess(active.index('name: Publish packages and formula immediately'),
+                        active.index('name: Verify after publication'))
 
 
 class OciReceiptValidation(unittest.TestCase):
