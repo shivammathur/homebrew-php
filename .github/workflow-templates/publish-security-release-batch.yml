@@ -31,6 +31,8 @@ jobs:
     needs: plan
     name: Publish ${{ matrix.formula }} then verify
     runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/homebrew/brew:main
     timeout-minutes: 120
     strategy:
       fail-fast: false
