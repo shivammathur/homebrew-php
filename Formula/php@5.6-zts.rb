@@ -7,6 +7,16 @@ class PhpAT56Zts < Formula
   license "PHP-3.01"
   revision 10
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    rebuild 1
+    sha256 arm64_golden_gate: "15b53e6679b00a974abef3d6349f3cfdcaa0cdc0522e6cf9ede8edaaa974cb65"
+    sha256 arm64_tahoe:       "24b20a3869b5ad585580254d238eea91ced01aa5ec96f12e1117c3eba7d7fcc1"
+    sha256 arm64_sequoia:     "a235e99a4414c4aa5d61ed9316c861211f52029ff09a709346515e9096b3b83c"
+    sha256 arm64_linux:       "4e1131c627477db9d5d0dfd71ce965e2d65936b72585fb85de167b42670d3441"
+    sha256 x86_64_linux:      "b4b9c44056734d75da8588511c0b4a9e5f515fd26b964a3c50fdbda85189cc5e"
+  end
+
   keg_only :versioned_formula
 
   # This PHP version is not supported upstream as of 2018-12-31.
