@@ -2,9 +2,9 @@ class PhpDebug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.11.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.11.tar.xz"
-  sha256 "d9be75c08e8c316f4c8f4194d8fbe1750a15f6a6d9d4e3fe72082abeeb800360"
+  url "https://www.php.net/distributions/php-8.5.12.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.12.tar.xz"
+  sha256 "08bc2eba2a588654ade1357174aa646b761556c862dda0678345ee29ed481209"
   license all_of: [
     "PHP-3.01",
 
@@ -29,20 +29,10 @@ class PhpDebug < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "210e88bb844002fae4187cf8eb2eed0d354f61f9624bdf99d6ad91090e7ebb5f"
-    sha256 arm64_tahoe:       "e379f7ad2036b4cc0f8a428646787756fce0f72b907f8f61a442090afa0626f1"
-    sha256 arm64_sequoia:     "b05d7d4dbedcf8b13d5e026491677b4488ba5a3dc4ec37d17d3a498f7fbd575c"
-    sha256 arm64_linux:       "0973ccbe6dbd70eb3398780ab8149c50a65eb097fc059a1e4d8ca7558d4f9f80"
-    sha256 x86_64_linux:      "55e2a218791ee93130c2d6c19ab4877e6f766d64520871488eaf1f80db0b1499"
   end
 
   depends_on "bison" => :build
@@ -349,6 +339,8 @@ class PhpDebug < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -391,6 +383,7 @@ class PhpDebug < Formula
     run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
 
     run "pear", base: :bin, args: ["update-channels"], print_stdout: true
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
