@@ -1,105 +1,113 @@
 name: Publish and commit bottles
+run-name: Publish security releases ${{ inputs.ticket }}
 on:
   workflow_dispatch:
     inputs:
-      pull_request:
-        description: Pull request number
+      runs:
+        description: Comma-separated catalog run IDs; blank selects all 48
+        default: ''
+        required: false
+      ticket:
+        description: Unique publication dispatch identifier
         required: true
-      large_runner:
-        description: "Run the upload job on a large runner? (default: false)"
-        type: boolean
-        required: false
-        default: false
-      autosquash:
-        description: "Squash pull request commits according to Homebrew style? (default: false)"
-        type: boolean
-        required: false
-        default: false
-      warn_on_upload_failure:
-        description: "Pass `--warn-on-upload-failure` to `brew pr-pull`? (default: false)"
-        type: boolean
-        required: false
-        default: false
-      message:
-        description: "Message to include when autosquashing revision bumps, deletions, and rebuilds (requires autosquash)"
-        required: false
+        type: string
 permissions:
-  actions: write
-  contents: write
-  packages: write
-  pull-requests: write
-env:
-  PR: ${{inputs.pull_request}}
-  HOMEBREW_DEVELOPER: 1
-  HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_NO_INSTALL_FROM_API: 1
-  GH_REPO: ${{github.repository}}
-  GH_DEBUG: 1
-  GH_NO_UPDATE_NOTIFIER: 1
-  GH_PROMPT_DISABLED: 1
+  contents: read
 jobs:
-  upload:
-    runs-on: ubuntu-22.04
+  plan:
+    if: github.repository == 'shivammathur/homebrew-php'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: plan
+        env:
+          SELECTED_RUNS: ${{ inputs.runs }}
+        run: python3 .github/scripts/security_publish_parallel.py plan --runs "$SELECTED_RUNS"
+  publish:
+    needs: plan
+    name: Publish ${{ matrix.formula }} then verify
+    runs-on: ubuntu-24.04
     container:
       image: ghcr.io/homebrew/brew:main
+      options: --user=linuxbrew
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    concurrency:
+      group: security-publication-${{ github.repository }}-${{ matrix.run }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      packages: write
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_FROM_API: 1
+      HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
+      HOMEBREW_NO_ANALYTICS: 1
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+      HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
+      HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+      SELECTED_RUN: ${{ matrix.run }}
     steps:
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@main
+      - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+        id: homebrew
         with:
           core: true
           cask: false
-
-      - name: Configure Git user
-        id: git-user-config
-        uses: Homebrew/actions/git-user-config@main
-        with:
-          username: BrewTestBot
-
-      - name: Pull bottles
-        shell: bash
-        env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
-          HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          AUTOSQUASH: ${{inputs.autosquash}}
-          WARN_ON_UPLOAD_FAILURE_FLAG: ${{inputs.warn_on_upload_failure && '--warn-on-upload-failure' || ''}}
-          MESSAGE: ${{inputs.message}}
+          stable: false
+          token: ${{ github.token }}
+      - name: Prepare publication tools
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
         run: |
-          sudo sed -i 's/Closes ##{pr}/[skip ci]/g' "$(brew --repository)"/Library/Homebrew/dev-cmd/pr-pull.rb
-          args=(
-            --debug
-            --workflows=build.yml
-            "--tap=${GITHUB_REPOSITORY_OWNER}/php"
-            "--root-url=https://ghcr.io/v2/${GITHUB_REPOSITORY_OWNER}/php"
-          )
-          if [[ "${AUTOSQUASH}" == "true" ]]; then
-            args+=(--autosquash)
-          else
-            args+=(--clean)
+          set -euo pipefail
+          if ! command -v python3 >/dev/null || ! command -v gh >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y python3 gh
           fi
-          if [[ -n "${WARN_ON_UPLOAD_FAILURE_FLAG}" ]]; then
-            args+=("${WARN_ON_UPLOAD_FAILURE_FLAG}")
-          fi
-          if [[ -n "${MESSAGE}" ]]; then
-            args+=("--message=${MESSAGE}")
-          fi
-          args+=("${PR}")
-          brew pr-pull "${args[@]}"
-
-      - name: Merge PR branch
-        working-directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-        run: bash .github/scripts/retry.sh 10 10 gh pr merge "$PR" --auto --delete-branch --rebase
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Push commits
-        uses: Homebrew/actions/git-try-push@main
+          brew install-bundler-gems --add-groups=bottle,pr_upload,style,audit,ast
+          git config user.name BrewTestBot
+          git config user.email 1589480+BrewTestBot@users.noreply.github.com
+          mkdir -p "$RUNNER_TEMP/security-publication"
+          cp -R .github/scripts .github/security-publication "$RUNNER_TEMP/security-publication/"
+          git fetch --no-tags origin main
+          git checkout -B "security-publication-$SELECTED_RUN" origin/main
+      - name: Publish packages and formula immediately
+        id: publish
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          python3 "$RUNNER_TEMP/security-publication/scripts/security_publish_parallel.py" publish \
+            --runs "$SELECTED_RUN" --output "$RUNNER_TEMP/publication"
+      - name: Verify after publication
+        if: steps.publish.outcome == 'success'
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          python3 "$RUNNER_TEMP/security-publication/scripts/security_publish_parallel.py" verify \
+            --runs "$SELECTED_RUN" --output "$RUNNER_TEMP/publication"
+      - name: Save recovery history
+        if: always()
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/recovery"
+          git diff > "$RUNNER_TEMP/recovery/uncommitted-formulae.patch"
+          git bundle create "$RUNNER_TEMP/recovery/publication.bundle" --all
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
         with:
-          directory: ${{steps.set-up-homebrew.outputs.repository-path}}
-          token: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Sync branches
-        run: gh workflow run sync-default-branches.yml
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          name: security-publication-${{ matrix.run }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/recovery
+            ${{ runner.temp }}/publication/validation.json
+            ${{ runner.temp }}/publication/public-source.json
+            ${{ runner.temp }}/publication/promoted/*
+          if-no-files-found: error
+          retention-days: 90

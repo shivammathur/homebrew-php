@@ -62,11 +62,7 @@ def push_history(tap, message):
 
 def save_report(args, row, report, push=False):
     s.write_json(args.output / "validation.json", report)
-    ledger = args.tap / ".github/security-promotions" / (row["run_id"] + ".json")
-    ledger.parent.mkdir(parents=True, exist_ok=True)
-    s.write_json(ledger, report)
-    batch.command("git", "add", "--", "Formula/" + row["formula"] + ".rb",
-                  str(ledger.relative_to(args.tap)), cwd=args.tap)
+    batch.command("git", "add", "--", "Formula/" + row["formula"] + ".rb", cwd=args.tap)
     message = f"{row['formula']}: {report['state']} [skip-build] [skip ci]"
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=args.tap).returncode:
         batch.command("git", "commit", "-m", message, cwd=args.tap)

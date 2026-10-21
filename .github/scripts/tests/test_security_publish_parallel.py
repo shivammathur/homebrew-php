@@ -52,6 +52,30 @@ class ParallelPublicationTests(unittest.TestCase):
             for commit in recipes:
                 self.git(remote, "merge-base", "--is-ancestor", commit, "main")
 
+    def test_reports_remain_outside_the_published_tap(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            tap = root / "tap"
+            output = root / "output"
+            tap.mkdir()
+            output.mkdir()
+            self.git(tap, "init", "--initial-branch=main")
+            self.git(tap, "config", "user.name", "Publication Test")
+            self.git(tap, "config", "user.email", "publication@example.invalid")
+            (tap / "Formula").mkdir()
+            formula = tap / "Formula/php@5.6.rb"
+            formula.write_text("baseline\n")
+            self.git(tap, "add", ".")
+            self.git(tap, "commit", "-m", "baseline")
+            formula.write_text("published bottle\n")
+            args = SimpleNamespace(tap=tap, output=output)
+            row = {"run_id": "123", "formula": "php@5.6"}
+            publisher.save_report(args, row, {"state": "published"})
+            self.assertEqual(self.git(tap, "show", "--format=", "--name-only", "HEAD"), "Formula/php@5.6.rb")
+            self.assertFalse((tap / ".github/security-promotions").exists())
+            self.assertEqual(json.loads((output / "validation.json").read_text())["state"], "published")
+            self.assertTrue((output / "publication.bundle").is_file())
+
     def test_verify_requires_formula_publication(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
