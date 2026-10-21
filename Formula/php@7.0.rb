@@ -1,20 +1,21 @@
 class PhpAT70 < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/e3a3b5ee45052f181393e7d9361895f169ab37a1.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/76d932fdc0b984a1a8d9bd42bd04fb386e36135f.tar.gz"
   version "7.0.33"
-  sha256 "2ce06a971c0029af7bec9247f2050e7f722eb28c094c639ea2d18acd780432ae"
+  sha256 "c7363edcfbae285748026db1e4dc70d119fead29f49c13fc42a0067d1b093241"
   license "PHP-3.01"
-  revision 19
+  revision 20
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "c5e3aa97be3481f87ad0b9418c2fa50a89c2333188cf1d74ddf7982d7d315b67"
-    sha256 arm64_tahoe:       "b57565514826ee52f73328e6ba3f28c756ba57d2dd55b4d47e5d973f169bf2fa"
-    sha256 arm64_sequoia:     "498d60c59ca7d60d5f19fd07f82dc86ad74a2ff5782845965967176810490ad5"
-    sha256 arm64_linux:       "44555fcc7be13381682cffd7a801d1f60d45c9b557037531864b266e428bd547"
-    sha256 x86_64_linux:      "cdb59a2aeac5ee29037460da46c54262be87d3428293e02c3b3e8091e50bfe00"
+    rebuild 1
+    sha256 arm64_golden_gate: "81d546914c0219494631429446ec2dd8856efb8a0a11a6660edcd6d6a80c971e"
+    sha256 arm64_tahoe:       "3a9d31a1127f3188514bc83420efc4b18ebb1716d66422614d2ad0bb77a7727b"
+    sha256 arm64_sequoia:     "99e80cf8b4f08c92eb454e39f5a481d7c0f927a317bbeb1e178ecba30cfda12d"
+    sha256 arm64_linux:       "ee67639f9dd18770e94b9368d698fe641f046bca2189b80b21b56ecec3b2b794"
+    sha256 x86_64_linux:      "dfa8bbb225f1c84241082025cbe797f8a4f4e80a297a9c1821bd7d4b9c04c83a"
   end
 
   keg_only :versioned_formula
@@ -270,7 +271,10 @@ class PhpAT70 < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     configure_php
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
