@@ -1,20 +1,11 @@
 class PhpAT74Debug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/6c44436630a8d8f82dba84314c50df7ac08c7534.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/066522cf9c489c59d41bfca7cbfb08eb36fe4cd4.tar.gz"
   version "7.4.33"
-  sha256 "a1a7e475baf81b182bb87f5d295224e9261d09de84d35e59b9ad29926920d0e2"
+  sha256 "da5bc8dd8f95b172b9be7a355f5e0b783a409c01100d305ff234af207bd39552"
   license "PHP-3.01"
-  revision 16
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "2ffcb832d0e18a10a910d14a003d47e9c8eea952e259f1289268441dd271f9c1"
-    sha256 arm64_tahoe:       "02707b186c01861501ecae6018a8036e156eed5d9bf6cd70ada403312e164fd2"
-    sha256 arm64_sequoia:     "e74b28cff6117284901733182c10caa78c10c3e782e8c383a2321712cfbfc8aa"
-    sha256 arm64_linux:       "76b03211e9f34fa6b4fffabbfd2025426708789032e2f3d0f80adf2caa992b58"
-    sha256 x86_64_linux:      "e39551ffe8a349983998da87a60c4fbd548df42f26a0c9e9b167cd18d06ccda4"
-  end
+  revision 17
 
   keg_only :versioned_formula
 
@@ -272,6 +263,8 @@ class PhpAT74Debug < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -363,6 +356,7 @@ class PhpAT74Debug < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
