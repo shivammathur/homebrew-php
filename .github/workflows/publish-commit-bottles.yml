@@ -111,3 +111,13 @@ jobs:
             ${{ runner.temp }}/publication/promoted/*
           if-no-files-found: error
           retention-days: 90
+      - name: Save compact publication report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: security-publication-report-${{ matrix.run }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/publication/validation.json
+            ${{ runner.temp }}/publication/public-source.json
+          if-no-files-found: warn
+          retention-days: 90
