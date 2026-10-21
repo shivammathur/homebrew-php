@@ -469,8 +469,7 @@ class PhpAT73Zts < Formula
         </FilesMatch>
       EOS
 
-      # Apache's single-process -X mode can hang during ZTS PHP shutdown.
-      pid = spawn formula_opt_bin("httpd")/"httpd", "-D", "FOREGROUND", "-f", "#{testpath}/httpd.conf"
+      pid = spawn formula_opt_bin("httpd")/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       sleep 10
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
