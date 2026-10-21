@@ -8,16 +8,6 @@ class PhpAT56 < Formula
   revision 18
   compatibility_version 1
 
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 1
-    sha256 arm64_golden_gate: "d11f6bbe512cb6e504f922f6f6ed183c2f5e426cb034083bb323d11da3e5b7aa"
-    sha256 arm64_tahoe:       "017e08d834f786c360aa31ef3ef9735ff1e10bc7919503ada984de7a0b00e796"
-    sha256 arm64_sequoia:     "7334ec4d1405efbb53f7c7104c8112b6bffc202471b12e6119f1dc3d7dd434d5"
-    sha256 arm64_linux:       "46eacafdbbbcfff394a6e73df786850bb29d36fcf877ec826c4cef8467977727"
-    sha256 x86_64_linux:      "90ed766472cb39c7d8f8fb1a7330742e77f9c8e0e409cba80567e7b1b0cde2f8"
-  end
-
   keg_only :versioned_formula
 
   # This PHP version is not supported upstream as of 2018-12-31.
