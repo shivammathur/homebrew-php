@@ -549,9 +549,11 @@ def check_public_source(version, source):
     validate_public_url(version, source)
     require(source.get("public_url"), "The published backport URL is required before promotion")
     if source.get("public_repository") != BACKPORTS_REPO:
+        headers = {"Accept": "application/vnd.github+json", "User-Agent": "homebrew-php-security-promotion"}
+        if os.environ.get("GH_TOKEN"):
+            headers["Authorization"] = "Bearer " + os.environ["GH_TOKEN"]
         request = urllib.request.Request(
-            f"https://api.github.com/repos/php/php-src/git/ref/tags/php-{version}",
-            headers={"Accept": "application/vnd.github+json", "User-Agent": "homebrew-php-security-promotion"})
+            f"https://api.github.com/repos/php/php-src/git/ref/tags/php-{version}", headers=headers)
         with urllib.request.urlopen(request, timeout=60) as response:
             require(json.load(response)["ref"] == f"refs/tags/php-{version}", "Public PHP tag mismatch")
     with urllib.request.urlopen(source["public_url"], timeout=120) as response:

@@ -288,6 +288,17 @@ class PromotionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "differs"):
                 s.check_public_source(VERSION, source)
 
+    def test_source_auth_is_confined_to_github_tag_api(self):
+        source = dict(SOURCE, sha256=s.digest(b"public source"))
+        responses = [io.BytesIO(json.dumps({"ref": f"refs/tags/php-{VERSION}"}).encode()), io.BytesIO(b"public source")]
+        with patch.dict(os.environ, {"GH_TOKEN": "test-only-token"}):
+            with patch.object(s.urllib.request, "urlopen", side_effect=responses) as request:
+                s.check_public_source(VERSION, source)
+        api_request = request.call_args_list[0].args[0]
+        self.assertEqual(api_request.full_url, f"https://api.github.com/repos/php/php-src/git/ref/tags/php-{VERSION}")
+        self.assertEqual(api_request.get_header("Authorization"), "Bearer test-only-token")
+        self.assertEqual(request.call_args_list[1].args[0], source["public_url"])
+
     def test_dependency_drift_rejected(self):
         documents = [{"formula": {"bottle": {"tags": {"tag": {"tab": {"runtime_dependencies": [
             {"full_name": "libzip", "pkg_version": "1.11.4"},
