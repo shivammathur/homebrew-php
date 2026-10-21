@@ -5,16 +5,11 @@ module.exports = async ({github, context, core}, formula_detect) => {
         pull_number: context.issue.number
     })
     const label_names = labels.map(label => label.name)
-    // Temporarily enable PHP 8.2–8.7 only; unversioned php is PHP 8.5.
-    const build_enabled = formula => /^(?:shivammathur\/php\/)?php(?:@8\.[2-7])?(?:-debug)?(?:-zts)?$/.test(formula)
-    const build_formulae = (formula_detect.testing_formulae || '').split(/[,\s]+/).filter(build_enabled)
-    const added_formulae = (formula_detect.added_formulae || '').split(/[,\s]+/).filter(build_enabled)
-    const deleted_formulae = (formula_detect.deleted_formulae || '').split(/[,\s]+/).filter(build_enabled)
-    if (label_names.includes('CI-syntax-only') || build_formulae.length === 0) {
-        console.log('CI checks only: no enabled PHP builds, or CI-syntax-only requested.')
+    if (label_names.includes('CI-syntax-only')) {
+        console.log('CI-syntax-only label found. Skipping tests job.')
         core.setOutput('syntax-only', 'true')
     } else {
-        console.log(`Building enabled PHP formulae: ${build_formulae.join(' ')}`)
+        console.log('No CI-syntax-only label found. Running tests job.')
         core.setOutput('syntax-only', 'false')
     }
 
@@ -54,11 +49,11 @@ module.exports = async ({github, context, core}, formula_detect) => {
 
     const test_bot_formulae_args = ["--only-formulae", "--junit", "--only-json-tab", "--skip-dependents"]
     test_bot_formulae_args.push('--root-url="https://ghcr.io/v2/shivammathur/php"')
-    test_bot_formulae_args.push(`--testing-formulae=${build_formulae.join(',')}`)
-    test_bot_formulae_args.push(`--added-formulae=${added_formulae.join(',')}`)
-    test_bot_formulae_args.push(`--deleted-formulae=${deleted_formulae.join(',')}`)
+    test_bot_formulae_args.push(`--testing-formulae=${formula_detect.testing_formulae}`)
+    test_bot_formulae_args.push(`--added-formulae=${formula_detect.added_formulae}`)
+    test_bot_formulae_args.push(`--deleted-formulae=${formula_detect.deleted_formulae}`)
     const test_bot_dependents_args = ["--only-formulae-dependents", "--junit"]
-    test_bot_dependents_args.push(`--testing-formulae=${build_formulae.join(',')}`)
+    test_bot_dependents_args.push(`--testing-formulae=${formula_detect.testing_formulae}`)
     if (label_names.includes('CI-test-bot-fail-fast')) {
         console.log('CI-test-bot-fail-fast label found. Passing --fail-fast to brew test-bot.')
         test_bot_formulae_args.push('--fail-fast')

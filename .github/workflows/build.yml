@@ -187,7 +187,7 @@ jobs:
             }
   build-formula:
     needs: set-environment
-    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build') && needs.set-environment.outputs.syntax-only != 'true'
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request' && !contains(github.event.head_commit.message, 'skip-build')
     strategy:
       matrix:
         include:
