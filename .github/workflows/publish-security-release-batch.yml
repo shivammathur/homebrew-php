@@ -1,0 +1,100 @@
+name: Publish prebuilt security releases in parallel
+run-name: Publish security releases ${{ inputs.ticket }}
+on:
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: Comma-separated catalog run IDs; blank selects all 48
+        default: ''
+        required: false
+      ticket:
+        description: Unique publication dispatch identifier
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  plan:
+    if: github.repository == 'shivammathur/homebrew-php'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: plan
+        env:
+          SELECTED_RUNS: ${{ inputs.runs }}
+        run: python3 .github/scripts/security_publish_parallel.py plan --runs "$SELECTED_RUNS"
+  publish:
+    needs: plan
+    name: Publish ${{ matrix.formula }} then verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    concurrency:
+      group: security-publication-${{ github.repository }}-${{ matrix.run }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      packages: write
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_FROM_API: 1
+      HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
+      HOMEBREW_NO_ANALYTICS: 1
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+      HOMEBREW_GITHUB_PACKAGES_USER: ${{ github.repository_owner }}
+      HOMEBREW_GITHUB_PACKAGES_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+      SELECTED_RUN: ${{ matrix.run }}
+    steps:
+      - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+        id: homebrew
+        with:
+          core: true
+          cask: false
+          stable: false
+          token: ${{ github.token }}
+      - name: Prepare publication tools
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          set -euo pipefail
+          brew install-bundler-gems --add-groups=bottle,pr_upload,style,audit,ast
+          git config user.name BrewTestBot
+          git config user.email 1589480+BrewTestBot@users.noreply.github.com
+          git checkout -B "security-publication-$SELECTED_RUN"
+      - name: Publish packages and formula immediately
+        id: publish
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          python3 .github/scripts/security_publish_parallel.py publish \
+            --runs "$SELECTED_RUN" --output "$RUNNER_TEMP/publication"
+      - name: Verify after publication
+        if: steps.publish.outcome == 'success'
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          python3 .github/scripts/security_publish_parallel.py verify \
+            --runs "$SELECTED_RUN" --output "$RUNNER_TEMP/publication"
+      - name: Save recovery history
+        if: always()
+        working-directory: ${{ steps.homebrew.outputs.repository-path }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/recovery"
+          git diff > "$RUNNER_TEMP/recovery/uncommitted-formulae.patch"
+          git bundle create "$RUNNER_TEMP/recovery/publication.bundle" --all
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: security-publication-${{ matrix.run }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/recovery
+            ${{ runner.temp }}/publication/validation.json
+            ${{ runner.temp }}/publication/public-source.json
+            ${{ runner.temp }}/publication/promoted/*
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,180 @@
+{
+  "schema": 1,
+  "sources": {
+    "5.6.40": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-5.6.40.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "749249099f6d0ce12aa8ac2378a29a80e3112bc5259711f5b916557d717023eb"
+    },
+    "7.0.33": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-7.0.33.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "a7ac82f721cf89ce1b1666d36e414470abed014f566255da2a00b96c5ed5a115"
+    },
+    "7.1.33": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-7.1.33.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "aa7b5c9c6d269352a233f6fdfccff9b94ec65bf8dcb3f4fae80b75423888b555"
+    },
+    "7.2.34": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-7.2.34.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "c6fbff5c898a87c67fcb1e80a24ad0b8a43b56fb93c1ff67b3a5b4d9c7b0685c"
+    },
+    "7.3.33": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-7.3.33.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "b0804a254252c7458899349bdcbb61df019a93b29323f30bcf09f2d145e6b672"
+    },
+    "7.4.33": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-7.4.33.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "0c0d67a37bcf10ac8e9542bdc8d6772dc15821ee90c30dbf3992472e7ae33f18"
+    },
+    "8.0.30": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-8.0.30.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "bdf716280eb5352eb01de9209b531045b039ad3e53d0a975026b5cc9b9bc5bba"
+    },
+    "8.1.34": {
+      "url": "https://setup-php.com/php-oct-sr-builds/php-8.1.34.tar.gz",
+      "auth": "none",
+      "public_repository": "shivammathur/php-src-backports",
+      "public_url": null,
+      "sha256": "4da19bfb4fc887d6126f2775e92317b102c230361c90bca311f7b40cb12e00c4"
+    }
+  },
+  "formulae": {
+    "php@5.6": "5.6.40",
+    "php@5.6-debug": "5.6.40",
+    "php@5.6-zts": "5.6.40",
+    "php@5.6-debug-zts": "5.6.40",
+    "php@7.0": "7.0.33",
+    "php@7.0-debug": "7.0.33",
+    "php@7.0-zts": "7.0.33",
+    "php@7.0-debug-zts": "7.0.33",
+    "php@7.1": "7.1.33",
+    "php@7.1-debug": "7.1.33",
+    "php@7.1-zts": "7.1.33",
+    "php@7.1-debug-zts": "7.1.33",
+    "php@7.2": "7.2.34",
+    "php@7.2-debug": "7.2.34",
+    "php@7.2-zts": "7.2.34",
+    "php@7.2-debug-zts": "7.2.34",
+    "php@7.3": "7.3.33",
+    "php@7.3-debug": "7.3.33",
+    "php@7.3-zts": "7.3.33",
+    "php@7.3-debug-zts": "7.3.33",
+    "php@7.4": "7.4.33",
+    "php@7.4-debug": "7.4.33",
+    "php@7.4-zts": "7.4.33",
+    "php@7.4-debug-zts": "7.4.33",
+    "php@8.0": "8.0.30",
+    "php@8.0-debug": "8.0.30",
+    "php@8.0-zts": "8.0.30",
+    "php@8.0-debug-zts": "8.0.30",
+    "php@8.1": "8.1.34",
+    "php@8.1-debug": "8.1.34",
+    "php@8.1-zts": "8.1.34",
+    "php@8.1-debug-zts": "8.1.34"
+  },
+  "revisions": {
+    "php@5.6": 18,
+    "php@5.6-debug": 18,
+    "php@5.6-zts": 10,
+    "php@5.6-debug-zts": 9,
+    "php@7.0": 20,
+    "php@7.0-debug": 19,
+    "php@7.0-zts": 10,
+    "php@7.0-debug-zts": 9,
+    "php@7.1": 18,
+    "php@7.1-debug": 18,
+    "php@7.1-zts": 9,
+    "php@7.1-debug-zts": 9,
+    "php@7.2": 19,
+    "php@7.2-debug": 19,
+    "php@7.2-zts": 9,
+    "php@7.2-debug-zts": 9,
+    "php@7.3": 17,
+    "php@7.3-debug": 17,
+    "php@7.3-zts": 9,
+    "php@7.3-debug-zts": 9,
+    "php@7.4": 16,
+    "php@7.4-debug": 17,
+    "php@7.4-zts": 9,
+    "php@7.4-debug-zts": 9,
+    "php@8.0": 13,
+    "php@8.0-debug": 13,
+    "php@8.0-zts": 10,
+    "php@8.0-debug-zts": 10,
+    "php@8.1": 4,
+    "php@8.1-debug": 4,
+    "php@8.1-zts": 4,
+    "php@8.1-debug-zts": 4
+  },
+  "runners": [
+    {
+      "runner": [
+        "self-hosted",
+        "macOS",
+        "ARM64",
+        "macos-27-arm64"
+      ],
+      "tag": "arm64_golden_gate"
+    },
+    {
+      "runner": [
+        "self-hosted",
+        "macOS",
+        "ARM64",
+        "macos-26-arm64"
+      ],
+      "tag": "arm64_tahoe"
+    },
+    {
+      "runner": [
+        "self-hosted",
+        "macOS",
+        "ARM64",
+        "macos-15-arm64"
+      ],
+      "tag": "arm64_sequoia"
+    },
+    {
+      "runner": [
+        "self-hosted",
+        "Linux",
+        "X64",
+        "ubuntu-24-sf"
+      ],
+      "tag": "x86_64_linux"
+    },
+    {
+      "runner": [
+        "self-hosted",
+        "Linux",
+        "ARM64",
+        "ubuntu-24-arm-sf"
+      ],
+      "tag": "arm64_linux"
+    }
+  ],
+  "tap_dependencies": {
+    "autoconf@2.69": "b02affd3ff7bb7a55a0c4fd788d57a7eeb59412eb7c5337433d16af24852d77c",
+    "bison@2.7": "2bf4e7e1d5722180db50cbdcb6f3f6878b1781fe80dd25597c27ca8326033960"
+  }
+}
