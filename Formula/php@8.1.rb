@@ -30,6 +30,16 @@ class PhpAT81 < Formula
   revision 4
   compatibility_version 1
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    rebuild 1
+    sha256 arm64_golden_gate: "1324018ed774ca370ef8edc40d478a5a6663502da49b90ca14924444b84c1485"
+    sha256 arm64_tahoe:       "0d9d72b3243bd9a63de37dac335bfe9566ac207fd634b643ee571a86c94de241"
+    sha256 arm64_sequoia:     "635d9cbb3b8ba60d5800983c58e468b4c001543e508e59123acdc07db82a385c"
+    sha256 arm64_linux:       "be977ccd66b974bc76d33139ed2ab2e8197cdb3630b5311889a3ce67eebd2a2f"
+    sha256 x86_64_linux:      "5097001a49163dd33ff09c801130b1948b4aff44a9c24620f49f5d9639add561"
+  end
+
   keg_only :versioned_formula
 
   # Security Support Until 31 Dec 2025
