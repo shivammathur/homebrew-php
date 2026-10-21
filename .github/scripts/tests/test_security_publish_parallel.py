@@ -76,6 +76,42 @@ class ParallelPublicationTests(unittest.TestCase):
             self.assertEqual(json.loads((output / "validation.json").read_text())["state"], "published")
             self.assertTrue((output / "publication.bundle").is_file())
 
+    def test_configuration_repair_preserves_source_revision_and_rejects_drift(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            tap = Path(temporary); (tap / "Formula").mkdir()
+            file = tap / "Formula/php@5.6.rb"
+            source = 'class PhpAT56 < Formula\n  version "5.6.40"\n  revision 18\n\n  bottle do\n    rebuild 1\n  end\n\nend\n'
+            file.write_text(source)
+            proof = {"formula_sha256": publisher.s.digest(source.encode()), "from_rebuild": 1,
+                     "rebuild": 2, "reason": "restore missing default configuration"}
+            row = {"formula": "php@5.6", "version": "5.6.40", "revision": 18, "configuration_repair": proof}
+            self.assertEqual(publisher.prepare_configuration_repair(row, tap), proof)
+            self.assertIn('  revision 18', file.read_text())
+            self.assertIn('  version "5.6.40"', file.read_text())
+            self.assertNotIn('bottle do', file.read_text())
+            with self.assertRaisesRegex(ValueError, "formula changed"):
+                publisher.prepare_configuration_repair(row, tap)
+
+    def test_repair_tag_rename_preserves_all_archive_bytes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary); contents = {}
+            for tag in publisher.batch.PLATFORMS:
+                name = f"php@5.6--5.6.40_18.{tag}.bottle.1.tar.gz"
+                data = (tag + " compiled payload").encode(); contents[tag] = data
+                (output / name).write_bytes(data)
+                document = {publisher.s.PUBLIC_TAP + "/php@5.6": {"bottle": {"rebuild": 1, "tags": {tag: {
+                    "local_filename": name, "filename": name.replace("--", "-"), "sha256": publisher.s.digest(data)}}}}}
+                publisher.s.write_json(output / (tag + ".bottle.json"), document)
+            publisher.rename_configuration_repair(output, "php@5.6", {"rebuild": 2})
+            for tag, data in contents.items():
+                document = publisher.s.read_json(output / (tag + ".bottle.json"))
+                bottle = document[publisher.s.PUBLIC_TAP + "/php@5.6"]["bottle"]
+                self.assertEqual(bottle["rebuild"], 2)
+                self.assertEqual((output / bottle["tags"][tag]["local_filename"]).read_bytes(), data)
+                self.assertTrue(bottle["tags"][tag]["filename"].endswith(".bottle.2.tar.gz"))
+            with self.assertRaisesRegex(ValueError, "new bottle rebuild"):
+                publisher.rename_configuration_repair(output, "php@5.6", {"rebuild": 2})
+
     def test_verify_requires_formula_publication(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)

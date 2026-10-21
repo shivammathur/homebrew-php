@@ -336,78 +336,138 @@
           "runtime_test": "passed",
           "build_step_outcome": "success"
         }
-      ]
+      ],
+      "configuration_repair": {
+        "formula_sha256": "5c98139a2c5b3c7d6736452ba0fa9fe209865ee13c78c022387044c390ba627c",
+        "from_rebuild": 1,
+        "rebuild": 2,
+        "reason": "restore missing default configuration"
+      }
     },
     {
-      "run_id": "39363767052",
+      "run_id": "39620743000",
       "formula": "php@5.6-debug",
       "version": "5.6.40",
       "revision": 18,
-      "commit": "34f0bba8f4b8e19b93b1d3ee9a6439649d0fa3a3",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39363767052",
+      "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39620743000",
       "assets": {
         "php@5.6-debug--5.6.40_18.arm64_golden_gate.bottle.1.tar.gz": {
-          "sha256": "84d141a1e9ade00ca9982a1e7a566f52f3d3cb0682dddb953b439373a391a9bf",
+          "id": 662978583,
           "size": 18503523,
-          "id": 658160304
+          "sha256": "84d141a1e9ade00ca9982a1e7a566f52f3d3cb0682dddb953b439373a391a9bf"
         },
         "php@5.6-debug--5.6.40_18.arm64_golden_gate.bottle.json": {
-          "sha256": "3fc8df14a5272adf8cd91493c0ca3f95164172c4ee6087e7f804ae14236e0f51",
+          "id": 662978580,
           "size": 125934,
-          "id": 658160296
+          "sha256": "3fc8df14a5272adf8cd91493c0ca3f95164172c4ee6087e7f804ae14236e0f51"
         },
         "php@5.6-debug--5.6.40_18.arm64_linux.bottle.1.tar.gz": {
-          "sha256": "56f4c6eebdf4403e408a90e2f5e5c0b7911cf3dbc909e505ea111aaa895d6155",
+          "id": 662978584,
           "size": 23785450,
-          "id": 658160300
+          "sha256": "56f4c6eebdf4403e408a90e2f5e5c0b7911cf3dbc909e505ea111aaa895d6155"
         },
         "php@5.6-debug--5.6.40_18.arm64_linux.bottle.json": {
-          "sha256": "3a30c340b4f4777e4d9306e2fefbcb784fef2e8ddf115c7a15984e3889e4b115",
+          "id": 662978586,
           "size": 150978,
-          "id": 658160297
+          "sha256": "3a30c340b4f4777e4d9306e2fefbcb784fef2e8ddf115c7a15984e3889e4b115"
         },
         "php@5.6-debug--5.6.40_18.arm64_sequoia.bottle.1.tar.gz": {
-          "sha256": "ea7082c8b14fbcb7b717c6574db0ed4d7b3e05debef1cd065c7a3decc924da36",
-          "size": 18491264,
-          "id": 658160302
+          "id": 662978585,
+          "size": 18543111,
+          "sha256": "9bade014316395fdaa6f8a2adbb8ecf75b4aba2014dad0af1ed956cf6a0a5438"
         },
         "php@5.6-debug--5.6.40_18.arm64_sequoia.bottle.json": {
-          "sha256": "659ebe457a9f5e8c299e9f9bd7af1e7c3fabc774b251bf80a4014fb94388a7de",
-          "size": 126323,
-          "id": 658160314
+          "id": 662978638,
+          "size": 125969,
+          "sha256": "2da43df9c96548a27ffb62c214d40767783d7c06818d33273424c145ade5a2ea"
         },
         "php@5.6-debug--5.6.40_18.arm64_tahoe.bottle.1.tar.gz": {
-          "sha256": "2ca1e620f489f054a881fcddbaa1016d47ff37b0077da1106caaf71e3f185f94",
-          "size": 18456843,
-          "id": 658160315
+          "id": 662978643,
+          "size": 18503069,
+          "sha256": "97ede639c67e8919869ea2bdb05f203b3a7659f705bd712143029e847d6f2fbf"
         },
         "php@5.6-debug--5.6.40_18.arm64_tahoe.bottle.json": {
-          "sha256": "c5329564e731fc9ba0412c420a33310459e3d80b101170982f80303a7693bc40",
-          "size": 126317,
-          "id": 658160329
+          "id": 662978671,
+          "size": 125920,
+          "sha256": "ffa7fca801210d220e064a19c9d27be589ea086270c6f86e4d93876c55e8353a"
         },
         "php@5.6-debug--5.6.40_18.x86_64_linux.bottle.1.tar.gz": {
-          "sha256": "5f7c6a9dd768516f0f2068d3dab86f78ee8adb4b70c641d82f61d9830e558c90",
+          "id": 662978687,
           "size": 24210623,
-          "id": 658160341
+          "sha256": "5f7c6a9dd768516f0f2068d3dab86f78ee8adb4b70c641d82f61d9830e558c90"
         },
         "php@5.6-debug--5.6.40_18.x86_64_linux.bottle.json": {
-          "sha256": "6d71d2e77c390bb213223d1dd6867fd52fe9c60bb2469b61f4e2eb841ec27f25",
+          "id": 662979178,
           "size": 150983,
-          "id": 658160349
+          "sha256": "6d71d2e77c390bb213223d1dd6867fd52fe9c60bb2469b61f4e2eb841ec27f25"
         },
         "php@5.6-debug.rb": {
-          "sha256": "e54a5f098e6e3d3d86152c4ed3bc97f54e1c57ca74e977074a3e44a6862c75c3",
+          "id": 662979210,
           "size": 20840,
-          "id": 658160347
+          "sha256": "e54a5f098e6e3d3d86152c4ed3bc97f54e1c57ca74e977074a3e44a6862c75c3"
         },
         "security-build.json": {
-          "sha256": "fc4e90e7c827105dbcfeb20995f86020461e50349bab7d83bf50d56367273580",
-          "size": 952642,
-          "id": 658160353
+          "id": 662979236,
+          "size": 959070,
+          "sha256": "2b1229274b467dc708140de90d4a09f62d22653a81fe1a5a431d8a1cf3120544"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_sequoia",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39620743000",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
+          },
+          "archive": "php@5.6-debug--5.6.40_18.arm64_sequoia.bottle.1.tar.gz",
+          "sha256": "9bade014316395fdaa6f8a2adbb8ecf75b4aba2014dad0af1ed956cf6a0a5438",
+          "json_sha256": "2da43df9c96548a27ffb62c214d40767783d7c06818d33273424c145ade5a2ea",
+          "runtime_test": "passed",
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@5.6-debug",
+            "version": "5.6.40",
+            "revision": 18,
+            "run_id": 39620743000,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12356002698,
+            "job_id": 119296378442,
+            "attempt": 2,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "c161a851d22ee805b06c91a358471cca810cb4cd2c4d9940d6ef5ba3bb30d20f",
+            "archive": "php@5.6-debug--5.6.40_18.arm64_sequoia.bottle.1.tar.gz",
+            "sha256": "9bade014316395fdaa6f8a2adbb8ecf75b4aba2014dad0af1ed956cf6a0a5438",
+            "json_sha256": "2da43df9c96548a27ffb62c214d40767783d7c06818d33273424c145ade5a2ea",
+            "log_sha256": "788492be14a68666b44e36abe816b07e0bbe7c572de49e69f6d548482cd939a5",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620743000/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:21:51.758206+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@5.6-debug",
+            "tag": "arm64_sequoia",
+            "run_id": 39620743000,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "c161a851d22ee805b06c91a358471cca810cb4cd2c4d9940d6ef5ba3bb30d20f",
+            "sha256": "9bade014316395fdaa6f8a2adbb8ecf75b4aba2014dad0af1ed956cf6a0a5438",
+            "artifact_id": 12356002698,
+            "verification_run": 39625960718,
+            "verification_job": 119311223556,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:41:38.038029+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223556.log",
+            "log_sha256": "accf650b7dd3b3c8ec26f78857c80348d58d5c762c7bacb8740dc902a25fd656",
+            "fresh_pour": "passed"
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -435,30 +495,58 @@
           "build_step_outcome": "success"
         },
         {
-          "tag": "arm64_sequoia",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39363767052",
-            "commit": "34f0bba8f4b8e19b93b1d3ee9a6439649d0fa3a3"
-          },
-          "archive": "php@5.6-debug--5.6.40_18.arm64_sequoia.bottle.1.tar.gz",
-          "sha256": "ea7082c8b14fbcb7b717c6574db0ed4d7b3e05debef1cd065c7a3decc924da36",
-          "json_sha256": "659ebe457a9f5e8c299e9f9bd7af1e7c3fabc774b251bf80a4014fb94388a7de",
-          "runtime_test": "passed",
-          "build_step_outcome": "success"
-        },
-        {
           "tag": "arm64_tahoe",
           "provenance": {
             "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39363767052",
-            "commit": "34f0bba8f4b8e19b93b1d3ee9a6439649d0fa3a3"
+            "run_id": "39620743000",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
           },
           "archive": "php@5.6-debug--5.6.40_18.arm64_tahoe.bottle.1.tar.gz",
-          "sha256": "2ca1e620f489f054a881fcddbaa1016d47ff37b0077da1106caaf71e3f185f94",
-          "json_sha256": "c5329564e731fc9ba0412c420a33310459e3d80b101170982f80303a7693bc40",
+          "sha256": "97ede639c67e8919869ea2bdb05f203b3a7659f705bd712143029e847d6f2fbf",
+          "json_sha256": "ffa7fca801210d220e064a19c9d27be589ea086270c6f86e4d93876c55e8353a",
           "runtime_test": "passed",
-          "build_step_outcome": "success"
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@5.6-debug",
+            "version": "5.6.40",
+            "revision": 18,
+            "run_id": 39620743000,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_tahoe",
+            "artifact_id": 12354938228,
+            "job_id": 119296378836,
+            "attempt": 2,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "b65becbbd29b83d886eb2d3e1d82f3ffd4bb0f691e5c113e70cc4c6a38b3c20b",
+            "archive": "php@5.6-debug--5.6.40_18.arm64_tahoe.bottle.1.tar.gz",
+            "sha256": "97ede639c67e8919869ea2bdb05f203b3a7659f705bd712143029e847d6f2fbf",
+            "json_sha256": "ffa7fca801210d220e064a19c9d27be589ea086270c6f86e4d93876c55e8353a",
+            "log_sha256": "d3674c34f0e90aa14ef3b80cae89cba07b8efeecc818ba7a665e634b7b920761",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620743000/security-arm64_tahoe",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:17:04.373380+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@5.6-debug",
+            "tag": "arm64_tahoe",
+            "run_id": 39620743000,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "b65becbbd29b83d886eb2d3e1d82f3ffd4bb0f691e5c113e70cc4c6a38b3c20b",
+            "sha256": "97ede639c67e8919869ea2bdb05f203b3a7659f705bd712143029e847d6f2fbf",
+            "artifact_id": 12354938228,
+            "verification_run": 39625960718,
+            "verification_job": 119311222971,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:41:38.038029+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311222971.log",
+            "log_sha256": "79a124c9177806f0f7c6cd586c36b2a17f016ea264f12b7803c3af6c20a868a1",
+            "fresh_pour": "passed"
+          }
         },
         {
           "tag": "x86_64_linux",
@@ -473,7 +561,13 @@
           "runtime_test": "passed",
           "build_step_outcome": "success"
         }
-      ]
+      ],
+      "configuration_repair": {
+        "formula_sha256": "aaaf836e6833350b180be22b4b23ad5a2b611c61c01d69aa7493f85e54cce3d3",
+        "from_rebuild": 1,
+        "rebuild": 2,
+        "reason": "restore missing default configuration"
+      }
     },
     {
       "run_id": "39363784582",
@@ -928,75 +1022,129 @@
       ]
     },
     {
-      "run_id": "39333633123",
+      "run_id": "39620743500",
       "formula": "php@7.0-debug",
       "version": "7.0.33",
       "revision": 19,
-      "commit": "4f1c6659134e24d99df30d5d888f03b08b5904bf",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39333633123",
+      "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39620743500",
       "assets": {
         "php@7.0-debug--7.0.33_19.arm64_golden_gate.bottle.1.tar.gz": {
-          "sha256": "9a91a760d2ac1724138084a202d0264413d68cd7256114c88876916f073a679e",
+          "id": 662978577,
           "size": 18807583,
-          "id": 657779088
+          "sha256": "9a91a760d2ac1724138084a202d0264413d68cd7256114c88876916f073a679e"
         },
         "php@7.0-debug--7.0.33_19.arm64_golden_gate.bottle.json": {
-          "sha256": "4f9f4da21bf23a7f0e981241b6ff86096e3b4e4927404daa64fb738e33aacabb",
+          "id": 662978578,
           "size": 126236,
-          "id": 657779087
+          "sha256": "4f9f4da21bf23a7f0e981241b6ff86096e3b4e4927404daa64fb738e33aacabb"
         },
         "php@7.0-debug--7.0.33_19.arm64_linux.bottle.1.tar.gz": {
-          "sha256": "363909d13030128f1f3e9b7c891798ed45592a5ce658077ef4688f5f85264be7",
+          "id": 662978579,
           "size": 23936833,
-          "id": 657779084
+          "sha256": "363909d13030128f1f3e9b7c891798ed45592a5ce658077ef4688f5f85264be7"
         },
         "php@7.0-debug--7.0.33_19.arm64_linux.bottle.json": {
-          "sha256": "f3996a5069b30f9543022eefb8ae941086cc9f401e3651ec8be8d3a1926692ae",
+          "id": 662978576,
           "size": 151230,
-          "id": 657779086
+          "sha256": "f3996a5069b30f9543022eefb8ae941086cc9f401e3651ec8be8d3a1926692ae"
         },
         "php@7.0-debug--7.0.33_19.arm64_sequoia.bottle.1.tar.gz": {
-          "sha256": "b0a977996516ac7f67cf8a2e99ee7ff12dbf8975b95fe38dced815ab33664065",
-          "size": 18779876,
-          "id": 657779085
+          "id": 662978574,
+          "size": 18835588,
+          "sha256": "ed8327b63036020a6448cd800a9859182a0dd57a5626a3de843b9fa07279b08b"
         },
         "php@7.0-debug--7.0.33_19.arm64_sequoia.bottle.json": {
-          "sha256": "07901041d177e29d7e7dff914fd49e99d9bc59869dcbc6a625632882e93ac791",
-          "size": 126503,
-          "id": 657779101
+          "id": 662978619,
+          "size": 126271,
+          "sha256": "3bf150123c7deb7d2e037394c4b50dff5f79d3cd91c928c0dfb399f6a55c09b7"
         },
         "php@7.0-debug--7.0.33_19.arm64_tahoe.bottle.1.tar.gz": {
-          "sha256": "3a325b0615d9834ea00ec65689d1dee1e01bcd98bd0c63c6651d5b2b562d79cc",
-          "size": 18752158,
-          "id": 657779099
+          "id": 662978640,
+          "size": 18805647,
+          "sha256": "7de6222181a2dd3c10c56d095077858e1d64a2c7926a3f8f7f114863a35a0c32"
         },
         "php@7.0-debug--7.0.33_19.arm64_tahoe.bottle.json": {
-          "sha256": "edec7539d99744b2a795cca2dc00ac7a3e073e865507063388ea26ef7de1a7ea",
-          "size": 126497,
-          "id": 657779128
+          "id": 662978647,
+          "size": 126263,
+          "sha256": "9adafae5b93407c0d1249a594ab6f2e4a201da4e4b1469b56f1101c9dc48960c"
         },
         "php@7.0-debug--7.0.33_19.x86_64_linux.bottle.1.tar.gz": {
-          "sha256": "67d4d6bb110a494ff5b580ae452dfc228626eb9fb2967071993a6633c3e77894",
+          "id": 662978673,
           "size": 24415093,
-          "id": 657779132
+          "sha256": "67d4d6bb110a494ff5b580ae452dfc228626eb9fb2967071993a6633c3e77894"
         },
         "php@7.0-debug--7.0.33_19.x86_64_linux.bottle.json": {
-          "sha256": "3bf10414fb71c811c1baea3266e96863322245628d075382d096ec322ec126af",
+          "id": 662978943,
           "size": 151235,
-          "id": 657779136
+          "sha256": "3bf10414fb71c811c1baea3266e96863322245628d075382d096ec322ec126af"
         },
         "php@7.0-debug.rb": {
-          "sha256": "0069734b250900417fb4052e76a37d2be144a644416fd697c0959735af9fd22c",
+          "id": 662978958,
           "size": 19934,
-          "id": 657779141
+          "sha256": "0069734b250900417fb4052e76a37d2be144a644416fd697c0959735af9fd22c"
         },
         "security-build.json": {
-          "sha256": "a30c6062880c2d1bb56d0bf83195215be3d8070cc535ca025c93f5620b11369d",
-          "size": 957744,
-          "id": 657779147
+          "id": 662978994,
+          "size": 966207,
+          "sha256": "9680928781d378dafdd93c6857e146154b0cb48dfafed09696c62d483d5173a4"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_sequoia",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39620743500",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
+          },
+          "archive": "php@7.0-debug--7.0.33_19.arm64_sequoia.bottle.1.tar.gz",
+          "sha256": "ed8327b63036020a6448cd800a9859182a0dd57a5626a3de843b9fa07279b08b",
+          "json_sha256": "3bf150123c7deb7d2e037394c4b50dff5f79d3cd91c928c0dfb399f6a55c09b7",
+          "runtime_test": "passed",
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@7.0-debug",
+            "version": "7.0.33",
+            "revision": 19,
+            "run_id": 39620743500,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12356630176,
+            "job_id": 119293236130,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "f820adf927c6b5b454f2aade46cba2147fb184b5bc985efb3a5d90381884bf10",
+            "archive": "php@7.0-debug--7.0.33_19.arm64_sequoia.bottle.1.tar.gz",
+            "sha256": "ed8327b63036020a6448cd800a9859182a0dd57a5626a3de843b9fa07279b08b",
+            "json_sha256": "3bf150123c7deb7d2e037394c4b50dff5f79d3cd91c928c0dfb399f6a55c09b7",
+            "log_sha256": "f4b27da96df0e0b70ea8cc249fdcfc9a01d9ff5e35b74136e4d9eb6c5081bb7e",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620743500/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:17:08.445557+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@7.0-debug",
+            "tag": "arm64_sequoia",
+            "run_id": 39620743500,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "f820adf927c6b5b454f2aade46cba2147fb184b5bc985efb3a5d90381884bf10",
+            "sha256": "ed8327b63036020a6448cd800a9859182a0dd57a5626a3de843b9fa07279b08b",
+            "artifact_id": 12356630176,
+            "verification_run": 39625960718,
+            "verification_job": 119311223008,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:41:38.038029+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223008.log",
+            "log_sha256": "cb56217f3a09a3f624766c1de45e44d8ee2f7d74a7c2c3a92a96f95662194efc",
+            "fresh_pour": "passed"
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -1024,30 +1172,58 @@
           "build_step_outcome": "success"
         },
         {
-          "tag": "arm64_sequoia",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39333633123",
-            "commit": "4f1c6659134e24d99df30d5d888f03b08b5904bf"
-          },
-          "archive": "php@7.0-debug--7.0.33_19.arm64_sequoia.bottle.1.tar.gz",
-          "sha256": "b0a977996516ac7f67cf8a2e99ee7ff12dbf8975b95fe38dced815ab33664065",
-          "json_sha256": "07901041d177e29d7e7dff914fd49e99d9bc59869dcbc6a625632882e93ac791",
-          "runtime_test": "passed",
-          "build_step_outcome": "success"
-        },
-        {
           "tag": "arm64_tahoe",
           "provenance": {
             "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39333633123",
-            "commit": "4f1c6659134e24d99df30d5d888f03b08b5904bf"
+            "run_id": "39620743500",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
           },
           "archive": "php@7.0-debug--7.0.33_19.arm64_tahoe.bottle.1.tar.gz",
-          "sha256": "3a325b0615d9834ea00ec65689d1dee1e01bcd98bd0c63c6651d5b2b562d79cc",
-          "json_sha256": "edec7539d99744b2a795cca2dc00ac7a3e073e865507063388ea26ef7de1a7ea",
+          "sha256": "7de6222181a2dd3c10c56d095077858e1d64a2c7926a3f8f7f114863a35a0c32",
+          "json_sha256": "9adafae5b93407c0d1249a594ab6f2e4a201da4e4b1469b56f1101c9dc48960c",
           "runtime_test": "passed",
-          "build_step_outcome": "success"
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@7.0-debug",
+            "version": "7.0.33",
+            "revision": 19,
+            "run_id": 39620743500,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_tahoe",
+            "artifact_id": 12355167983,
+            "job_id": 119293235957,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "712e1ba19fd09bc1772a4dae431b5cbec3d5f381f2446a403e2b1f3e159c1802",
+            "archive": "php@7.0-debug--7.0.33_19.arm64_tahoe.bottle.1.tar.gz",
+            "sha256": "7de6222181a2dd3c10c56d095077858e1d64a2c7926a3f8f7f114863a35a0c32",
+            "json_sha256": "9adafae5b93407c0d1249a594ab6f2e4a201da4e4b1469b56f1101c9dc48960c",
+            "log_sha256": "bf052a1c44789d572269ea2fdd456688f47fdac933eae635623dfa8608aedb84",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620743500/security-arm64_tahoe",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:17:12.507016+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@7.0-debug",
+            "tag": "arm64_tahoe",
+            "run_id": 39620743500,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "712e1ba19fd09bc1772a4dae431b5cbec3d5f381f2446a403e2b1f3e159c1802",
+            "sha256": "7de6222181a2dd3c10c56d095077858e1d64a2c7926a3f8f7f114863a35a0c32",
+            "artifact_id": 12355167983,
+            "verification_run": 39625960718,
+            "verification_job": 119311223001,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:41:38.038029+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223001.log",
+            "log_sha256": "eeaf601011eae904f00dd5c798c85c4620a212a64bc9e069496c2e6afb15711d",
+            "fresh_pour": "passed"
+          }
         },
         {
           "tag": "x86_64_linux",
@@ -2503,75 +2679,130 @@
       ]
     },
     {
-      "run_id": "39333641662",
+      "run_id": "39620757118",
       "formula": "php@7.2-zts",
       "version": "7.2.34",
       "revision": 9,
-      "commit": "4f1c6659134e24d99df30d5d888f03b08b5904bf",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39333641662",
+      "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39620757118",
       "assets": {
         "php@7.2-zts--7.2.34_9.arm64_golden_gate.bottle.1.tar.gz": {
-          "sha256": "d6d209263b299f9be8ebf034cdf3f261271555fff82908bd4eb46e53eec6d7d6",
+          "id": 662983156,
           "size": 19871596,
-          "id": 657793187
+          "sha256": "d6d209263b299f9be8ebf034cdf3f261271555fff82908bd4eb46e53eec6d7d6"
         },
         "php@7.2-zts--7.2.34_9.arm64_golden_gate.bottle.json": {
-          "sha256": "42d4e3345de4141c6c0e6e5985168bf6af0b9def18516cb8d4d17c90fdf187f5",
+          "id": 662983151,
           "size": 127947,
-          "id": 657793189
+          "sha256": "42d4e3345de4141c6c0e6e5985168bf6af0b9def18516cb8d4d17c90fdf187f5"
         },
         "php@7.2-zts--7.2.34_9.arm64_linux.bottle.1.tar.gz": {
-          "sha256": "12408c2ea07ee25eab3bb026308f3816c6e626e42a3e316469775db0e0999769",
+          "id": 662983139,
           "size": 24247083,
-          "id": 657793181
+          "sha256": "12408c2ea07ee25eab3bb026308f3816c6e626e42a3e316469775db0e0999769"
         },
         "php@7.2-zts--7.2.34_9.arm64_linux.bottle.json": {
-          "sha256": "7595877a9ca3062fb16feafbbb55a0b9850c68a874006878859256a1f0cf2168",
+          "id": 662983141,
           "size": 152911,
-          "id": 657793185
+          "sha256": "7595877a9ca3062fb16feafbbb55a0b9850c68a874006878859256a1f0cf2168"
         },
         "php@7.2-zts--7.2.34_9.arm64_sequoia.bottle.1.tar.gz": {
-          "sha256": "4c4a706fbd3debf6e24cf213aa45a003fa1890b1dbfdefbb2e6d55bd5fc9ca4d",
+          "id": 662983146,
           "size": 19933792,
-          "id": 657793180
+          "sha256": "4c4a706fbd3debf6e24cf213aa45a003fa1890b1dbfdefbb2e6d55bd5fc9ca4d"
         },
         "php@7.2-zts--7.2.34_9.arm64_sequoia.bottle.json": {
-          "sha256": "78cdebd16a6f51ed049fcde14d5f141510ccef4022b18082b81dc6126c753460",
+          "id": 662983195,
           "size": 127939,
-          "id": 657793204
+          "sha256": "78cdebd16a6f51ed049fcde14d5f141510ccef4022b18082b81dc6126c753460"
         },
         "php@7.2-zts--7.2.34_9.arm64_tahoe.bottle.1.tar.gz": {
-          "sha256": "541bf6ca01101706c623a98c5d21e41ab1796d830082333a1cc6c9a9b2e18c35",
-          "size": 19823099,
-          "id": 657793205
+          "id": 662983199,
+          "size": 19874095,
+          "sha256": "921b749a7b3a0e6976864d67b7fbe92325f93a29ad62b8676cc1c4e5c7a864ad"
         },
         "php@7.2-zts--7.2.34_9.arm64_tahoe.bottle.json": {
-          "sha256": "31b12e2b99d6286b9e872375040bbce17254e4eb2274d499f54344dfaccec50b",
-          "size": 128218,
-          "id": 657793225
+          "id": 662983232,
+          "size": 127974,
+          "sha256": "89f1a18433221eff2a57e251f9f787fb3c6a4fd1fe7771504adc4cdfc29565bb"
         },
         "php@7.2-zts--7.2.34_9.x86_64_linux.bottle.1.tar.gz": {
-          "sha256": "8726bb878ffe0abd518e4c9293b18e07bcadd41628124e33427592d7d9fb2d7c",
+          "id": 662983267,
           "size": 24789068,
-          "id": 657793233
+          "sha256": "8726bb878ffe0abd518e4c9293b18e07bcadd41628124e33427592d7d9fb2d7c"
         },
         "php@7.2-zts--7.2.34_9.x86_64_linux.bottle.json": {
-          "sha256": "6da0e860fda28468cebb9a42e7cff14522a13aadbab23e00314fbe3fc8fbf23e",
+          "id": 662983383,
           "size": 152916,
-          "id": 657793246
+          "sha256": "6da0e860fda28468cebb9a42e7cff14522a13aadbab23e00314fbe3fc8fbf23e"
         },
         "php@7.2-zts.rb": {
-          "sha256": "8d4c3903b7e65e3d34b4d01d4cb457575578db9c6fbb8b86dbe7dc35038ba8d0",
+          "id": 662983422,
           "size": 19659,
-          "id": 657793245
+          "sha256": "8d4c3903b7e65e3d34b4d01d4cb457575578db9c6fbb8b86dbe7dc35038ba8d0"
         },
         "security-build.json": {
-          "sha256": "693bf19a6f50451ac55364832465da3c94869318a6dd1c49607dd2f897b905c0",
-          "size": 966661,
-          "id": 657793254
+          "id": 662983456,
+          "size": 971317,
+          "sha256": "2a4d4b275434fecd7b8509cf6513dfb42400df19ce613e24549f3090f2cf625c"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_tahoe",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39620757118",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
+          },
+          "archive": "php@7.2-zts--7.2.34_9.arm64_tahoe.bottle.1.tar.gz",
+          "sha256": "921b749a7b3a0e6976864d67b7fbe92325f93a29ad62b8676cc1c4e5c7a864ad",
+          "json_sha256": "89f1a18433221eff2a57e251f9f787fb3c6a4fd1fe7771504adc4cdfc29565bb",
+          "runtime_test": "passed",
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@7.2-zts",
+            "version": "7.2.34",
+            "revision": 9,
+            "run_id": 39620757118,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_tahoe",
+            "artifact_id": 12355832007,
+            "job_id": 119293278570,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "54124c8649412a391ab6b9a13aaf0a04f3d0d5353d6533b1f723c3b04d80fcfc",
+            "archive": "php@7.2-zts--7.2.34_9.arm64_tahoe.bottle.1.tar.gz",
+            "sha256": "921b749a7b3a0e6976864d67b7fbe92325f93a29ad62b8676cc1c4e5c7a864ad",
+            "json_sha256": "89f1a18433221eff2a57e251f9f787fb3c6a4fd1fe7771504adc4cdfc29565bb",
+            "log_sha256": "235d12e916c40b6a6d1c8a5b3137ede62fb9def516bc16cc181731de49874fdb",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620757118/security-arm64_tahoe",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:17:17.980183+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@7.2-zts",
+            "tag": "arm64_tahoe",
+            "run_id": 39620757118,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "54124c8649412a391ab6b9a13aaf0a04f3d0d5353d6533b1f723c3b04d80fcfc",
+            "sha256": "921b749a7b3a0e6976864d67b7fbe92325f93a29ad62b8676cc1c4e5c7a864ad",
+            "artifact_id": 12355832007,
+            "verification_run": 39625960718,
+            "verification_job": 119311223135,
+            "job_conclusion": null,
+            "observed_at": "2026-10-21T15:42:58.620295+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223135.log",
+            "log_sha256": "eed4c3aa41585d395b29d2e94150bcc338f4cf8a4247596bc6f787c612e06523",
+            "fresh_pour": "passed",
+            "metadata_status_lag": true
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -2608,19 +2839,6 @@
           "archive": "php@7.2-zts--7.2.34_9.arm64_sequoia.bottle.1.tar.gz",
           "sha256": "4c4a706fbd3debf6e24cf213aa45a003fa1890b1dbfdefbb2e6d55bd5fc9ca4d",
           "json_sha256": "78cdebd16a6f51ed049fcde14d5f141510ccef4022b18082b81dc6126c753460",
-          "runtime_test": "passed",
-          "build_step_outcome": "success"
-        },
-        {
-          "tag": "arm64_tahoe",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39333641662",
-            "commit": "4f1c6659134e24d99df30d5d888f03b08b5904bf"
-          },
-          "archive": "php@7.2-zts--7.2.34_9.arm64_tahoe.bottle.1.tar.gz",
-          "sha256": "541bf6ca01101706c623a98c5d21e41ab1796d830082333a1cc6c9a9b2e18c35",
-          "json_sha256": "31b12e2b99d6286b9e872375040bbce17254e4eb2274d499f54344dfaccec50b",
           "runtime_test": "passed",
           "build_step_outcome": "success"
         },
@@ -7337,75 +7555,142 @@
       ]
     },
     {
-      "run_id": "39308016372",
+      "run_id": "39625871995",
       "formula": "php@8.3-zts",
       "version": "8.3.36",
       "revision": 0,
-      "commit": "9c764842527a3201f569cfc517143a0181ff221e",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39308016372",
+      "commit": "7eebe94f93a23759663ef62987094657b511ac84",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39625871995",
       "assets": {
         "php@8.3-zts--8.3.36.arm64_golden_gate.bottle.json": {
-          "sha256": "f79f1428790fc0298183aa20bf2da64baaca8092497131c9c87b03ad34198c4f",
+          "id": 662983168,
           "size": 122630,
-          "id": 657321649
+          "sha256": "f79f1428790fc0298183aa20bf2da64baaca8092497131c9c87b03ad34198c4f"
         },
         "php@8.3-zts--8.3.36.arm64_golden_gate.bottle.tar.gz": {
-          "sha256": "15ed370e5e519172652afc5ed32b493c906b3796dc4ed822b6db6a4b13c3f9da",
+          "id": 662983169,
           "size": 25597609,
-          "id": 657321650
+          "sha256": "15ed370e5e519172652afc5ed32b493c906b3796dc4ed822b6db6a4b13c3f9da"
         },
         "php@8.3-zts--8.3.36.arm64_linux.bottle.json": {
-          "sha256": "eb8ef3fbb8ca90ad81d6437cbf6cc16823a7918d81e2bc3f14bfb15ea77fe443",
+          "id": 662983175,
           "size": 179327,
-          "id": 657321643
+          "sha256": "eb8ef3fbb8ca90ad81d6437cbf6cc16823a7918d81e2bc3f14bfb15ea77fe443"
         },
         "php@8.3-zts--8.3.36.arm64_linux.bottle.tar.gz": {
-          "sha256": "b55a14f3427dc314723f5f0d7b009b45bd75de70d0d09a2044348f297a01071d",
+          "id": 662983174,
           "size": 32049232,
-          "id": 657321637
+          "sha256": "b55a14f3427dc314723f5f0d7b009b45bd75de70d0d09a2044348f297a01071d"
         },
         "php@8.3-zts--8.3.36.arm64_sequoia.bottle.json": {
-          "sha256": "b903f21f6424ebea435a501553bfea6cb94632763025e7270ae2e72b9403e5c4",
-          "size": 123079,
-          "id": 657321640
+          "id": 662983173,
+          "size": 122622,
+          "sha256": "5c57bacc34d1768e18cf3371248183005857a23378f3eb895add3b6d69ecc43a"
         },
         "php@8.3-zts--8.3.36.arm64_sequoia.bottle.tar.gz": {
-          "sha256": "2e674f149c31bb44e2412d5c152b9688d5d223c72fd9c095d288ec2559ec8b57",
-          "size": 25579113,
-          "id": 657321660
+          "id": 662983211,
+          "size": 25640268,
+          "sha256": "074d3f0d7867d84d09c57a64111d68cf160d2d50240dc6def37fcbfc5f048451"
         },
         "php@8.3-zts--8.3.36.arm64_tahoe.bottle.json": {
-          "sha256": "fdf3da0f2c093e09b1815c893944523c7f1c2b342f59c78033a348e78e1de29b",
+          "id": 662983217,
           "size": 122616,
-          "id": 657321662
+          "sha256": "fdf3da0f2c093e09b1815c893944523c7f1c2b342f59c78033a348e78e1de29b"
         },
         "php@8.3-zts--8.3.36.arm64_tahoe.bottle.tar.gz": {
-          "sha256": "ac5b715ab580b83b2c5acd1946212dcc9b87942020b41865b3fcf44a88f37d3b",
+          "id": 662983219,
           "size": 25591853,
-          "id": 657321702
+          "sha256": "ac5b715ab580b83b2c5acd1946212dcc9b87942020b41865b3fcf44a88f37d3b"
         },
         "php@8.3-zts--8.3.36.x86_64_linux.bottle.json": {
-          "sha256": "57bdb19f0d511e42c5c5d4cfb648feafc1dbeddbb6e13b3cdf7b857be26de4b9",
+          "id": 662983256,
           "size": 179332,
-          "id": 657321705
+          "sha256": "57bdb19f0d511e42c5c5d4cfb648feafc1dbeddbb6e13b3cdf7b857be26de4b9"
         },
         "php@8.3-zts--8.3.36.x86_64_linux.bottle.tar.gz": {
-          "sha256": "d8f6a34c2a5c3d0025820dc2eaebd07997538fa37342a2abd800827d7ce5011c",
+          "id": 662983290,
           "size": 32302969,
-          "id": 657321760
+          "sha256": "d8f6a34c2a5c3d0025820dc2eaebd07997538fa37342a2abd800827d7ce5011c"
         },
         "php@8.3-zts.rb": {
-          "sha256": "4ea35262a07fb78ed19765d229d89fe763d444efb1d73415a1db45cbda071ea7",
+          "id": 662983702,
           "size": 18403,
-          "id": 657322010
+          "sha256": "4ea35262a07fb78ed19765d229d89fe763d444efb1d73415a1db45cbda071ea7"
         },
         "security-build.json": {
-          "sha256": "fd542080a19d444dabd4aeed79c20a6a0b29dc930a3535361f9cee4273c1988e",
-          "size": 1001527,
-          "id": 657322033
+          "id": 662983708,
+          "size": 1005394,
+          "sha256": "f89e358cc9dc2383cfcc33b188cf1b8bafe349041ca36666d8baeb64c949d05a"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_sequoia",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39625871995",
+            "commit": "7eebe94f93a23759663ef62987094657b511ac84"
+          },
+          "archive": "php@8.3-zts--8.3.36.arm64_sequoia.bottle.tar.gz",
+          "sha256": "074d3f0d7867d84d09c57a64111d68cf160d2d50240dc6def37fcbfc5f048451",
+          "json_sha256": "5c57bacc34d1768e18cf3371248183005857a23378f3eb895add3b6d69ecc43a",
+          "runtime_test": "passed",
+          "build_step_outcome": "success",
+          "post_test_failure": {
+            "formula": "php@8.3-zts",
+            "version": "8.3.36",
+            "revision": 0,
+            "run_id": 39625871995,
+            "commit": "7eebe94f93a23759663ef62987094657b511ac84",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12356789201,
+            "job_id": 119310948176,
+            "attempt": 1,
+            "job_conclusion": "success",
+            "runtime_test": "passed",
+            "post_test_failure": null,
+            "fresh_pour": "pending",
+            "build_sha256": "009b2707dd4db512433b07b99c37a124f56e4b2f53fb81f6f47078103e840444",
+            "archive": "php@8.3-zts--8.3.36.arm64_sequoia.bottle.tar.gz",
+            "sha256": "074d3f0d7867d84d09c57a64111d68cf160d2d50240dc6def37fcbfc5f048451",
+            "json_sha256": "5c57bacc34d1768e18cf3371248183005857a23378f3eb895add3b6d69ecc43a",
+            "log_sha256": "5b5aec296c3ed17a6f64a9f009b96aaa1428f77cb910269278aac5c2ed5f787a",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39625871995/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:42:20.996707+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@8.3-zts",
+            "version": "8.3.36",
+            "revision": 0,
+            "run_id": 39625871995,
+            "commit": "7eebe94f93a23759663ef62987094657b511ac84",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12356789201,
+            "job_id": 119310948176,
+            "attempt": 1,
+            "job_conclusion": "success",
+            "runtime_test": "passed",
+            "post_test_failure": null,
+            "fresh_pour": "passed",
+            "build_sha256": "009b2707dd4db512433b07b99c37a124f56e4b2f53fb81f6f47078103e840444",
+            "archive": "php@8.3-zts--8.3.36.arm64_sequoia.bottle.tar.gz",
+            "sha256": "074d3f0d7867d84d09c57a64111d68cf160d2d50240dc6def37fcbfc5f048451",
+            "json_sha256": "5c57bacc34d1768e18cf3371248183005857a23378f3eb895add3b6d69ecc43a",
+            "log_sha256": "5b5aec296c3ed17a6f64a9f009b96aaa1428f77cb910269278aac5c2ed5f787a",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39625871995/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:43:20.692596+00:00",
+            "verification_run": 39625871995,
+            "verification_job": 119310948176,
+            "verification_kind": "successful original build followed by isolated second pour",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-job-119310948176.log"
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -7429,19 +7714,6 @@
           "archive": "php@8.3-zts--8.3.36.arm64_linux.bottle.tar.gz",
           "sha256": "b55a14f3427dc314723f5f0d7b009b45bd75de70d0d09a2044348f297a01071d",
           "json_sha256": "eb8ef3fbb8ca90ad81d6437cbf6cc16823a7918d81e2bc3f14bfb15ea77fe443",
-          "runtime_test": "passed",
-          "build_step_outcome": null
-        },
-        {
-          "tag": "arm64_sequoia",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39308016372",
-            "commit": "9c764842527a3201f569cfc517143a0181ff221e"
-          },
-          "archive": "php@8.3-zts--8.3.36.arm64_sequoia.bottle.tar.gz",
-          "sha256": "2e674f149c31bb44e2412d5c152b9688d5d223c72fd9c095d288ec2559ec8b57",
-          "json_sha256": "b903f21f6424ebea435a501553bfea6cb94632763025e7270ae2e72b9403e5c4",
           "runtime_test": "passed",
           "build_step_outcome": null
         },
@@ -7484,75 +7756,129 @@
       }
     },
     {
-      "run_id": "39308016784",
+      "run_id": "39620762684",
       "formula": "php@8.4",
       "version": "8.4.27",
       "revision": 0,
-      "commit": "9c764842527a3201f569cfc517143a0181ff221e",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39308016784",
+      "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39620762684",
       "assets": {
         "php@8.4--8.4.27.arm64_golden_gate.bottle.json": {
-          "sha256": "b3f470228d25bda2c3c62d0bf763fb29044a2f99a3800241afae1f090050fe29",
+          "id": 662969164,
           "size": 122813,
-          "id": 657322568
+          "sha256": "b3f470228d25bda2c3c62d0bf763fb29044a2f99a3800241afae1f090050fe29"
         },
         "php@8.4--8.4.27.arm64_golden_gate.bottle.tar.gz": {
-          "sha256": "8aedd0ad51e65eff86ed144079c80322cbe0c63ca515244f04ef1714542674fc",
+          "id": 662969160,
           "size": 28841435,
-          "id": 657322571
+          "sha256": "8aedd0ad51e65eff86ed144079c80322cbe0c63ca515244f04ef1714542674fc"
         },
         "php@8.4--8.4.27.arm64_linux.bottle.json": {
-          "sha256": "14f915c299a06ed8936754ae3b4f347bcec25bfb6b8a99d56dfcf0e77c294d05",
+          "id": 662969157,
           "size": 174850,
-          "id": 657322570
+          "sha256": "14f915c299a06ed8936754ae3b4f347bcec25bfb6b8a99d56dfcf0e77c294d05"
         },
         "php@8.4--8.4.27.arm64_linux.bottle.tar.gz": {
-          "sha256": "d38e93eef9a9f23f0d3b6ea064e8b7cb1cb0a992da97c4982370030dbe2fc97f",
+          "id": 662969154,
           "size": 30398693,
-          "id": 657322572
+          "sha256": "d38e93eef9a9f23f0d3b6ea064e8b7cb1cb0a992da97c4982370030dbe2fc97f"
         },
         "php@8.4--8.4.27.arm64_sequoia.bottle.json": {
-          "sha256": "aaa15ab6906ec16c6c1b5bb269645d649c50d5c376105e9bf3e484ba38f2c2cc",
-          "size": 123109,
-          "id": 657322588
+          "id": 662969158,
+          "size": 122848,
+          "sha256": "f850d7d7960c2121ab9b95783d3ed0ba036841ef0be32c22d28952cd43e574c6"
         },
         "php@8.4--8.4.27.arm64_sequoia.bottle.tar.gz": {
-          "sha256": "c16cbd6f7d6e0f5e6d2651be122b4e060bfa4f8184753fc081769dfc7fdc4cd2",
-          "size": 28787736,
-          "id": 657322632
+          "id": 662969185,
+          "size": 28846995,
+          "sha256": "443646074ab723e60d8d0a47b2196bac9c1cd061efaaf050b92a8da30ac1fac0"
         },
         "php@8.4--8.4.27.arm64_tahoe.bottle.json": {
-          "sha256": "00bac570faa4561d3f1c753c68d026421c2fc94ed5d0520f5574a09b34a1873c",
-          "size": 123103,
-          "id": 657322635
+          "id": 662969196,
+          "size": 122840,
+          "sha256": "44a2c24fd74c8f8f0f0d9f75a377a59d980550ada37fafc74a3582b4151bbef4"
         },
         "php@8.4--8.4.27.arm64_tahoe.bottle.tar.gz": {
-          "sha256": "9bc954a3183707a3b0890e330022fad7d5479bbaa26b30445a7185a1a634ed7b",
-          "size": 28787532,
-          "id": 657322640
+          "id": 662969198,
+          "size": 28845708,
+          "sha256": "f68351ce3df01e775ca236114ada5e891c5a7fc5c72f2d80b6f8ecad525dfe6b"
         },
         "php@8.4--8.4.27.x86_64_linux.bottle.json": {
-          "sha256": "0625d7491a54cd78367cc5c0adda5e80b67b0874bcbcbf2b844932fad5c478f2",
+          "id": 662969236,
           "size": 174855,
-          "id": 657322677
+          "sha256": "0625d7491a54cd78367cc5c0adda5e80b67b0874bcbcbf2b844932fad5c478f2"
         },
         "php@8.4--8.4.27.x86_64_linux.bottle.tar.gz": {
-          "sha256": "dcb1621be648039a7e2ca7fde62618eade3e68582c7815b2a2219bb72fdfb5d4",
+          "id": 662969272,
           "size": 31122397,
-          "id": 657322698
+          "sha256": "dcb1621be648039a7e2ca7fde62618eade3e68582c7815b2a2219bb72fdfb5d4"
         },
         "php@8.4.rb": {
-          "sha256": "adce221fcb84816c812ed036d6c3ddb4d078fe9dc753c80a50364430b9a59a42",
+          "id": 662969509,
           "size": 17227,
-          "id": 657323075
+          "sha256": "adce221fcb84816c812ed036d6c3ddb4d078fe9dc753c80a50364430b9a59a42"
         },
         "security-build.json": {
-          "sha256": "2aac4c8facbd1db3d2942b8d60b71265113bffa487a445765bf27bb77e6d53a6",
-          "size": 991442,
-          "id": 657323087
+          "id": 662969548,
+          "size": 999665,
+          "sha256": "96d3d2b54b84107a687b91370e67ee5578023a3e372d303f1d6e5c5ad1a08ca0"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_sequoia",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39620762684",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
+          },
+          "archive": "php@8.4--8.4.27.arm64_sequoia.bottle.tar.gz",
+          "sha256": "443646074ab723e60d8d0a47b2196bac9c1cd061efaaf050b92a8da30ac1fac0",
+          "json_sha256": "f850d7d7960c2121ab9b95783d3ed0ba036841ef0be32c22d28952cd43e574c6",
+          "runtime_test": "passed",
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@8.4",
+            "version": "8.4.27",
+            "revision": 0,
+            "run_id": 39620762684,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12356294648,
+            "job_id": 119293316507,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "875e42f5f3a9ad675e3018eda9d80959cc4951e1a493c9ee6cb30c7365b8340c",
+            "archive": "php@8.4--8.4.27.arm64_sequoia.bottle.tar.gz",
+            "sha256": "443646074ab723e60d8d0a47b2196bac9c1cd061efaaf050b92a8da30ac1fac0",
+            "json_sha256": "f850d7d7960c2121ab9b95783d3ed0ba036841ef0be32c22d28952cd43e574c6",
+            "log_sha256": "fee5efba97e8b8951ccbc8c83a07caed79b24201ee5a4f1dbb586c5336b6c9d1",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620762684/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:27:26.656941+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@8.4",
+            "tag": "arm64_sequoia",
+            "run_id": 39620762684,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "875e42f5f3a9ad675e3018eda9d80959cc4951e1a493c9ee6cb30c7365b8340c",
+            "sha256": "443646074ab723e60d8d0a47b2196bac9c1cd061efaaf050b92a8da30ac1fac0",
+            "artifact_id": 12356294648,
+            "verification_run": 39625960718,
+            "verification_job": 119311223030,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:38:08.784488+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223030.log",
+            "log_sha256": "33f828628407cc3da0bb63ddd3e18774869ca09e70a16b8414dc2e36201bd095",
+            "fresh_pour": "passed"
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -7580,30 +7906,58 @@
           "build_step_outcome": null
         },
         {
-          "tag": "arm64_sequoia",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39308016784",
-            "commit": "9c764842527a3201f569cfc517143a0181ff221e"
-          },
-          "archive": "php@8.4--8.4.27.arm64_sequoia.bottle.tar.gz",
-          "sha256": "c16cbd6f7d6e0f5e6d2651be122b4e060bfa4f8184753fc081769dfc7fdc4cd2",
-          "json_sha256": "aaa15ab6906ec16c6c1b5bb269645d649c50d5c376105e9bf3e484ba38f2c2cc",
-          "runtime_test": "passed",
-          "build_step_outcome": null
-        },
-        {
           "tag": "arm64_tahoe",
           "provenance": {
             "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39308016784",
-            "commit": "9c764842527a3201f569cfc517143a0181ff221e"
+            "run_id": "39620762684",
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc"
           },
           "archive": "php@8.4--8.4.27.arm64_tahoe.bottle.tar.gz",
-          "sha256": "9bc954a3183707a3b0890e330022fad7d5479bbaa26b30445a7185a1a634ed7b",
-          "json_sha256": "00bac570faa4561d3f1c753c68d026421c2fc94ed5d0520f5574a09b34a1873c",
+          "sha256": "f68351ce3df01e775ca236114ada5e891c5a7fc5c72f2d80b6f8ecad525dfe6b",
+          "json_sha256": "44a2c24fd74c8f8f0f0d9f75a377a59d980550ada37fafc74a3582b4151bbef4",
           "runtime_test": "passed",
-          "build_step_outcome": null
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@8.4",
+            "version": "8.4.27",
+            "revision": 0,
+            "run_id": 39620762684,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "tag": "arm64_tahoe",
+            "artifact_id": 12355709814,
+            "job_id": 119293315669,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test formula-name overwrite",
+            "fresh_pour": "pending",
+            "build_sha256": "1977b958d42627d8968af34adc280272b33f61949c420c8c3603bedf9aba102c",
+            "archive": "php@8.4--8.4.27.arm64_tahoe.bottle.tar.gz",
+            "sha256": "f68351ce3df01e775ca236114ada5e891c5a7fc5c72f2d80b6f8ecad525dfe6b",
+            "json_sha256": "44a2c24fd74c8f8f0f0d9f75a377a59d980550ada37fafc74a3582b4151bbef4",
+            "log_sha256": "0710fdf6c7931ba7818002e8e91a685dc9d664ec909fcd5e7e3c2124ba5fc344",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39620762684/security-arm64_tahoe",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:27:22.728086+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@8.4",
+            "tag": "arm64_tahoe",
+            "run_id": 39620762684,
+            "commit": "86402a0eb98145674ec8d33cfb33423a948b1adc",
+            "build_sha256": "1977b958d42627d8968af34adc280272b33f61949c420c8c3603bedf9aba102c",
+            "sha256": "f68351ce3df01e775ca236114ada5e891c5a7fc5c72f2d80b6f8ecad525dfe6b",
+            "artifact_id": 12355709814,
+            "verification_run": 39625960718,
+            "verification_job": 119311223011,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:38:08.784488+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119311223011.log",
+            "log_sha256": "acf793db02c10f10ee9ad19dc58fbe69d6c66a99be6236e43ddb1638a0df7ecd",
+            "fresh_pour": "passed"
+          }
         },
         {
           "tag": "x86_64_linux",
@@ -7819,75 +8173,129 @@
       }
     },
     {
-      "run_id": "39308016500",
+      "run_id": "39623717013",
       "formula": "php@8.4-debug-zts",
       "version": "8.4.27",
       "revision": 0,
-      "commit": "9c764842527a3201f569cfc517143a0181ff221e",
-      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39308016500",
+      "commit": "2257c044a134372d58396f3f8fd9b07b81e6daa6",
+      "url": "https://github.com/shivammathur/homebrew-php-security/releases/tag/security-build-39623717013",
       "assets": {
         "php@8.4-debug-zts--8.4.27.arm64_golden_gate.bottle.json": {
-          "sha256": "c87f06aae60d9f1e997ec16d3a9bd9b973e1a8d14910d10dfb5b1ab841bbe1c5",
+          "id": 662978612,
           "size": 127629,
-          "id": 657258186
+          "sha256": "c87f06aae60d9f1e997ec16d3a9bd9b973e1a8d14910d10dfb5b1ab841bbe1c5"
         },
         "php@8.4-debug-zts--8.4.27.arm64_golden_gate.bottle.tar.gz": {
-          "sha256": "4a0cf57fd519bc8c9457b47f7806c177f5e5b0304f4f83c0535fdf37d9de194e",
+          "id": 662978610,
           "size": 33367622,
-          "id": 657258190
+          "sha256": "4a0cf57fd519bc8c9457b47f7806c177f5e5b0304f4f83c0535fdf37d9de194e"
         },
         "php@8.4-debug-zts--8.4.27.arm64_linux.bottle.json": {
-          "sha256": "9b94ac5a9946ba8b2b994f4b4ae72ff1ea4822d45f3f96a4c2b1a0183674392d",
+          "id": 662978613,
           "size": 185549,
-          "id": 657258175
+          "sha256": "9b94ac5a9946ba8b2b994f4b4ae72ff1ea4822d45f3f96a4c2b1a0183674392d"
         },
         "php@8.4-debug-zts--8.4.27.arm64_linux.bottle.tar.gz": {
-          "sha256": "fee5b90b792f782ecaa81ef35a43ec5195b01aad7baeca79eddc900cdb784ebd",
+          "id": 662978609,
           "size": 40702917,
-          "id": 657258188
+          "sha256": "fee5b90b792f782ecaa81ef35a43ec5195b01aad7baeca79eddc900cdb784ebd"
         },
         "php@8.4-debug-zts--8.4.27.arm64_sequoia.bottle.json": {
-          "sha256": "46adf34ea7e49f14f810ba62ba1b726df4b01362c3705d95cb2eca03b2b04d23",
-          "size": 128054,
-          "id": 657258182
+          "id": 662978608,
+          "size": 127621,
+          "sha256": "886955febc43a08fa3c6e60a50d10763dd65b937796f7849a4acf71fc049816c"
         },
         "php@8.4-debug-zts--8.4.27.arm64_sequoia.bottle.tar.gz": {
-          "sha256": "27546d4dbd3318ab8415bbd8beb640f2e968db9279d150e5d8af4aa458aeab2d",
-          "size": 33252514,
-          "id": 657258211
+          "id": 662978645,
+          "size": 33299578,
+          "sha256": "391c4e2c0ecaa4102057b41a67870053d2b3fe060fdc7ce7a7ae003bdd33e790"
         },
         "php@8.4-debug-zts--8.4.27.arm64_tahoe.bottle.json": {
-          "sha256": "fb692472a329ab83af406d4b04438f2cd8568a90a7732ca3c4ed26332caa87ec",
+          "id": 662978644,
           "size": 127615,
-          "id": 657258214
+          "sha256": "fb692472a329ab83af406d4b04438f2cd8568a90a7732ca3c4ed26332caa87ec"
         },
         "php@8.4-debug-zts--8.4.27.arm64_tahoe.bottle.tar.gz": {
-          "sha256": "076042e27b937122b7a30a51bd3e6a78da3fe084fd9ae75ae86fd62129ca7907",
+          "id": 662978650,
           "size": 33354536,
-          "id": 657258234
+          "sha256": "076042e27b937122b7a30a51bd3e6a78da3fe084fd9ae75ae86fd62129ca7907"
         },
         "php@8.4-debug-zts--8.4.27.x86_64_linux.bottle.json": {
-          "sha256": "d92204e9369630ca7e740c95b5b4754a7b2864bdbfbb5caf524979348d250bdc",
+          "id": 662978681,
           "size": 185552,
-          "id": 657258263
+          "sha256": "d92204e9369630ca7e740c95b5b4754a7b2864bdbfbb5caf524979348d250bdc"
         },
         "php@8.4-debug-zts--8.4.27.x86_64_linux.bottle.tar.gz": {
-          "sha256": "3cb866fd56b53f9edc1f3c06118d35c41b84340c77c518cc2c39179d2f635351",
+          "id": 662978727,
           "size": 41707491,
-          "id": 657258322
+          "sha256": "3cb866fd56b53f9edc1f3c06118d35c41b84340c77c518cc2c39179d2f635351"
         },
         "php@8.4-debug-zts.rb": {
-          "sha256": "c7ce5dd63f88d8524b9591e38df9671f18bbc78f090cacd986d5a244af1bc7fa",
+          "id": 662979168,
           "size": 16963,
-          "id": 657258350
+          "sha256": "c7ce5dd63f88d8524b9591e38df9671f18bbc78f090cacd986d5a244af1bc7fa"
         },
         "security-build.json": {
-          "sha256": "90031e4b336eb5709aa7a7ee200b495b5748ab1f5fa18c2924882c7a69d276c9",
-          "size": 1046821,
-          "id": 657258370
+          "id": 662979193,
+          "size": 1050790,
+          "sha256": "363cabd27a62a37de47c7f786ac7a65ee36c219f3331dca602d33ad774cfc675"
         }
       },
       "platforms": [
+        {
+          "tag": "arm64_sequoia",
+          "provenance": {
+            "repository": "shivammathur/homebrew-php-security",
+            "run_id": "39623717013",
+            "commit": "2257c044a134372d58396f3f8fd9b07b81e6daa6"
+          },
+          "archive": "php@8.4-debug-zts--8.4.27.arm64_sequoia.bottle.tar.gz",
+          "sha256": "391c4e2c0ecaa4102057b41a67870053d2b3fe060fdc7ce7a7ae003bdd33e790",
+          "json_sha256": "886955febc43a08fa3c6e60a50d10763dd65b937796f7849a4acf71fc049816c",
+          "runtime_test": "passed",
+          "build_step_outcome": "failure",
+          "post_test_failure": {
+            "formula": "php@8.4-debug-zts",
+            "version": "8.4.27",
+            "revision": 0,
+            "run_id": 39623717013,
+            "commit": "2257c044a134372d58396f3f8fd9b07b81e6daa6",
+            "tag": "arm64_sequoia",
+            "artifact_id": 12357545484,
+            "job_id": 119303663225,
+            "attempt": 1,
+            "job_conclusion": "failure",
+            "runtime_test": "passed",
+            "post_test_failure": "post-test local bottle path disabled",
+            "fresh_pour": "pending",
+            "build_sha256": "398579ff850d2efc57e8f0d50c5727406b6945525689cba506d20daaefe366cd",
+            "archive": "php@8.4-debug-zts--8.4.27.arm64_sequoia.bottle.tar.gz",
+            "sha256": "391c4e2c0ecaa4102057b41a67870053d2b3fe060fdc7ce7a7ae003bdd33e790",
+            "json_sha256": "886955febc43a08fa3c6e60a50d10763dd65b937796f7849a4acf71fc049816c",
+            "log_sha256": "e0a62b7579017f36fe4d7ae6b5944e3f745c3d292445550670b71a51751389a3",
+            "stage": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-artifacts/39623717013/security-arm64_sequoia",
+            "provenance": "verified",
+            "required_configs": "verified",
+            "inventory": "verified",
+            "verified_at": "2026-10-21T15:30:40.351014+00:00"
+          },
+          "fresh_pour": {
+            "formula": "php@8.4-debug-zts",
+            "tag": "arm64_sequoia",
+            "run_id": 39623717013,
+            "commit": "2257c044a134372d58396f3f8fd9b07b81e6daa6",
+            "build_sha256": "398579ff850d2efc57e8f0d50c5727406b6945525689cba506d20daaefe366cd",
+            "sha256": "391c4e2c0ecaa4102057b41a67870053d2b3fe060fdc7ce7a7ae003bdd33e790",
+            "artifact_id": 12357545484,
+            "verification_run": 39626378213,
+            "verification_job": 119312692330,
+            "job_conclusion": "success",
+            "observed_at": "2026-10-21T15:40:29.819131+00:00",
+            "log": "/Users/shivammathur/php/homebrew-php-security-work/validation/publication-20261021/configuration-pour-job-119312692330.log",
+            "log_sha256": "f153c0d56d55158a3888b161bde98db96678882f6e33a1720d73dde96faadf90",
+            "fresh_pour": "passed"
+          }
+        },
         {
           "tag": "arm64_golden_gate",
           "provenance": {
@@ -7911,19 +8319,6 @@
           "archive": "php@8.4-debug-zts--8.4.27.arm64_linux.bottle.tar.gz",
           "sha256": "fee5b90b792f782ecaa81ef35a43ec5195b01aad7baeca79eddc900cdb784ebd",
           "json_sha256": "9b94ac5a9946ba8b2b994f4b4ae72ff1ea4822d45f3f96a4c2b1a0183674392d",
-          "runtime_test": "passed",
-          "build_step_outcome": null
-        },
-        {
-          "tag": "arm64_sequoia",
-          "provenance": {
-            "repository": "shivammathur/homebrew-php-security",
-            "run_id": "39308016500",
-            "commit": "9c764842527a3201f569cfc517143a0181ff221e"
-          },
-          "archive": "php@8.4-debug-zts--8.4.27.arm64_sequoia.bottle.tar.gz",
-          "sha256": "27546d4dbd3318ab8415bbd8beb640f2e968db9279d150e5d8af4aa458aeab2d",
-          "json_sha256": "46adf34ea7e49f14f810ba62ba1b726df4b01362c3705d95cb2eca03b2b04d23",
           "runtime_test": "passed",
           "build_step_outcome": null
         },

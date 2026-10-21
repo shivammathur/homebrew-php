@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import random
+import re
 import subprocess
 import time
 from types import SimpleNamespace
@@ -39,6 +40,64 @@ def one(args):
     s.PUBLIC_REPO, s.PUBLIC_TAP, s.ROOT_URL = repo, tap, root
     return catalog, rows[0], repo, tap, root
 
+
+def prepare_configuration_repair(row, tap):
+    proof = row.get("configuration_repair")
+    if proof is None:
+        return None
+    s.require(row["formula"] in {"php@5.6", "php@5.6-debug"} and row["version"] == "5.6.40",
+              "Unexpected configuration repair target")
+    s.require(set(proof) == {"formula_sha256", "from_rebuild", "rebuild", "reason"} and
+              proof["reason"] == "restore missing default configuration" and
+              type(proof["from_rebuild"]) is int and type(proof["rebuild"]) is int and
+              proof["rebuild"] == proof["from_rebuild"] + 1, "Invalid configuration repair proof")
+    file = tap / "Formula" / (row["formula"] + ".rb")
+    current = file.read_text()
+    s.require(s.digest(current.encode()) == proof["formula_sha256"], "Published formula changed before repair")
+    block = re.search(r"\n  bottle do\n.*?\n  end\n", current, re.S)
+    revision = re.search(r"^  revision (\d+)$", current, re.M)
+    version = re.search(r'^  version "([^"]+)"$', current, re.M)
+    rebuild = re.search(r"^    rebuild (\d+)$", block[0] if block else "", re.M)
+    s.require(block and revision and int(revision[1]) == row["revision"] and
+              version and version[1] == row["version"] and
+              (int(rebuild[1]) if rebuild else 0) == proof["from_rebuild"], "Repair version/revision/rebuild mismatch")
+    # Promotion now sees the same pinned source recipe without its obsolete bottle block.
+    # Formula revision and source bytes remain unchanged; the new package tag is distinct.
+    file.write_text(current[:block.start()] + current[block.end():])
+    return proof
+
+
+def rename_configuration_repair(output, formula, proof):
+    if proof is None:
+        return
+    documents = sorted(output.glob("*.bottle.json"))
+    s.require(len(documents) == 5, "Repair needs all five bottles")
+    seen = set()
+    for path in documents:
+        document = s.read_json(path)
+        entry = document[s.PUBLIC_TAP + "/" + formula]
+        s.require(set(entry["bottle"]["tags"]).isdisjoint(seen), "Duplicate repair platform")
+        seen.update(entry["bottle"]["tags"])
+        s.require(entry["bottle"].get("rebuild", 0) < proof["rebuild"], "Repair must use a new bottle rebuild tag")
+        for info in entry["bottle"]["tags"].values():
+            old = output / s.basename(info["local_filename"])
+            def rename(value):
+                result, count = re.subn(r"\.bottle(?:\.\d+)?\.tar\.gz$",
+                                        ".bottle." + str(proof["rebuild"]) + ".tar.gz", value)
+                s.require(count == 1, "Invalid repair bottle filename")
+                return result
+            new = output / s.basename(rename(info["local_filename"]))
+            s.require(not new.exists() and s.file_digest(old) == info["sha256"], "Repair bottle changed or destination exists")
+            old.rename(new)
+            sbom = output / (old.name + ".spdx.json")
+            if sbom.exists():
+                sbom.rename(output / (new.name + ".spdx.json"))
+            s.require(s.file_digest(new) == info["sha256"], "Repair renamed bottle bytes changed")
+            info["local_filename"] = new.name
+            info["filename"] = rename(info["filename"])
+        entry["bottle"]["rebuild"] = proof["rebuild"]
+        s.write_json(path, document)
+    s.require(seen == batch.PLATFORMS, "Repair platform matrix is incomplete")
 
 def push_history(tap, message):
     """Preserve embedded recipe commits and merge only disjoint concurrent writes."""
@@ -93,16 +152,18 @@ def publish(args):
     equivalence_path = batch.HERE / "security-publication/public-source-equivalence.json"
     equivalence = s.read_json(equivalence_path) if equivalence_path.exists() else {}
     selected_equivalence = {row["version"]: equivalence[row["version"]]} if row["version"] in equivalence else {}
+    repair = prepare_configuration_repair(row, args.tap)
     s.promote(SimpleNamespace(input=args.output / "input", output=promoted, tap=args.tap,
                              run_id=row["run_id"], build_commit=row["commit"],
                              public_sources=override, source_archive_equivalence=selected_equivalence,
                              defer_release_checks=True))
+    rename_configuration_repair(promoted, row["formula"], repair)
     batch.command("brew", "bottle", "--merge", "--write", "--no-commit", "--root-url=" + root,
                   *sorted(promoted.glob("*.bottle.json")), cwd=promoted)
     report = s.read_json(promoted / "promotion.json")
     for bottle in report["bottles"]:
         bottle["payload_inventory_sha256"] = s.digest(json.dumps(bottle.pop("payload_sha256"), sort_keys=True).encode())
-    report.update(formula=row["formula"], version=row["version"], revision=row["revision"],
+    report.update(configuration_repair=repair, formula=row["formula"], version=row["version"], revision=row["revision"],
                   destination=repo, mode="public", catalog_sha256=s.file_digest(args.catalog),
                   runtime_tests={p["tag"]: p["runtime_test"] for p in row["platforms"]},
                   live_release=observed, state="prepared", verification="pending",
