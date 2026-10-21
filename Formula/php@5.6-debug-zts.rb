@@ -1,19 +1,20 @@
 class PhpAT56DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/2f0da72721b16b74c602d3c80f527e07d1cdd49a.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/2e922830b542a067a306870dffd20040f34fb05c.tar.gz"
   version "5.6.40"
-  sha256 "595bb86a07ce587ae98a04cf1d3cb23f2280a90867a11cc312d67a4b1e87911a"
+  sha256 "04c58a4a21c99f3a8df74c37141231691497ebf50a5dce3479f168de7b6f3a5e"
   license "PHP-3.01"
-  revision 8
+  revision 9
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "866e96413398abc0413dbaf156808a92fca9e9818eadc90be9c4ea4cb4302604"
-    sha256 arm64_tahoe:       "d34882f5b0c5e436d047310e23904b092b4ba0e8a4a77393a0218e6a265db48a"
-    sha256 arm64_sequoia:     "6718fd3a189dadc1d5835ec2ed68a992de67764f5a0da70107de4b3745ac0eb9"
-    sha256 arm64_linux:       "208c7f4e6d5e174aa75566a7d3efc04e312e580b9ec73a1d7ce99f58a0833a7c"
-    sha256 x86_64_linux:      "876e384dd6a77330a61071cce0a35bac8f8c8ba1b5660de8d6d4ac7163b4f624"
+    rebuild 1
+    sha256 arm64_golden_gate: "e55f3f632a0568d92b1f7e3cd516ac6d3da51e3dac901cc9833f9875a90445cb"
+    sha256 arm64_tahoe:       "86efc2771bec77d02070b5c949f94f4e019d0c93d0178f5a28dc695372cca8dd"
+    sha256 arm64_sequoia:     "9a41fc6157f82291243f143f26d9650586678553dfbcabadc1a8063071d116b5"
+    sha256 arm64_linux:       "7dbf31cdacec31e811ac93cbcf9afca3b347955f6d5550457f6bd72e3a006105"
+    sha256 x86_64_linux:      "b06ac010c16cf745eeea635c3cfd48d1a55106aae52f2d1ca54ddf9e054732e8"
   end
 
   keg_only :versioned_formula
@@ -273,6 +274,8 @@ class PhpAT56DebugZts < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -366,6 +369,7 @@ class PhpAT56DebugZts < Formula
       "{{etc}}/php/{{version.major_minor}}-debug-zts",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
