@@ -1,20 +1,21 @@
 class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/b39d5b8abd8dcd20feb0f734ef061a54f8bbd134.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/f4457d3e8b14e8fd31f70dde5b19e6799fe71538.tar.gz"
   version "7.2.34"
-  sha256 "5f20df8c8514e84951eebad321abee448b00c5eaff6de7f304f3e760140bc578"
+  sha256 "2beaaef99d934c31390a83e51dd61f981004fca474aa4655573292409ce83ca4"
   license "PHP-3.01"
-  revision 18
+  revision 19
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "8d3db482b58757bfdf686e5839906aba41ef5fb360241bdf471e1b5ea25c542f"
-    sha256 arm64_tahoe:       "581ed865b8089f7fd07a3527192ef01856dc014b18daa469b0273a1d6d3c7484"
-    sha256 arm64_sequoia:     "9d5985113ef4b956ce81167712681ef4a9e0206148c58f584ef8e9916bcb44f7"
-    sha256 arm64_linux:       "87e3ed5fe865b1c6865bf31e58044c51be2647bd37fde857991516c0c91eb590"
-    sha256 x86_64_linux:      "686b9973abb858ef5da7f04854b4ac886a5c06ccc61feef7d5fde3769f1207ad"
+    rebuild 1
+    sha256 arm64_golden_gate: "ab89ab0ea8640c77b1e9106f943faf36a5cd2dc2b5e7d5753b655b06ddf7b0f2"
+    sha256 arm64_tahoe:       "7bd7207bac9563aa7a69514f6d360c6e9339de2ae063985e64331adc1c523e35"
+    sha256 arm64_sequoia:     "b2b622d5abfe1f4931d489d679900343718c4cc14965b5eb25bf733a6ab9a9db"
+    sha256 arm64_linux:       "4b5fb3bd17efc26f0b39e3cef6aed0aee777579fb8df6739f30b61cc479ccca2"
+    sha256 x86_64_linux:      "583715a20b5311fb65f4e98e4b2de4fe54637847f9122bc8d4d98d0e1fe53cb2"
   end
 
   keg_only :versioned_formula
@@ -267,7 +268,10 @@ class PhpAT72 < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     configure_php
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
