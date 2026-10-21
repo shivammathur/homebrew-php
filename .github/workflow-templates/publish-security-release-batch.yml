@@ -33,6 +33,10 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/homebrew/brew:main
+      options: --user=linuxbrew
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 120
     strategy:
       fail-fast: false
@@ -66,6 +70,10 @@ jobs:
         working-directory: ${{ steps.homebrew.outputs.repository-path }}
         run: |
           set -euo pipefail
+          if ! command -v python3 >/dev/null || ! command -v gh >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y python3 gh
+          fi
           brew install-bundler-gems --add-groups=bottle,pr_upload,style,audit,ast
           git config user.name BrewTestBot
           git config user.email 1589480+BrewTestBot@users.noreply.github.com
