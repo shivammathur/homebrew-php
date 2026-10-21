@@ -1,0 +1,221 @@
+{
+  "private_run_id": "39363784582",
+  "private_commit": "34f0bba8f4b8e19b93b1d3ee9a6439649d0fa3a3",
+  "release_checks_deferred": true,
+  "public_recipe_commit": "56e4a6d5d7a9e2c10b2e9dd6752ff1a0818d6360",
+  "formulae": {
+    "php@5.6-debug-zts": "5.6.40"
+  },
+  "revisions": {
+    "php@5.6-debug-zts": 9
+  },
+  "sources": {
+    "5.6.40": {
+      "url": "https://github.com/shivammathur/php-src-backports/archive/2e922830b542a067a306870dffd20040f34fb05c.tar.gz",
+      "sha256": "04c58a4a21c99f3a8df74c37141231691497ebf50a5dce3479f168de7b6f3a5e"
+    }
+  },
+  "source_archive_equivalence": {
+    "5.6.40": {
+      "schema": 1,
+      "version": "5.6.40",
+      "tag_sha": "2e922830b542a067a306870dffd20040f34fb05c",
+      "commit": "989262e3e9dcca7642b644a75d209c5b7740e294",
+      "public_url": "https://github.com/shivammathur/php-src-backports/archive/2e922830b542a067a306870dffd20040f34fb05c.tar.gz",
+      "private_archive_sha256": "749249099f6d0ce12aa8ac2378a29a80e3112bc5259711f5b916557d717023eb",
+      "public_archive_sha256": "04c58a4a21c99f3a8df74c37141231691497ebf50a5dce3479f168de7b6f3a5e",
+      "private_root": "shivammathur-php-src-backports-security-2e922830b542a067a306870dffd20040f34fb05c",
+      "public_root": "php-src-backports-2e922830b542a067a306870dffd20040f34fb05c",
+      "private_inventory_sha256": "a3967bbcbef815bf83252919a9d669f37e5aec240977d110154b1ee66a212391",
+      "public_inventory_sha256": "a3967bbcbef815bf83252919a9d669f37e5aec240977d110154b1ee66a212391",
+      "entries": 18331,
+      "php_version": "5.6.40",
+      "source_contents_identical": true,
+      "archive_bytes_identical": false,
+      "observed_at": "2026-10-21T14:06:00.585052+00:00"
+    }
+  },
+  "bottles": [
+    {
+      "unchanged_payload_entries": 587,
+      "changed_metadata_files": [
+        "php@5.6-debug-zts/5.6.40_9/.brew/php@5.6-debug-zts.rb",
+        "php@5.6-debug-zts/5.6.40_9/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-debug-zts",
+      "tag": "arm64_golden_gate",
+      "original_sha256": "05627a48ca289b296c547ac60449368a2415c70ed553e43a9ba1d3917bd77eb9",
+      "published_sha256": "e55f3f632a0568d92b1f7e3cd516ac6d3da51e3dac901cc9833f9875a90445cb",
+      "payload_inventory_sha256": "8ee028b3478013b5b79bd1f40845562deea557c256650a6d268e688676f8929e"
+    },
+    {
+      "unchanged_payload_entries": 589,
+      "changed_metadata_files": [
+        "php@5.6-debug-zts/5.6.40_9/.brew/php@5.6-debug-zts.rb",
+        "php@5.6-debug-zts/5.6.40_9/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-debug-zts",
+      "tag": "arm64_linux",
+      "original_sha256": "88c2c96542f566abcd8c93c5e4802b348f69eaf4d69566b0b4d9364185a92242",
+      "published_sha256": "7dbf31cdacec31e811ac93cbcf9afca3b347955f6d5550457f6bd72e3a006105",
+      "payload_inventory_sha256": "01ccb228c9ad70210e25f3d806fb8b15d13d07b4ffdfffcf14103d0998980fb0"
+    },
+    {
+      "unchanged_payload_entries": 590,
+      "changed_metadata_files": [
+        "php@5.6-debug-zts/5.6.40_9/.brew/php@5.6-debug-zts.rb",
+        "php@5.6-debug-zts/5.6.40_9/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-debug-zts",
+      "tag": "arm64_sequoia",
+      "original_sha256": "380727ba2cc5434af24e80a2034dd85abd96e23ff7d53faffb6b0188a5b85ceb",
+      "published_sha256": "9a41fc6157f82291243f143f26d9650586678553dfbcabadc1a8063071d116b5",
+      "payload_inventory_sha256": "6c23da9b62d80e765c7d0ac87584f3ba164cb2682b73a4a66fae0e5b7a3123a2"
+    },
+    {
+      "unchanged_payload_entries": 590,
+      "changed_metadata_files": [
+        "php@5.6-debug-zts/5.6.40_9/.brew/php@5.6-debug-zts.rb",
+        "php@5.6-debug-zts/5.6.40_9/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-debug-zts",
+      "tag": "arm64_tahoe",
+      "original_sha256": "3c27afbb1c5f04ad3ae5f702b241cafa9bfd00af2d716f16cba2ce0c58e53d1f",
+      "published_sha256": "86efc2771bec77d02070b5c949f94f4e019d0c93d0178f5a28dc695372cca8dd",
+      "payload_inventory_sha256": "d6ea64615363b1b9072334ca6e0581ef0847f99d6202447bd01a1e03a8c2b108"
+    },
+    {
+      "unchanged_payload_entries": 589,
+      "changed_metadata_files": [
+        "php@5.6-debug-zts/5.6.40_9/.brew/php@5.6-debug-zts.rb",
+        "php@5.6-debug-zts/5.6.40_9/sbom.spdx.json"
+      ],
+      "formula": "php@5.6-debug-zts",
+      "tag": "x86_64_linux",
+      "original_sha256": "e19443a6bcd6f582c40c31da4bc53f30cb1d8a393f289429c260f8464fad425d",
+      "published_sha256": "b06ac010c16cf745eeea635c3cfd48d1a55106aae52f2d1ca54ddf9e054732e8",
+      "payload_inventory_sha256": "5cdf079df86282bc728aeecf08c7ec6132b7429f2af05ed5d5d10048c2f7e609"
+    }
+  ],
+  "formula": "php@5.6-debug-zts",
+  "version": "5.6.40",
+  "revision": 9,
+  "destination": "shivammathur/homebrew-php",
+  "mode": "public",
+  "catalog_sha256": "e1b1ab7d81e6807a6869f78454ccb6e57e55f23c8001c032f24d141820d521b0",
+  "runtime_tests": {
+    "arm64_golden_gate": "passed",
+    "arm64_linux": "passed",
+    "arm64_sequoia": "passed",
+    "arm64_tahoe": "passed",
+    "x86_64_linux": "passed"
+  },
+  "live_release": {
+    "observed_at": "2026-10-21T14:13:04.258202+00:00",
+    "actions_conclusion": "success",
+    "assets": 12
+  },
+  "state": "published",
+  "verification": "passed",
+  "prepared_at": "2026-10-21T14:13:24.342606+00:00",
+  "publication_workflow_run": "39614446696",
+  "package_uploaded_at": "2026-10-21T14:13:52.542290+00:00",
+  "last_pushed_commit": "86b2bdd4a22ede6d067b22ed02b793b9e65a85b0",
+  "formula_pushed_at": "2026-10-21T14:13:54.754163+00:00",
+  "verification_checks": {
+    "packages": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:13:57.927438+00:00",
+      "result": {
+        "image": "ghcr.io/shivammathur/php/php/5.6-debug-zts:5.6.40_9-1",
+        "index_sha256": "6e8ff16f784f1dadb2d17cc4f642b74335d4421ee9a6f8ac2ac5460caa5c6b40",
+        "bottles": [
+          {
+            "tag": "arm64_golden_gate",
+            "sha256": "e55f3f632a0568d92b1f7e3cd516ac6d3da51e3dac901cc9833f9875a90445cb",
+            "size": 18918046
+          },
+          {
+            "tag": "arm64_linux",
+            "sha256": "7dbf31cdacec31e811ac93cbcf9afca3b347955f6d5550457f6bd72e3a006105",
+            "size": 24549110
+          },
+          {
+            "tag": "arm64_sequoia",
+            "sha256": "9a41fc6157f82291243f143f26d9650586678553dfbcabadc1a8063071d116b5",
+            "size": 18961459
+          },
+          {
+            "tag": "arm64_tahoe",
+            "sha256": "86efc2771bec77d02070b5c949f94f4e019d0c93d0178f5a28dc695372cca8dd",
+            "size": 18916991
+          },
+          {
+            "tag": "x86_64_linux",
+            "sha256": "b06ac010c16cf745eeea635c3cfd48d1a55106aae52f2d1ca54ddf9e054732e8",
+            "size": 24857597
+          }
+        ],
+        "download_verified": true
+      }
+    },
+    "source": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:14:01.329775+00:00",
+      "result": null
+    },
+    "dependencies": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:14:01.799864+00:00",
+      "result": null
+    },
+    "style": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:14:04.267984+00:00",
+      "result": null
+    },
+    "audit": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:14:05.133313+00:00",
+      "result": null
+    },
+    "sbom": {
+      "status": "passed",
+      "observed_at": "2026-10-21T14:14:05.618448+00:00",
+      "result": null
+    }
+  },
+  "verified_at": "2026-10-21T14:14:05.619024+00:00",
+  "published_package": {
+    "image": "ghcr.io/shivammathur/php/php/5.6-debug-zts:5.6.40_9-1",
+    "index_sha256": "6e8ff16f784f1dadb2d17cc4f642b74335d4421ee9a6f8ac2ac5460caa5c6b40",
+    "bottles": [
+      {
+        "tag": "arm64_golden_gate",
+        "sha256": "e55f3f632a0568d92b1f7e3cd516ac6d3da51e3dac901cc9833f9875a90445cb",
+        "size": 18918046
+      },
+      {
+        "tag": "arm64_linux",
+        "sha256": "7dbf31cdacec31e811ac93cbcf9afca3b347955f6d5550457f6bd72e3a006105",
+        "size": 24549110
+      },
+      {
+        "tag": "arm64_sequoia",
+        "sha256": "9a41fc6157f82291243f143f26d9650586678553dfbcabadc1a8063071d116b5",
+        "size": 18961459
+      },
+      {
+        "tag": "arm64_tahoe",
+        "sha256": "86efc2771bec77d02070b5c949f94f4e019d0c93d0178f5a28dc695372cca8dd",
+        "size": 18916991
+      },
+      {
+        "tag": "x86_64_linux",
+        "sha256": "b06ac010c16cf745eeea635c3cfd48d1a55106aae52f2d1ca54ddf9e054732e8",
+        "size": 24857597
+      }
+    ],
+    "download_verified": true
+  }
+}
