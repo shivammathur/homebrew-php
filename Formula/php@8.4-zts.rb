@@ -1,9 +1,9 @@
 class PhpAT84Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.4.26.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.26.tar.xz"
-  sha256 "32a2de53862ad44ed4a5005244ce4f1b50c271e74dced215449a4443b40569f1"
+  url "https://www.php.net/distributions/php-8.4.27.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.27.tar.xz"
+  sha256 "dcf93923b0e38e0d5252b25b796520b5a47761a08b3488b6d0b5d1115764d3f0"
   license all_of: [
     "PHP-3.01",
 
@@ -28,20 +28,10 @@ class PhpAT84Zts < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 1
 
   livecheck do
     url "https://www.php.net/downloads?source=Y"
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "198545e32efbd1774e9fa317b700f1f535f6401b04c59de2b76b36dd7ec962d5"
-    sha256 arm64_tahoe:       "66d0149d61c35eb61454158dc00ca9ae7575adcfc8ded79f42bdf8a7ecee4aa0"
-    sha256 arm64_sequoia:     "97d332855ae92767d78224dde0d54bb6c1d77b73fcfae3cb37e2f348813359d1"
-    sha256 arm64_linux:       "ff9a07556b0ec746ed303315271e7889147f7ebe3d28024a452ec892b7ccd09b"
-    sha256 x86_64_linux:      "1a5a1244935a2f17b57ecbf1a91b8e4982a30a6a1f1255d0d080339f987f1680"
   end
 
   keg_only :versioned_formula
@@ -272,6 +262,8 @@ class PhpAT84Zts < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -361,6 +353,7 @@ class PhpAT84Zts < Formula
       "{{etc}}/php/{{version.major_minor}}-zts",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
