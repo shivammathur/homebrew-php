@@ -33,6 +33,15 @@ class PhpAT83DebugZts < Formula
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_golden_gate: "3bb1370a40b38788bd3b11e1610ee3795917d1dd01c091f10427644586080d5f"
+    sha256 arm64_tahoe:       "a5d7d97c6bd9c28f192d52ebab6de366bda3fa89dd538000be5514990023c8f0"
+    sha256 arm64_sequoia:     "ac953336fe17052f002e87992640635a01499e93ee90e8b23572bdea79690bb1"
+    sha256 arm64_linux:       "23e4462ac60a8dd6428c1b13b3629e5e19c4f55b8dab1d85418d0cc0752ae6f8"
+    sha256 x86_64_linux:      "82965b88ce4faeb01fe53399e981464c6e9c56bde9e334bf40b4e899fc774ba1"
+  end
+
   keg_only :versioned_formula
 
   depends_on "bison" => :build
