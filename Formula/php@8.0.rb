@@ -1,20 +1,21 @@
 class PhpAT80 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/1c4ef2f91899bcb60abc223859fe5cda502fca19.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/5f8af80e6bdfe5d80880abccc4e7cb415c26ca42.tar.gz"
   version "8.0.30"
-  sha256 "dcaa45c7634e2f44ecb0db4320c7b316fb1f3bff1d0b9730f85beabd680f4103"
+  sha256 "75a276a0a65cb6ad4dfab2db6fa0719601b593bfa99fd1936105952465e4e111"
   license "PHP-3.01"
-  revision 12
+  revision 13
   compatibility_version 1
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "0402611391bcafcd52f7d9183dbbd2e237029d23762cbd8ac6ff2cf62c76ea70"
-    sha256 arm64_tahoe:       "ec5bfcabeb8d1d576f06300d80dca2237fc4b1da81e629390c989547ba748df9"
-    sha256 arm64_sequoia:     "05f5edc623d35f76550c3164e8bba3daa4ca5a7187dc482294101d50608d0d3f"
-    sha256 arm64_linux:       "3b31e6e9cc904bd785ae0f9c58674abdd03cce1c1d08af4162e48fbf77aea3f2"
-    sha256 x86_64_linux:      "f4a28c33c350ed9662308b3531e3da77cc1242a54420f36a4f6e7aa0c33d7b2b"
+    rebuild 1
+    sha256 arm64_golden_gate: "5d31161f970c93f2466bfdcf59d79619fb7064c43c23967e56d1455902951fff"
+    sha256 arm64_tahoe:       "d439ece4c0e0056a988986d6a2349c4d92c3210d64ae1d487d37d1ed31555f8b"
+    sha256 arm64_sequoia:     "662f4b6373e15852934955a40c96ee18d4e411ccf11791457aeba67fce9de85c"
+    sha256 arm64_linux:       "f83cd7bf6e3d7cac4b9c1abe5e6b9c159fb04cc01934f2b5d22341283a4bbd5a"
+    sha256 x86_64_linux:      "e1fcfa012895c8b8f3fe79559c09a0266137553adb19b854f05d1608da64d344"
   end
 
   keg_only :versioned_formula
@@ -273,6 +274,8 @@ class PhpAT80 < Formula
   end
 
   post_install_steps do
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
     set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
     set_permissions [
       "pear/.depdblock",
@@ -362,6 +365,7 @@ class PhpAT80 < Formula
       "intl",
       "opcache"
     ]
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
