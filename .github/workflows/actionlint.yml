@@ -33,9 +33,6 @@ jobs:
       - name: Set up Homebrew
         id: setup-homebrew
         uses: Homebrew/actions/setup-homebrew@main
-        with:
-          core: false
-          cask: false
 
       - uses: Homebrew/actions/cache-homebrew-prefix@main
         with:

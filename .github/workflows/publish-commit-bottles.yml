@@ -32,7 +32,6 @@ env:
   PR: ${{inputs.pull_request}}
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_NO_INSTALL_FROM_API: 1
   GH_REPO: ${{github.repository}}
   GH_DEBUG: 1
   GH_NO_UPDATE_NOTIFIER: 1
@@ -46,9 +45,6 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
-        with:
-          core: true
-          cask: false
 
       - name: Configure Git user
         id: git-user-config

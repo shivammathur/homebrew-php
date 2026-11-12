@@ -28,9 +28,6 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
-        with:
-          core: true
-          cask: false
 
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@main

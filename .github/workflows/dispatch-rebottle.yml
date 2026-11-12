@@ -28,7 +28,6 @@ env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
-  HOMEBREW_NO_INSTALL_FROM_API: 1
   HOMEBREW_ARM64_TESTING: 1
   DISPATCH_REBOTTLE_SENDER: ${{ github.event.sender.login }}
   DISPATCH_REBOTTLE_FORMULA: ${{ inputs.formula }}
@@ -121,9 +120,6 @@ jobs:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
-        with:
-          core: true
-          cask: false
 
       - name: Download bottles from GitHub Actions
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
