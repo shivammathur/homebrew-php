@@ -1,21 +1,11 @@
 class PhpAT74DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/9f3f6763497aa556d3fc56df7e66f44b8de49815.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/e321637b40c8aa9740101805a793ee40e6aeafaf.tar.gz"
   version "7.4.33"
-  sha256 "cd3e5db449ebad253f678afd3421ffd108d6a3a6bd7ad1d05dc80988b96b015d"
+  sha256 "a7380772f65078ed0ac742b8841d42da982cbd46fa909c714524368708d05f4d"
   license "PHP-3.01"
-  revision 9
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_golden_gate: "ae82ca699dceba53520aa9b904d7c69f5187ab266316c0c795b481e3c5dfc4a8"
-    sha256 arm64_tahoe:       "a6988e8efe00bdf7d71921b32e44baa31447cd28e24401c42475db55dd38941d"
-    sha256 arm64_sequoia:     "2ed66a537dd180ad33a49cbfd2ced0d9ac5a9fc2797027e001b2a503ece07d8f"
-    sha256 arm64_linux:       "30090f797470b5dc01b025c79b36254aeeea07619de6697f2d4720d34d64c738"
-    sha256 x86_64_linux:      "a6d9c80be71c03d065c43416222e4256c125f68f7ed14b502bf26cb830e0375a"
-  end
+  revision 10
 
   keg_only :versioned_formula
 
@@ -38,7 +28,7 @@ class PhpAT74DebugZts < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "krb5"
   depends_on "libffi"
   depends_on "libpq"
