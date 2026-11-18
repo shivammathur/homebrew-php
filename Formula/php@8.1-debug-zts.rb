@@ -29,6 +29,15 @@ class PhpAT81DebugZts < Formula
   ]
   revision 5
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_golden_gate: "6fdddde8691d34e92d03989af231fa2f0901af20a92d8cada524724b3f73cd91"
+    sha256 arm64_tahoe:       "b5639ac776565b7154664c102b8d914253e61daf6d926ed3f0a90a4041b18aa9"
+    sha256 arm64_sequoia:     "1f14ca4702cc43344ca55d3b551dc6a0b11dbcab7ba9b6d76575104d6276d784"
+    sha256 arm64_linux:       "8a3cd2be82810edf84b2432181847e2256caa7571be2a3d10c6caf4213ba7f81"
+    sha256 x86_64_linux:      "08cddf9b09d068e712b9ac5664ad3b2c355fe7137c527dbad5c0a7bfa1d01de9"
+  end
+
   keg_only :versioned_formula
 
   # Security Support Until 31 Dec 2025
