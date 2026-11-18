@@ -35,6 +35,15 @@ class PhpDebug < Formula
     regex(/href=.*?php[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_golden_gate: "31d4c6708fe3f08026a0e9e5e8e6c30deaf0c9a7eba2bffce015c12b52520cc7"
+    sha256 arm64_tahoe:       "c6140adf8f7701773284b005dbad2fe3662bea8a31b2ee548c52a63c88e52e87"
+    sha256 arm64_sequoia:     "13993e66214feec14bfff47e73a2380484b7c7f203db60696d5f0953a7d95642"
+    sha256 arm64_linux:       "5cb41bf7807c3f96395a5f5223de55092ba38337ba15e84716bec3a57a98d8a7"
+    sha256 x86_64_linux:      "0839315f05dd862c10ad0863b56c77160c70099689d3732e79c5dd3b6d1ca2ac"
+  end
+
   depends_on "bison" => :build
   depends_on "httpd" => [:build, :test]
   depends_on "pkgconf" => :build
