@@ -44,8 +44,8 @@
 | PHP 8.2       | `php@8.2`          | `php@8.2-debug`                | `php@8.2-zts`              | `php@8.2-debug-zts`                    |
 | PHP 8.3       | `php@8.3`          | `php@8.3-debug`                | `php@8.3-zts`              | `php@8.3-debug-zts`                    |
 | PHP 8.4       | `php@8.4`          | `php@8.4-debug`                | `php@8.4-zts`              | `php@8.4-debug-zts`                    |
-| PHP 8.5       | `php` or `php@8.5` | `php-debug` or `php@8.5-debug` | `php-zts` or `php@8.5-zts` | `php-debug-zts` or `php@8.5-debug-zts` |
-| PHP 8.6.0-dev | `php@8.6`          | `php@8.6-debug`                | `php@8.6-zts`              | `php@8.6-debug-zts`                    |
+| PHP 8.5       | `php@8.5`          | `php@8.5-debug`               | `php@8.5-zts`             | `php@8.5-debug-zts`                   |
+| PHP 8.6       | `php` or `php@8.6` | `php-debug` or `php@8.6-debug` | `php-zts` or `php@8.6-zts` | `php-debug-zts` or `php@8.6-debug-zts` |
 | PHP 8.7.0-dev | `php@8.7`          | `php@8.7-debug`                | `php@8.7-zts`              | `php@8.7-debug-zts`                    |
 
 For each PHP version, we have formulae with thread-safety support `(zts)` and debug symbols support `(debug)` and both `(debug-zts)` as well.

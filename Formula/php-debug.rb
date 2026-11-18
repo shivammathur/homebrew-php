@@ -2,9 +2,9 @@ class PhpDebug < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.12.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.12.tar.xz"
-  sha256 "08bc2eba2a588654ade1357174aa646b761556c862dda0678345ee29ed481209"
+  url "https://www.php.net/distributions/php-8.6.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.6.0.tar.xz"
+  sha256 "5f84beaa3d763aee1e4feed99bf54ec692c383b322e25626807b589238c3a087"
   license all_of: [
     "PHP-3.01",
 
@@ -14,7 +14,7 @@ class PhpDebug < Formula
     "MIT",      # ext/date/lib/LICENSE.rst
 
     # Extra licenses documented in README.REDIST.BINS ignoring unbundled pcre2lib (3) and gd (13)
-    # ref: https://github.com/php/php-src/blob/PHP-8.5/README.REDIST.BINS
+    # ref: https://github.com/php/php-src/blob/PHP-8.6/README.REDIST.BINS
     "Apache-1.0",            # 10
     "Apache-2.0",            # 20
     "bcrypt-Solar-Designer", # 5
@@ -37,11 +37,11 @@ class PhpDebug < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "ae79b53e21c28c2b43e029c48fb05b7f1c19b21afa9abc01fbb2e8c938a2c32d"
-    sha256 arm64_tahoe:       "3d6b4cfb19118c3fcc7f9ca71c2a41146333de8eaefdfc680a498f49db6db81f"
-    sha256 arm64_sequoia:     "4b37a55264c1c61d2eb859590de8281eaeb93a5115577fa1978bf6e71a202c29"
-    sha256 arm64_linux:       "db9f135ae17c92766235fdf00a2e97433b3dfc74dcc76392d96b7cb88ee62263"
-    sha256 x86_64_linux:      "cdc139ecba71698b5cf96fb72457f6f992e8a30f3383ef9e2ccbc3a9d75025db"
+    sha256 arm64_golden_gate: "31d4c6708fe3f08026a0e9e5e8e6c30deaf0c9a7eba2bffce015c12b52520cc7"
+    sha256 arm64_tahoe:       "c6140adf8f7701773284b005dbad2fe3662bea8a31b2ee548c52a63c88e52e87"
+    sha256 arm64_sequoia:     "13993e66214feec14bfff47e73a2380484b7c7f203db60696d5f0953a7d95642"
+    sha256 arm64_linux:       "5cb41bf7807c3f96395a5f5223de55092ba38337ba15e84716bec3a57a98d8a7"
+    sha256 x86_64_linux:      "0839315f05dd862c10ad0863b56c77160c70099689d3732e79c5dd3b6d1ca2ac"
   end
 
   depends_on "bison" => :build
@@ -57,7 +57,7 @@ class PhpDebug < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -204,14 +204,14 @@ class PhpDebug < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2=#{formula_opt_prefix("argon2")}
+      --with-password-argon2
       --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{formula_opt_prefix("unixodbc")}
       --with-pdo-pgsql=#{formula_opt_prefix("libpq")}
       --with-pdo-sqlite
       --with-pgsql=#{formula_opt_prefix("libpq")}
-      --with-pic
+      --enable-pic
       --with-snmp=#{formula_opt_prefix("net-snmp")}
       --with-sodium
       --with-sqlite3

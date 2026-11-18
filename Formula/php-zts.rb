@@ -2,9 +2,9 @@ class PhpZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.5.12.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.5.12.tar.xz"
-  sha256 "08bc2eba2a588654ade1357174aa646b761556c862dda0678345ee29ed481209"
+  url "https://www.php.net/distributions/php-8.6.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.6.0.tar.xz"
+  sha256 "5f84beaa3d763aee1e4feed99bf54ec692c383b322e25626807b589238c3a087"
   license all_of: [
     "PHP-3.01",
 
@@ -14,7 +14,7 @@ class PhpZts < Formula
     "MIT",      # ext/date/lib/LICENSE.rst
 
     # Extra licenses documented in README.REDIST.BINS ignoring unbundled pcre2lib (3) and gd (13)
-    # ref: https://github.com/php/php-src/blob/PHP-8.5/README.REDIST.BINS
+    # ref: https://github.com/php/php-src/blob/PHP-8.6/README.REDIST.BINS
     "Apache-1.0",            # 10
     "Apache-2.0",            # 20
     "bcrypt-Solar-Designer", # 5
@@ -37,11 +37,11 @@ class PhpZts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "10dd0dee5c8876669a7512371f24b04edccb8bca9cb3f897cde3ef1d58398101"
-    sha256 arm64_tahoe:       "a80055f28f34cddfd3dab50621e4796da97599c6576440f6ed4ac848cb6c55e2"
-    sha256 arm64_sequoia:     "d03f165f27479248fe080eaa374f3b4924e2aa87826e8270d76010017fb4116f"
-    sha256 arm64_linux:       "42fb0bfa38275640b8e9f019bc86ce228c708c1bd357f1f0ae82814667a56c25"
-    sha256 x86_64_linux:      "8bdb02b3bc910daac98a5e4dd87f1cfb5531d0c360d473c1e30b4d6a7deff772"
+    sha256 arm64_golden_gate: "fa01f55010194aa013a34884e5dec33cfd6f6641a8244ad1af20127dbf9ac510"
+    sha256 arm64_tahoe:       "ad7971f69505da5796ee6c17eaf81f6012a9e3dbeb013e3b138fb4802e8d0ee5"
+    sha256 arm64_sequoia:     "130b8f7e6acf0dd0459d16774f8a11c0a07a2abcd14cb66be48be8195fb48075"
+    sha256 arm64_linux:       "dae9e197fc5636d4a51762ebc3b1445c8994c3a2dd57c88f5b900c12f8856a3b"
+    sha256 x86_64_linux:      "98317bf6a6466594c4b8b56f90bb14cb39b9b329b2a3a5e4ca0ae980d2a97e28"
   end
 
   depends_on "bison" => :build
@@ -57,7 +57,7 @@ class PhpZts < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -201,14 +201,14 @@ class PhpZts < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2=#{formula_opt_prefix("argon2")}
+      --with-password-argon2
       --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{formula_opt_prefix("unixodbc")}
       --with-pdo-pgsql=#{formula_opt_prefix("libpq")}
       --with-pdo-sqlite
       --with-pgsql=#{formula_opt_prefix("libpq")}
-      --with-pic
+      --enable-pic
       --with-snmp=#{formula_opt_prefix("net-snmp")}
       --with-sodium
       --with-sqlite3
@@ -320,7 +320,8 @@ class PhpZts < Formula
     # because it's not possible to build Apache and embed at the same time
     args = shared_args.map(&:clone)
     args << "--disable-cgi"
-    args << "--disable-cli"
+    # PHP 8.6 embeds the CLI entry points in libphp.
+    args << "--enable-cli"
     args << "--disable-phpdbg"
     args << "--enable-embed"
 

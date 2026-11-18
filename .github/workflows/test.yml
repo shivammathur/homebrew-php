@@ -22,7 +22,7 @@ jobs:
     - name: Remove PHP
       run: brew uninstall --ignore-dependencies php || true
     - name: Install nightly PHP build dependency
-      if: matrix.php == '8.6' || matrix.php == '8.7'
+      if: matrix.php == '8.7'
       run: brew install --build-from-source re2c
     - name: Setup PHP
       timeout-minutes: 20
@@ -50,5 +50,5 @@ jobs:
         brew services start "$formula"
         brew services list
 
-        [ "$formula" = "php@8.5$debug$phpts" ] && formula="php$debug$phpts"
+        [ "$formula" = "php@8.6$debug$phpts" ] && formula="php$debug$phpts"
         cat ~/Library/LaunchAgents/sh.brew."$formula".plist
