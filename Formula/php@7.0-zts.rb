@@ -1,21 +1,11 @@
 class PhpAT70Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://secure.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/67a075e9b509891ae7b95e8ff48e73c16f63a19d.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/7a43ad6da6eb16cda31088d450440d20a3444875.tar.gz"
   version "7.0.33"
-  sha256 "29b56e2126d94f5f8fa848194fb4073f33c30ce1f484c94dd52f77de668fe850"
+  sha256 "254851519f0c2378bb470de84a71ca0b8f5c949670afe38066eed9cdd1cb6645"
   license "PHP-3.01"
-  revision 10
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_golden_gate: "ef0773f740eac062dde9b687157dae0c6e2c21a44fa99c8a3b2e298f595dae1b"
-    sha256 arm64_tahoe:       "97326d0dc054f6373086dff096b0e3893895b42c0c724ff9daa16b416bb9e79c"
-    sha256 arm64_sequoia:     "d49f1c9f38709f30d46738f6cb74352e228d1e29937acc4241fc72735fb2f300"
-    sha256 arm64_linux:       "4707563202d669c1df7030a7925ae03a5660aedf93bd99e5a447e9ffeec98d7e"
-    sha256 x86_64_linux:      "5dc4c1ca1d8bf8029244a9339db84e360d17977baf6c3f55e1fa2129006350ed"
-  end
+  revision 11
 
   keg_only :versioned_formula
 
@@ -38,7 +28,7 @@ class PhpAT70Zts < Formula
   depends_on "freetype"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "jpeg"
   depends_on "krb5"
   depends_on "libpng"
@@ -188,7 +178,7 @@ class PhpAT70Zts < Formula
       --with-gettext#{gettext_path}
       --with-gmp=#{formula_opt_prefix("gmp")}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{formula_opt_prefix("icu4c@78")}
+      --with-icu-dir=#{formula_opt_prefix("icu4c@79")}
       --with-jpeg-dir=#{formula_opt_prefix("jpeg")}
       --with-kerberos#{headers_path}
       --with-layout=GNU
