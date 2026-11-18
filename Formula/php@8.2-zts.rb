@@ -1,9 +1,9 @@
 class PhpAT82Zts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.35.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.35.tar.xz"
-  sha256 "5737b98601fe5ab1b8c5db0c82ed3158acb9283ed3081ffe2faffb9ac81455e6"
+  url "https://www.php.net/distributions/php-8.2.36.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.36.tar.xz"
+  sha256 "df50a00d2b453096608bf2bd98a9fab9a3df8678a77b93011b65c3cfe9a018fa"
   license all_of: [
     "PHP-3.01",
 
@@ -35,11 +35,11 @@ class PhpAT82Zts < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "4a72408a493dddae8eaac78d08d504659594d9bb97352473b29fc1597923fbb1"
-    sha256 arm64_tahoe:       "6006f7f82d26993e011aff508c1abf6f2a1fc2fda3e94fb7cd4a0ca53ce15154"
-    sha256 arm64_sequoia:     "ce1945c209b111a8635a050c69720706592aa6b63a9e2945e28f18aed5582d45"
-    sha256 arm64_linux:       "146267e7fcd9584e2053730bad96829ddd9cc13de73d29e84be59dd776a7e3bf"
-    sha256 x86_64_linux:      "c008199b02177c10d2807f93cc1bf7217fce43b457cfdfc787f0920558931f3d"
+    sha256 arm64_golden_gate: "edcf90972e9cba4358b7b1323c1096e0cfb772a89455113b1afec939417887c0"
+    sha256 arm64_tahoe:       "c4440b4764dedeedcd3b869a7bd9c8f35f229af7a95ae353d3634685f07313a0"
+    sha256 arm64_sequoia:     "407011b3ff397e8450c9d3d55ccc12a3655dd60105daa846eb21a5ad9dbabe81"
+    sha256 arm64_linux:       "bf2a5cf8ad374f61ccc5ed6d678d6cba314be315bb8403a055c6f0160c5b6c37"
+    sha256 x86_64_linux:      "53aca0bd7fe5af8040d139258fe5567bcb1c6fb4c2cf3206989512a353268419"
   end
 
   keg_only :versioned_formula
@@ -61,7 +61,7 @@ class PhpAT82Zts < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
