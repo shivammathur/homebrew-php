@@ -33,6 +33,15 @@ class PhpAT82Zts < Formula
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
+  bottle do
+    root_url "https://ghcr.io/v2/shivammathur/php"
+    sha256 arm64_golden_gate: "edcf90972e9cba4358b7b1323c1096e0cfb772a89455113b1afec939417887c0"
+    sha256 arm64_tahoe:       "c4440b4764dedeedcd3b869a7bd9c8f35f229af7a95ae353d3634685f07313a0"
+    sha256 arm64_sequoia:     "407011b3ff397e8450c9d3d55ccc12a3655dd60105daa846eb21a5ad9dbabe81"
+    sha256 arm64_linux:       "bf2a5cf8ad374f61ccc5ed6d678d6cba314be315bb8403a055c6f0160c5b6c37"
+    sha256 x86_64_linux:      "53aca0bd7fe5af8040d139258fe5567bcb1c6fb4c2cf3206989512a353268419"
+  end
+
   keg_only :versioned_formula
 
   # Security Support Until 31 Dec 2026
