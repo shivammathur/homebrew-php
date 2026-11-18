@@ -1,9 +1,9 @@
 class PhpAT82DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-8.2.35.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.35.tar.xz"
-  sha256 "5737b98601fe5ab1b8c5db0c82ed3158acb9283ed3081ffe2faffb9ac81455e6"
+  url "https://www.php.net/distributions/php-8.2.36.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.36.tar.xz"
+  sha256 "df50a00d2b453096608bf2bd98a9fab9a3df8678a77b93011b65c3cfe9a018fa"
   license all_of: [
     "PHP-3.01",
 
@@ -33,15 +33,6 @@ class PhpAT82DebugZts < Formula
     regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    sha256 arm64_golden_gate: "3d05a3f8347f144b6b41df03526a9b6ef060326019dc588e7a40edb6bf6fc2b4"
-    sha256 arm64_tahoe:       "8c266d8ab41e1c44d7a20c9b9a8ee5956b5bf25f2aab6c8890c775accbc6acf5"
-    sha256 arm64_sequoia:     "f131ad55782bff29557ea304bf9b0b72fa5ce4abebd64dee05159b181b3ec0a2"
-    sha256 arm64_linux:       "5fe83629139ee6123ca80a153e3459f77528fba9a660839846acb9b7cf3c54c5"
-    sha256 x86_64_linux:      "496ebabb8db2980af6808d34ed39ccb810b222ce6fc8180091d29a4dabba04ed"
-  end
-
   keg_only :versioned_formula
 
   # Security Support Until 31 Dec 2026
@@ -61,7 +52,7 @@ class PhpAT82DebugZts < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
