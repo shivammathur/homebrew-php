@@ -1,21 +1,11 @@
 class PhpAT72DebugZts < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/shivammathur/php-src-backports/archive/591bc8d42c53199ad7fe8298dce65701006a2abf.tar.gz"
+  url "https://github.com/shivammathur/php-src-backports/archive/6cfbf88361e3de4cecbb7610f7c43efeecf831b6.tar.gz"
   version "7.2.34"
-  sha256 "6c45203a66c02bf2800b32120103e10575a0df964750ed1d2b1e7d06f7139b3e"
+  sha256 "d9d5bfd919c61e427c4808aefd139ae0e63b26dc65f051fb075650630a01f51f"
   license "PHP-3.01"
-  revision 9
-
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 2
-    sha256 arm64_golden_gate: "2f43fe5a144ba7b1ea2f9aa7caa327e67465f629d6ce09c5e7da38e56e2f5ffc"
-    sha256 arm64_tahoe:       "0b88fbc7469d9836f5ef36e7696e9189e9a0d118f0c811bcebc00a4aad3b978a"
-    sha256 arm64_sequoia:     "479188f6bf3c9c400687e6ea7022f049d8cbd775ffa7ab302c0add182e1f85f8"
-    sha256 arm64_linux:       "446257a534d1b4c9ebe1081fa90ce407fdb59360836f143105713492af5c8191"
-    sha256 x86_64_linux:      "24fb25734536f7132ca619466cdc2142b0995fe7100ddc43d09bfdd577cc0192"
-  end
+  revision 10
 
   keg_only :versioned_formula
 
@@ -39,7 +29,7 @@ class PhpAT72DebugZts < Formula
   depends_on "freetype"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "jpeg"
   depends_on "krb5"
   depends_on "libpng"
@@ -189,7 +179,7 @@ class PhpAT72DebugZts < Formula
       --with-gettext#{gettext_path}
       --with-gmp=#{formula_opt_prefix("gmp")}
       --with-iconv#{headers_path}
-      --with-icu-dir=#{formula_opt_prefix("icu4c@78")}
+      --with-icu-dir=#{formula_opt_prefix("icu4c@79")}
       --with-jpeg-dir=#{formula_opt_prefix("jpeg")}
       --with-kerberos#{headers_path}
       --with-layout=GNU
