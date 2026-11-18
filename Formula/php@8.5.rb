@@ -1,9 +1,10 @@
-class PhpAT86DebugZts < Formula
+class PhpAT85 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://github.com/php/php-src/archive/ed13285afa9e62740e167148547411b40ddddf84.tar.gz?commit=ed13285afa9e62740e167148547411b40ddddf84"
-  version "8.6.0"
-  sha256 "4e8bf192862e16203f326851d39c14a8613c3030e2c8e6cbe74b5f74df54ed29"
+  # Should only be updated if the new version is announced on the homepage, https://www.php.net/
+  url "https://www.php.net/distributions/php-8.5.13.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.5.13.tar.xz"
+  sha256 "607602acaf0c3061818e9916ec44a058e8b3d43959a83862b9cd3ec7bf5b785f"
   license all_of: [
     "PHP-3.01",
 
@@ -13,7 +14,7 @@ class PhpAT86DebugZts < Formula
     "MIT",      # ext/date/lib/LICENSE.rst
 
     # Extra licenses documented in README.REDIST.BINS ignoring unbundled pcre2lib (3) and gd (13)
-    # ref: https://github.com/php/php-src/blob/master/README.REDIST.BINS
+    # ref: https://github.com/php/php-src/blob/PHP-8.5/README.REDIST.BINS
     "Apache-1.0",            # 10
     "Apache-2.0",            # 20
     "bcrypt-Solar-Designer", # 5
@@ -28,16 +29,10 @@ class PhpAT86DebugZts < Formula
     "TCL",                   # 7
     "Zlib",                  # 8
   ]
-  revision 2
 
-  bottle do
-    root_url "https://ghcr.io/v2/shivammathur/php"
-    rebuild 19
-    sha256 arm64_golden_gate: "accbf41e7c7bc92fdb37325b17b13019308849bfd3aaab5d512d66c25599655b"
-    sha256 arm64_tahoe:       "2b114966cb347b03619ca6528325021dd6981117cbc9af7990ebcaf5ce1b1242"
-    sha256 arm64_sequoia:     "cfb7654aa7300413f3ddb1520b79130b9e367e33e89023104e7663c285a60f45"
-    sha256 arm64_linux:       "ce52df64482efdf793f712233b8fc26dfe8877625c5c55820b5e169b8a7de0b4"
-    sha256 x86_64_linux:      "6ba6010d8f4cdc76b46c56bde2ca384f8e6f980b96d66609a5e6078856bbf770"
+  livecheck do
+    url "https://www.php.net/downloads?source=Y"
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
   end
 
   keg_only :versioned_formula
@@ -55,7 +50,7 @@ class PhpAT86DebugZts < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gmp"
-  depends_on "icu4c@78"
+  depends_on "icu4c@79"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -83,7 +78,7 @@ class PhpAT86DebugZts < Formula
     depends_on "zlib-ng-compat"
   end
 
-  deny_network_access! [:postinstall]
+  deny_network_access! [:build]
 
   def install
     # buildconf required due to system library linking bug patch
@@ -115,7 +110,7 @@ class PhpAT86DebugZts < Formula
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
 
-    config_path = etc/"php/#{php_version}"
+    config_path = etc/"php/#{version.major_minor}"
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
@@ -124,6 +119,12 @@ class PhpAT86DebugZts < Formula
 
     # Identify build provider in php -v output and phpinfo()
     ENV["PHP_BUILD_PROVIDER"] = "Shivam Mathur"
+
+    # Runtime optimizations
+    ENV.O3
+    use_pgo = !OS.mac? || Hardware::CPU.arm?
+    use_lto = OS.mac? && Hardware::CPU.arm?
+    pgo_prefix = "pgo"
 
     # system pkg-config missing
     if OS.mac?
@@ -142,20 +143,19 @@ class PhpAT86DebugZts < Formula
     fpm_user = OS.mac? ? "_www" : "www-data"
     fpm_group = OS.mac? ? "_www" : "www-data"
 
-    shared_args = %W[
+    args = %W[
       --prefix=#{prefix}
       --localstatedir=#{var}
       --sysconfdir=#{config_path}
       --with-config-file-path=#{config_path}
       --with-config-file-scan-dir=#{config_path}/conf.d
       --with-pear=#{pkgshare}/pear
-      --disable-zend-signals
       --enable-bcmath
       --enable-calendar
-      --enable-debug
       --enable-dba
       --enable-exif
       --enable-ftp
+      --enable-fpm
       --enable-gd
       --enable-intl
       --enable-mbregex
@@ -170,13 +170,15 @@ class PhpAT86DebugZts < Formula
       --enable-sysvmsg
       --enable-sysvsem
       --enable-sysvshm
-      --enable-zts
+      --with-apxs2=#{formula_opt_bin("httpd")}/apxs
       --with-bz2#{headers_path}
       --with-capstone
       --with-curl
       --with-external-gd
       --with-external-pcre
       --with-ffi
+      --with-fpm-user=#{fpm_user}
+      --with-fpm-group=#{fpm_group}
       --with-gettext#{gettext_path}
       --with-gmp=#{formula_opt_prefix("gmp")}
       --with-iconv#{headers_path}
@@ -190,14 +192,14 @@ class PhpAT86DebugZts < Formula
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
       --with-openssl
-      --with-password-argon2
+      --with-password-argon2=#{formula_opt_prefix("argon2")}
       --with-pdo-dblib=#{formula_opt_prefix("freetds")}
       --with-pdo-mysql=mysqlnd
       --with-pdo-odbc=unixODBC,#{formula_opt_prefix("unixodbc")}
       --with-pdo-pgsql=#{formula_opt_prefix("libpq")}
       --with-pdo-sqlite
       --with-pgsql=#{formula_opt_prefix("libpq")}
-      --enable-pic
+      --with-pic
       --with-snmp=#{formula_opt_prefix("net-snmp")}
       --with-sodium
       --with-sqlite3
@@ -209,30 +211,93 @@ class PhpAT86DebugZts < Formula
     ]
 
     if OS.mac?
-      shared_args << "--enable-dtrace"
+      args << "--enable-dtrace"
     else
-      shared_args << "--disable-dtrace"
-      shared_args << "--without-ndbm"
-      shared_args << "--without-gdbm"
+      args << "--disable-dtrace"
+      args << "--without-ndbm"
+      args << "--without-gdbm"
     end
 
-    args = shared_args.map(&:clone)
-    args << "--with-apxs2=#{formula_opt_bin("httpd")}/apxs"
-    args << "--enable-fpm"
-    args << "--with-fpm-user=#{fpm_user}"
-    args << "--with-fpm-group=#{fpm_group}"
+    if use_pgo
+      pgo_script = buildpath/"pgo_script.php"
+      pgo_script.write (Pathname(__dir__).parent/"Scripts/pgo_script.php").read
 
-    system "./configure", *args
-    system "make"
-    system "make", "install"
+      base_flags = %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS].to_h { |key| [key, ENV[key]] }
+      profile_dir = buildpath/"pgo-data"
+      pgo_generate_flag = if OS.mac?
+        "-fprofile-instr-generate"
+      else
+        profile_dir.mkpath
+        "-fprofile-generate=#{profile_dir}"
+      end
+      %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+        ENV.append key, pgo_generate_flag
+      end
+      ENV.append "LDFLAGS", pgo_generate_flag
 
-    # Build libphp in another pass,
-    # because it's not possible to build Apache and embed at the same time
-    args = shared_args.map(&:clone)
-    args << "--disable-cgi"
-    args << "--enable-cli"
-    args << "--disable-phpdbg"
-    args << "--enable-embed"
+      system "./configure", *args
+      system "make"
+
+      php = buildpath/"sapi/cli/php"
+      if OS.mac?
+        profile_pattern = buildpath/"#{pgo_prefix}-%p-%m.profraw"
+        ENV["LLVM_PROFILE_FILE"] = profile_pattern.to_s
+      end
+      begin
+        system php, "-n", "-d", "opcache.enable_cli=1", "Zend/bench.php", "--repeat", "3"
+        system php, "-n", "Zend/bench.php", "--repeat", "3"
+        3.times do
+          system php, "-n", "-d", "opcache.enable_cli=1", pgo_script
+          system php, "-n", pgo_script
+        end
+      ensure
+        ENV.delete("LLVM_PROFILE_FILE")
+      end
+
+      if OS.mac?
+        profiles = Dir[buildpath/"#{pgo_prefix}-*.profraw"]
+        odie "PGO training did not generate any profile data" if profiles.empty?
+
+        profdata_tool = Utils.safe_popen_read("/usr/bin/xcrun", "--find", "llvm-profdata").chomp
+        profdata = buildpath/"#{pgo_prefix}.profdata"
+        system profdata_tool, "merge", "-o", profdata, *profiles
+        pgo_use_flag = "-fprofile-instr-use=#{profdata}"
+      else
+        profiles = Dir[profile_dir/"**/*.gcda"]
+        odie "PGO training did not generate any profile data" if profiles.empty?
+
+        pgo_use_flag = "-fprofile-use=#{profile_dir}"
+      end
+
+      system "make", "distclean"
+      base_flags.each do |key, value|
+        if value.nil?
+          ENV.delete(key)
+        else
+          ENV[key] = value
+        end
+      end
+
+      %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+        ENV.append key, pgo_use_flag
+        if OS.mac?
+          ENV.append key, "-Wno-profile-instr-out-of-date"
+          ENV.append key, "-Wno-profile-instr-unprofiled"
+        else
+          ENV.append key, "-fprofile-correction"
+          # GCC 13's tracer pass crashes on session.c under -fprofile-use (https://github.com/php/php-src/issues/18807)
+          ENV.append key, "-fno-tracer"
+        end
+      end
+      ENV.append "LDFLAGS", pgo_use_flag
+      if use_lto
+        %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].each do |key|
+          ENV.append key, "-flto=thin"
+        end
+        ENV.append "LDFLAGS", "-flto=thin"
+        ENV.append "LDFLAGS", "-Wl,-export_dynamic"
+      end
+    end
 
     system "./configure", *args
     system "make"
@@ -271,59 +336,10 @@ class PhpAT86DebugZts < Formula
   end
 
   post_install_steps do
-    set_permissions ["pear/.channels", "pear/.channels/.alias"], "0755", base: :pkgshare, recursive: false
-    set_permissions [
-      "pear/.depdblock",
-      "pear/.filemap",
-      "pear/.depdb",
-      "pear/.lock",
-      "pear/.channels/*",
-      "pear/.channels/.alias/*",
-    ], "0644", base: :pkgshare, recursive: false
-
-    # Custom location for extensions installed via pecl
-    mkdir_p "lib/php/pecl", base: :homebrew_prefix
-    unless_path_exists "pecl", base: :prefix do
-      symlink "lib/php/pecl", "pecl", source_base: :homebrew_prefix, target_base: :prefix
-    end
-
-    # fix pear config to install outside cellar
-    run "/bin/cp", args: %w[-R {{pkgshare}}/pear/. {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts]
-    run "pear", base: :bin, args: %w[config-set php_ini {{etc}}/php/{{version.major_minor}}-debug-zts/php.ini system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts"
-    run "pear", base: :bin,
-                args: %w[config-set php_dir {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/doc"
-    run "pear", base: :bin,
-                args: %w[config-set doc_dir
-                         {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/doc system]
-    run "/bin/sh", args: ["-ec", <<~SH, "--", "{{bin}}", "{{HOMEBREW_PREFIX}}/lib/php/pecl"]
-      extension_dir="$("$1/php-config" --extension-dir)"
-      ext_dir="$2/${extension_dir##*/}"
-      mkdir -p "$ext_dir"
-      exec "$1/pear" config-set ext_dir "$ext_dir" system
-    SH
-    run "pear", base: :bin, args: %w[config-set bin_dir {{opt_prefix}}/bin system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/data"
-    run "pear", base: :bin,
-                args: %w[config-set data_dir
-                         {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/data system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/cfg"
-    run "pear", base: :bin,
-                args: %w[config-set cfg_dir
-                         {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/cfg system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/htdocs"
-    run "pear", base: :bin,
-                args: %w[config-set www_dir
-                         {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/htdocs system]
-    run "pear", base: :bin, args: %w[config-set man_dir {{HOMEBREW_PREFIX}}/share/man system]
-    mkdir_p "{{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/test"
-    run "pear", base: :bin,
-                args: %w[config-set test_dir
-                         {{HOMEBREW_PREFIX}}/share/pear@{{version.major_minor}}-debug-zts/test system]
-    run "pear", base: :bin, args: %w[config-set php_bin {{opt_prefix}}/bin/php system]
-
-    run "pear", base: :bin, args: ["update-channels"]
+    # Package setup must not load the user's optional PHP extensions.
+    inreplace "pear", /^exec \$PHP (?:-n )?-C -q /, "exec $PHP -n -C -q ", base: :bin
+    configure_php
+    inreplace "pear", "exec $PHP -n -C -q ", "exec $PHP -C -q ", base: :bin
   end
 
   def caveats
@@ -339,12 +355,8 @@ class PhpAT86DebugZts < Formula
           DirectoryIndex index.php index.html
 
       The php.ini and php-fpm.ini file can be found in:
-          #{etc}/php/#{php_version}/
+          #{etc}/php/#{version.major_minor}/
     EOS
-  end
-
-  def php_version
-    version.to_s.split(".")[0..1].join(".") + "-debug-zts"
   end
 
   service do
