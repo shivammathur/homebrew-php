@@ -133,7 +133,8 @@ class PhpAT71Debug < Formula
 
     if OS.mac?
       # Each extension needs a direct reference to the sdk path or it won't find the headers
-      headers_path = "=#{MacOS.sdk_for_formula(self).path}/usr"
+      sdk_path = MacOS.sdk_for_formula(self).path
+      headers_path = "=#{sdk_path}/usr"
       gettext_path = "=#{formula_opt_prefix("gettext")}"
     end
 
