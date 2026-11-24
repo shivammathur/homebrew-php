@@ -28,11 +28,12 @@ jobs:
       timeout-minutes: 20
       env:
         update: true
+        verbose: v
         debug: ${{ matrix.debug }}
         phpts: ${{ matrix.phpts }}
         use_package_cache: false
         SETUP_PHP_BREW_WATCHDOG: false
-      uses: shivammathur/setup-php@verbose
+      uses: shivammathur/setup-php@develop
       with:
         php-version: ${{ matrix.php }}
 
